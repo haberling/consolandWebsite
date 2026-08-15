@@ -5,10 +5,6 @@
       "path": "home"
     },
     {
-      "title": "Blog Archive",
-      "path": "blog-archive/blog-archive"
-    },
-    {
       "title": "Games",
       "path": "games/Games",
       "children": [
@@ -30,6 +26,10 @@
           "path": "utilities/example-tool"
         }
       ]
+    },
+    {
+      "title": "Blog Archive",
+      "path": "blog-archive/blog-archive"
     }
   ]
 }

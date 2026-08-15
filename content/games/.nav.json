@@ -1,3 +1,4 @@
 {
-  "deny": ["draft-idea.md"]
+  "deny": ["draft-idea.md"],
+  "priority": -10
 }

@@ -24,6 +24,12 @@
 //      { "allow": ["a.md", "b.md"] }   -- only these
 //      { "deny": ["draft.md"] }        -- everything except these
 //    Specifying both allow and deny in the same file is an error.
+//  - content/<dir>/.nav.json can also set "priority" (an int, default 0) to
+//    control that top-level nav item's position: lower sorts earlier,
+//    negatives allowed. Items with equal priority (including the default 0
+//    among themselves and against loose top-level pages, which always use 0)
+//    fall back to alphabetical-by-title. "Home" is always pinned first
+//    regardless of priority.
 //
 // This only recurses one level into content/ subdirectories; deeper nesting
 // isn't supported yet.
@@ -125,7 +131,7 @@ static List<NavItem> BuildNav(string contentRoot)
         }
     }
 
-    items.AddRange(rest.OrderBy(n => n.Title, StringComparer.OrdinalIgnoreCase));
+    items.AddRange(rest.OrderBy(n => n.Priority).ThenBy(n => n.Title, StringComparer.OrdinalIgnoreCase));
     return items;
 }
 
@@ -142,8 +148,10 @@ static NavItem? BuildDirectoryNavItem(string contentRoot, string dir)
         ? $"  landing page: {Path.GetFileName(landingFile)} -> nav item will be clickable"
         : $"  no landing page (no .md file matching \"{dirName}\", dashes/spaces interchangeable) -> nav item will be a dropdown-only trigger");
 
+    var config = LoadNavOverride(dir);
+
     var candidates = mdFiles.Where(f => f != landingFile).ToList();
-    var allowed = ApplyNavOverride(dir, candidates);
+    var allowed = ApplyNavOverride(dir, candidates, config);
 
     var children = allowed
         .Select(f => new NavItem { Title = TitleFromFile(f, Path.GetFileNameWithoutExtension(f)), Path = ToContentPath(contentRoot, f) })
@@ -172,21 +180,25 @@ static NavItem? BuildDirectoryNavItem(string contentRoot, string dir)
         Title = title,
         Path = path,
         Children = children.Count > 0 ? children : null,
+        Priority = config?.Priority ?? 0,
     };
 }
 
-static List<string> ApplyNavOverride(string dir, List<string> candidateFiles)
+static NavOverride? LoadNavOverride(string dir)
 {
     var overridePath = Path.Combine(dir, ".nav.json");
-    if (!File.Exists(overridePath)) return candidateFiles;
+    if (!File.Exists(overridePath)) return null;
 
     Console.WriteLine("  applying .nav.json override");
-    var config = JsonSerializer.Deserialize(File.ReadAllText(overridePath), JsonContext.Default.NavOverride);
+    return JsonSerializer.Deserialize(File.ReadAllText(overridePath), JsonContext.Default.NavOverride);
+}
 
+static List<string> ApplyNavOverride(string dir, List<string> candidateFiles, NavOverride? config)
+{
     if (config == null) return candidateFiles;
 
     if (config.Allow != null && config.Deny != null)
-        throw new InvalidOperationException($"{overridePath}: specify \"allow\" or \"deny\", not both.");
+        throw new InvalidOperationException($"{Path.Combine(dir, ".nav.json")}: specify \"allow\" or \"deny\", not both.");
 
     if (config.Allow != null)
     {
@@ -250,6 +262,9 @@ class NavItem
 
     [JsonPropertyName("children")]
     public List<NavItem>? Children { get; set; }
+
+    [JsonIgnore]
+    public int Priority { get; set; }
 }
 
 class NavOverride
@@ -259,6 +274,9 @@ class NavOverride
 
     [JsonPropertyName("deny")]
     public List<string>? Deny { get; set; }
+
+    [JsonPropertyName("priority")]
+    public int Priority { get; set; }
 }
 
 [JsonSourceGenerationOptions(

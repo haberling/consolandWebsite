@@ -10,9 +10,9 @@
 //    (as opposed to from an interactive shell), which breaks it entirely.
 //  - Runs `dotnet run tools/build-manifest.cs` to regenerate content/manifest.json.
 //  - Clears docs/ and copies src/ (html/css/js/img) into it as the site root.
-//  - Copies every content/**/*.md and content/manifest.json into docs/content/,
-//    preserving the relative layout. content/**/.nav.json is a build-time-only
-//    config file (consumed by build-manifest.cs) and is not copied.
+//  - Copies every content/** file (markdown, manifest.json, images, etc.) into
+//    docs/content/, preserving the relative layout. content/**/.nav.json is a
+//    build-time-only config file (consumed by build-manifest.cs) and is not copied.
 //  - Writes docs/CNAME with the site's custom domain, so every deploy
 //    re-asserts it regardless of what's in docs/ before the run.
 //
@@ -50,7 +50,7 @@ try
     CopyDirectory(srcRoot, docsRoot, skipDirNames: new[] { "ts" });
 
     var docsContentRoot = Path.Combine(docsRoot, "content");
-    Console.WriteLine($"Copying content/**/*.md and manifest.json -> {docsContentRoot}");
+    Console.WriteLine($"Copying content/** (excluding .nav.json) -> {docsContentRoot}");
     CopyContent(contentRoot, docsContentRoot);
 
     var cnamePath = Path.Combine(docsRoot, "CNAME");
@@ -122,7 +122,6 @@ static void CopyContent(string contentRoot, string destRoot)
     {
         var name = Path.GetFileName(file);
         if (name == ".nav.json") continue;
-        if (!name.EndsWith(".md", StringComparison.OrdinalIgnoreCase) && name != "manifest.json") continue;
 
         var relative = Path.GetRelativePath(contentRoot, file);
         var dest = Path.Combine(destRoot, relative);

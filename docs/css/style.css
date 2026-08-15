@@ -1,0 +1,231 @@
+:root {
+  color-scheme: dark;
+  --bg: #14161a;
+  --bg-elevated: #1c1f24;
+  --text: #e6e8eb;
+  --text-dim: #9aa1ab;
+  --accent: #ffb000;
+  --border: #2a2e35;
+  --max-width: 860px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.site-header {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-elevated);
+}
+
+.site-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: nowrap;
+  padding-bottom: 0.75rem;
+}
+
+.site-nav {
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+}
+
+.site-tagline {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.site-tagline p {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  text-align: right;
+}
+
+.site-title {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-shrink: 0;
+  font-family: Consolas, "Cascadia Code", "SF Mono", Menlo, "Liberation Mono", monospace;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.site-logo {
+  height: 54px;
+  width: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: contain;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+}
+
+.site-nav-list {
+  display: flex;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-item {
+  position: relative;
+}
+
+.nav-item.has-dropdown {
+  /* Extends the item's actual hover box down into the visual gap below the
+     label, so crossing that gap doesn't drop out of :hover before reaching
+     the dropdown. The negative margin cancels the padding's layout push. */
+  padding-bottom: 0.6rem;
+  margin-bottom: -0.6rem;
+}
+
+.nav-label {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  cursor: pointer;
+  color: var(--text-dim);
+  font-size: 0.95rem;
+}
+
+a.nav-label {
+  text-decoration: none;
+}
+
+.nav-label:hover,
+.nav-item:focus-within .nav-label {
+  color: var(--accent);
+}
+
+.nav-item.active > .nav-label {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.nav-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 160px;
+  padding: 0.4rem 0;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+  z-index: 20;
+}
+
+.nav-item.has-dropdown:hover .nav-dropdown,
+.nav-item.has-dropdown:focus-within .nav-dropdown {
+  display: block;
+}
+
+.nav-dropdown a {
+  display: block;
+  padding: 0.4rem 0.9rem;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.nav-dropdown a:hover {
+  color: var(--accent);
+  background: rgba(255, 176, 0, 0.08);
+  text-decoration: none;
+}
+
+.nav-dropdown a.active {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+#app {
+  flex: 1;
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.site-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 0.85rem;
+}
+
+/* placeholders for widgets built out later */
+.downloads-widget {
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1.5rem 0;
+}
+
+.downloads-widget h3 {
+  margin-top: 0;
+}
+
+.downloads-widget ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.downloads-widget a.download-button {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  color: var(--accent);
+}
+
+.downloads-widget a.download-button:hover {
+  background: var(--accent);
+  color: var(--bg);
+  text-decoration: none;
+}

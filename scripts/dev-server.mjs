@@ -1,8 +1,11 @@
 // Zero-dependency static file server for local development. Serves src/ as
 // the site root and content/ under /content/, mirroring the relative layout
-// the C# build tool will eventually assemble into docs/.
+// the C# build tool will eventually assemble into docs/. Also runs
+// `tsc --watch` in the background so edits to src/ts/*.ts are reflected in
+// src/js/*.js without a separate terminal.
 
 import http from "node:http";
+import { spawn } from "node:child_process";
 import { readFile, stat } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -12,6 +15,30 @@ const repoRoot = path.resolve(__dirname, "..");
 const srcRoot = path.join(repoRoot, "src");
 const contentRoot = path.join(repoRoot, "content");
 const port = process.env.PORT ? Number(process.env.PORT) : 8080;
+
+const isWindows = process.platform === "win32";
+const tscBin = path.join(repoRoot, "node_modules", ".bin", isWindows ? "tsc.cmd" : "tsc");
+const tsc = spawn(tscBin, ["--watch", "--preserveWatchOutput"], {
+  cwd: repoRoot,
+  stdio: "inherit",
+  shell: isWindows,
+});
+tsc.on("error", (err) => {
+  console.error(`Failed to start tsc --watch: ${err.message}`);
+});
+
+function stopTsc() {
+  if (!tsc.killed) tsc.kill();
+}
+process.on("SIGINT", () => {
+  stopTsc();
+  process.exit(0);
+});
+process.on("SIGTERM", () => {
+  stopTsc();
+  process.exit(0);
+});
+process.on("exit", stopTsc);
 
 const mimeTypes = {
   ".html": "text/html; charset=utf-8",

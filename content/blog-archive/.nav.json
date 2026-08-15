@@ -1,4 +1,5 @@
 {
   "allow": [],
-  "priority": 10
+  "priority": 10,
+  "nonav": false
 }

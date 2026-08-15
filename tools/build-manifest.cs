@@ -1,6 +1,23 @@
-// Scans content/ and writes content/manifest.json for the site nav.
+// Scans a site's content directory and writes <that dir>/manifest.json for
+// the site nav.
 //
-// Usage (from anywhere): dotnet run tools/build-manifest.cs
+// Usage (from anywhere): dotnet run tools/build-manifest.cs [path]
+//
+// Finding the content directory (the "site root"):
+//  - The content directory is located at runtime, not assumed relative to
+//    this script, so the whole project can be moved around freely as long
+//    as the site root marker (below) travels with it.
+//  - A directory is the site root if it has a ".nav.json" containing
+//    "siteRoot": true.
+//  - The search starts from [path] if given, otherwise the current
+//    directory. It looks for the marker there, then in each of that
+//    directory's immediate subdirectories (one level down, never deeper --
+//    this intentionally does not walk the whole drive). The first match
+//    found is used as the content root.
+//  - If no site root is found, this exits with an error explaining how to
+//    create one: run `dotnet run tools/build-manifest.cs --init-site-root
+//    [path]` (path defaults to the current directory) to write a
+//    ".nav.json" with "siteRoot": true at that location.
 //
 // Rules:
 //  - content/home.md, if present, always becomes a "Home" nav item pinned
@@ -30,22 +47,53 @@
 //    among themselves and against loose top-level pages, which always use 0)
 //    fall back to alphabetical-by-title. "Home" is always pinned first
 //    regardless of priority.
+//  - content/<dir>/.nav.json can also set "nonav" (bool, default false) to
+//    exclude that directory from the nav entirely, e.g. for pages that
+//    should be reachable by direct link only.
+//  - Any top-level content/<dir>/ containing at least one .md file is kept
+//    self-documenting: if it has no .nav.json, one is created with the
+//    default fields ("priority": 0, "nonav": false); if it has one but
+//    "nonav" is missing, that key is backfilled onto it (defaulted to
+//    false) in place. Both cases write back to content/<dir>/.nav.json.
 //
 // This only recurses one level into content/ subdirectories; deeper nesting
 // isn't supported yet.
 
-using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-var contentRoot = Path.Combine(RepoRoot(), "content");
-Console.WriteLine($"Scanning {contentRoot}");
-
-if (!Directory.Exists(contentRoot))
+if (args.Length > 0 && args[0] == "--init-site-root")
 {
-    Console.Error.WriteLine($"error: content/ not found at {contentRoot}");
+    var targetDir = Path.GetFullPath(args.Length > 1 ? args[1] : Directory.GetCurrentDirectory());
+    InitSiteRoot(targetDir);
+    return 0;
+}
+
+var searchFrom = Path.GetFullPath(args.Length > 0 ? args[0] : Directory.GetCurrentDirectory());
+if (!Directory.Exists(searchFrom))
+{
+    Console.Error.WriteLine($"error: path not found: {searchFrom}");
     return 1;
 }
+
+var contentRoot = FindSiteRoot(searchFrom);
+if (contentRoot == null)
+{
+    Console.Error.WriteLine("error: no site root found.");
+    Console.Error.WriteLine();
+    Console.Error.WriteLine($"Looked for a \".nav.json\" with \"siteRoot\": true in:");
+    Console.Error.WriteLine($"  {searchFrom}");
+    Console.Error.WriteLine($"  {searchFrom}{Path.DirectorySeparatorChar}* (immediate subdirectories)");
+    Console.Error.WriteLine();
+    Console.Error.WriteLine("To mark a folder as the site root, run:");
+    Console.Error.WriteLine("  dotnet run tools/build-manifest.cs --init-site-root [path]");
+    Console.Error.WriteLine("(path defaults to the current directory if omitted)");
+    Console.Error.WriteLine();
+    Console.Error.WriteLine("Or point this run at the right place instead of searching from here:");
+    Console.Error.WriteLine("  dotnet run tools/build-manifest.cs [path]");
+    return 1;
+}
+Console.WriteLine($"Scanning {contentRoot}");
 
 try
 {
@@ -78,13 +126,42 @@ catch (Exception ex)
     return 1;
 }
 
-static string RepoRoot()
+static string? FindSiteRoot(string searchFrom)
 {
-    var scriptPath = ThisFilePath();
-    return Path.GetFullPath(Path.Combine(Path.GetDirectoryName(scriptPath)!, ".."));
+    if (IsSiteRoot(searchFrom)) return searchFrom;
+
+    foreach (var child in Directory.GetDirectories(searchFrom))
+    {
+        if (IsSiteRoot(child)) return child;
+    }
+
+    return null;
 }
 
-static string ThisFilePath([CallerFilePath] string path = "") => path;
+static bool IsSiteRoot(string dir)
+{
+    var markerPath = Path.Combine(dir, ".nav.json");
+    if (!File.Exists(markerPath)) return false;
+
+    var config = JsonSerializer.Deserialize(File.ReadAllText(markerPath), JsonContext.Default.NavOverride);
+    return config?.SiteRoot == true;
+}
+
+static void InitSiteRoot(string dir)
+{
+    Directory.CreateDirectory(dir);
+
+    var markerPath = Path.Combine(dir, ".nav.json");
+    var config = File.Exists(markerPath)
+        ? JsonSerializer.Deserialize(File.ReadAllText(markerPath), JsonContext.Default.NavOverride) ?? new NavOverride()
+        : new NavOverride();
+
+    config.SiteRoot = true;
+    var json = JsonSerializer.Serialize(config, JsonContext.Default.NavOverride);
+    File.WriteAllText(markerPath, json + "\n");
+
+    Console.WriteLine($"Marked {dir} as the site root (wrote {markerPath}).");
+}
 
 static List<NavItem> BuildNav(string contentRoot)
 {
@@ -141,14 +218,20 @@ static NavItem? BuildDirectoryNavItem(string contentRoot, string dir)
     var mdFiles = Directory.GetFiles(dir, "*.md", SearchOption.TopDirectoryOnly);
     Console.WriteLine($"  found {mdFiles.Length} .md file(s)");
 
+    var config = LoadOrCreateNavOverride(dir, mdFiles.Length > 0);
+
+    if (config.NoNav)
+    {
+        Console.WriteLine("  nonav: true -> excluding this directory from the nav entirely");
+        return null;
+    }
+
     var landingFile = mdFiles.FirstOrDefault(f =>
         string.Equals(NormalizeForMatch(Path.GetFileNameWithoutExtension(f)), NormalizeForMatch(dirName), StringComparison.OrdinalIgnoreCase));
 
     Console.WriteLine(landingFile != null
         ? $"  landing page: {Path.GetFileName(landingFile)} -> nav item will be clickable"
         : $"  no landing page (no .md file matching \"{dirName}\", dashes/spaces interchangeable) -> nav item will be a dropdown-only trigger");
-
-    var config = LoadNavOverride(dir);
 
     var candidates = mdFiles.Where(f => f != landingFile).ToList();
     var allowed = ApplyNavOverride(dir, candidates, config);
@@ -180,17 +263,41 @@ static NavItem? BuildDirectoryNavItem(string contentRoot, string dir)
         Title = title,
         Path = path,
         Children = children.Count > 0 ? children : null,
-        Priority = config?.Priority ?? 0,
+        Priority = config.Priority,
     };
 }
 
-static NavOverride? LoadNavOverride(string dir)
+static NavOverride LoadOrCreateNavOverride(string dir, bool hasMdFiles)
 {
     var overridePath = Path.Combine(dir, ".nav.json");
-    if (!File.Exists(overridePath)) return null;
+
+    if (!File.Exists(overridePath))
+    {
+        if (!hasMdFiles) return new NavOverride();
+
+        Console.WriteLine("  no .nav.json found -> creating default (\"priority\": 0, \"nonav\": false)");
+        var created = new NavOverride();
+        WriteNavOverride(overridePath, created);
+        return created;
+    }
 
     Console.WriteLine("  applying .nav.json override");
-    return JsonSerializer.Deserialize(File.ReadAllText(overridePath), JsonContext.Default.NavOverride);
+    var raw = File.ReadAllText(overridePath);
+    var config = JsonSerializer.Deserialize(raw, JsonContext.Default.NavOverride) ?? new NavOverride();
+
+    if (!raw.Contains("\"nonav\""))
+    {
+        Console.WriteLine("  .nav.json missing \"nonav\" -> backfilling default (false)");
+        WriteNavOverride(overridePath, config);
+    }
+
+    return config;
+}
+
+static void WriteNavOverride(string path, NavOverride config)
+{
+    var json = JsonSerializer.Serialize(config, JsonContext.Default.NavOverride);
+    File.WriteAllText(path, json + "\n");
 }
 
 static List<string> ApplyNavOverride(string dir, List<string> candidateFiles, NavOverride? config)
@@ -277,6 +384,12 @@ class NavOverride
 
     [JsonPropertyName("priority")]
     public int Priority { get; set; }
+
+    [JsonPropertyName("nonav")]
+    public bool NoNav { get; set; }
+
+    [JsonPropertyName("siteRoot")]
+    public bool SiteRoot { get; set; }
 }
 
 [JsonSourceGenerationOptions(

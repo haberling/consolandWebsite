@@ -1,0 +1,35 @@
+{
+  "nav": [
+    {
+      "title": "Home",
+      "path": "home"
+    },
+    {
+      "title": "Blog Archive",
+      "path": "blog-archive/blog-archive"
+    },
+    {
+      "title": "Games",
+      "path": "games/Games",
+      "children": [
+        {
+          "title": "Another Game",
+          "path": "games/another-game"
+        },
+        {
+          "title": "Example Game",
+          "path": "games/example-game"
+        }
+      ]
+    },
+    {
+      "title": "Utilities",
+      "children": [
+        {
+          "title": "Example Tool",
+          "path": "utilities/example-tool"
+        }
+      ]
+    }
+  ]
+}

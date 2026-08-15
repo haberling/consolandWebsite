@@ -8,10 +8,15 @@
 </head>
 <body>
   <header class="site-header">
-    <a class="site-title" href="#/">
-      <img class="site-logo" src="img/logo.png" alt="">
-      Consoland
-    </a>
+    <div class="site-header-top">
+      <a class="site-title" href="#/">
+        <img class="site-logo" src="img/logo.png" alt="">
+        Consoland
+      </a>
+      <div class="site-tagline">
+        <p>A website about software, which is really software about software.</p>
+      </div>
+    </div>
     <nav id="site-nav" class="site-nav">
       <!-- populated from manifest.json once content scaffolding exists -->
     </nav>
@@ -26,7 +31,6 @@
     <span>&copy; 2026 Marcus Haberling</span>
   </footer>
 
-  <script src="js/router.js"></script>
-  <script src="js/main.js"></script>
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>

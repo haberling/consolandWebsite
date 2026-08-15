@@ -2,6 +2,7 @@
 // headings, paragraphs, bold/italic, inline code, links/images, fenced code
 // blocks, widgets, unordered/ordered lists, blockquotes, hr.
 const CODE_SPAN_MARKER = String.fromCharCode(0);
+const ESCAPED_BACKSLASH_MARKER = String.fromCharCode(1);
 async function loadWidget(name) {
     try {
         const mod = (await import(`./widgets/${name.toLowerCase()}.js`));
@@ -36,6 +37,14 @@ function renderInline(text) {
     out = out.replace(/__([^_]+)__/g, "<strong>$1</strong>");
     out = out.replace(/\*([^*]+)\*/g, "<em>$1</em>");
     out = out.replace(/_([^_]+)_/g, "<em>$1</em>");
+    // Explicit escapes/passthroughs, applied after the escapeHtml() above has
+    // already turned "<" and "\" into inert text. "\\" is pulled out first
+    // (CommonMark-style) so a literal backslash before "-" isn't itself
+    // consumed by the "\-" escape, e.g. "\\-" -> literal "\-".
+    out = out.replace(/\\\\/g, ESCAPED_BACKSLASH_MARKER);
+    out = out.replace(/&lt;br\s*\/?&gt;/gi, "<br>");
+    out = out.replace(/\\-/g, "-");
+    out = out.replace(new RegExp(ESCAPED_BACKSLASH_MARKER, "g"), "\\");
     const markerPattern = new RegExp(`${CODE_SPAN_MARKER}(\\d+)${CODE_SPAN_MARKER}`, "g");
     out = out.replace(markerPattern, (_m, i) => codeSpans[Number(i)]);
     return out;

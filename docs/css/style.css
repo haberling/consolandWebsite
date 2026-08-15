@@ -37,6 +37,17 @@ a:hover {
   text-decoration: underline;
 }
 
+blockquote {
+  margin: 1rem 0 1rem 1.5rem;
+  padding: 0.2rem 1rem;
+  border-left: 3px solid var(--accent);
+  color: var(--text-dim);
+}
+
+blockquote p {
+  margin: 0.4rem 0;
+}
+
 .site-header {
   display: flex;
   flex-direction: column;
@@ -219,7 +230,7 @@ a.nav-label {
   padding: 0;
   margin: 0;
   display: flex;
-  flex-direction: column;
+  flex-flow: row wrap;
   gap: 0.5rem;
 }
 
@@ -235,4 +246,54 @@ a.nav-label {
   background: var(--accent);
   color: var(--bg);
   text-decoration: none;
+}
+
+.copy-command {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 100%;
+  min-width: 0;
+  gap: 0.3rem;
+}
+
+.copy-command-label {
+  color: var(--text-dim);
+  font-size: 0.85rem;
+}
+
+.copy-command-row {
+  display: flex;
+  align-items: stretch;
+  min-width: 0;
+  gap: 0.5rem;
+}
+
+.copy-command-text {
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  white-space: pre;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Consolas, "Cascadia Code", "SF Mono", Menlo, "Liberation Mono", monospace;
+  font-size: 0.9rem;
+}
+
+.copy-command-button {
+  flex-shrink: 0;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--accent);
+  font: inherit;
+  cursor: pointer;
+}
+
+.copy-command-button:hover {
+  background: var(--accent);
+  color: var(--bg);
 }

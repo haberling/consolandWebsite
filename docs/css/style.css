@@ -183,6 +183,13 @@ a.nav-label {
   padding: 2rem 1.5rem;
 }
 
+#app img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 6px;
+}
+
 .site-footer {
   display: flex;
   align-items: center;

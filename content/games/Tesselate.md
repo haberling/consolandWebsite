@@ -1,7 +1,12 @@
 # Tesselate
 
-A vibe coded falling block game in the soviet tradition. All in your command Line.
-
+A vibe coded falling block game in the soviet tradition. All on your command line.
+```slideshow:Screenshots
+   content/games/images/tesselate11.png | Gameplay
+   content/games/images/tesselate18.png | On Fire
+   content/games/images/tesselate26.png | Game Over
+   content/games/images/tesselate1.png | Music Credits
+```
 ## Features
 
 1. Playable from the command line, while your waiting for a task to complete or an agent to finish
@@ -22,7 +27,7 @@ A vibe coded falling block game in the soviet tradition. All in your command Lin
 
 >★★☆☆☆<br>
 >Eh, it's Ok.<br>
->\- Judas Iscariot
+>\- Charles Manson
 
 
 ```downloads

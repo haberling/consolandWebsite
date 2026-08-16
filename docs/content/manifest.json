@@ -6,7 +6,6 @@
     },
     {
       "title": "Games",
-      "path": "games/Games",
       "children": [
         {
           "title": "Another Game",

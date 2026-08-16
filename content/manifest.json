@@ -19,12 +19,7 @@
     },
     {
       "title": "Utilities",
-      "children": [
-        {
-          "title": "Example Tool",
-          "path": "utilities/example-tool"
-        }
-      ]
+      "path": "utilities/utilities"
     },
     {
       "title": "Blog Archive",

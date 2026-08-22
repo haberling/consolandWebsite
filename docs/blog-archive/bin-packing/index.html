@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L0SF9VQEKN"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-L0SF9VQEKN');
+  </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Code Complexity and the Bin Packing Problem — Consoland</title>
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="stylesheet" href="/css/framework.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/widgets/code.css">
+<link rel="stylesheet" href="/css/widgets/downloads.css">
+<link rel="stylesheet" href="/css/widgets/slideshow.css">
+
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header-top">
+      <a class="site-title" href="/"><img class="site-logo" src="/img/logo.png" alt="">Consoland</a>
+      <div class="site-tagline">
+        <p>A website about software, which is really software about software.</p>
+      </div>
+    </div>
+    <nav id="site-nav" class="site-nav">
+      <!-- populated client-side from /content/manifest.json -->
+    </nav>
+  </header>
+
+  <main id="app"><h1>Code Complexity and the Bin Packing Problem</h1>
+<p><em>A mental tool for software system design — originally published May 25, 2022 on Medium (<a href="https://medium.com/better-programming/code-complexity-and-the-bin-packing-problem-928538d72a29">Better Programming</a>)</em></p>
+<p><img src="/content/blog-archive/images/bin-packing-01-header.jpg" alt="Generated at Hotpot.ai"> <em>Generated at Hotpot.ai and licensed for use by me. For all the hype around AI making art, this doesn't REALLY look like the prompt "Ten Bins in a row," does it?</em></p>
+<p>We all know that the Binning Problem is NP — NP-Hard, to be specific. What if this problem also describes an underlying issue with creating software? I want to explore the idea that bin packing is a good model for studying some of the problems that cause code complexity. This will require a mixture of hard math and soft analogy (Hard as in "definite," not difficult). This is dangerous, and I welcome any objections in the comment section.</p>
+<p>First, a quick summary of the bin packing problem from geeksforgeeks.org:</p>
+<blockquote><p>"Given n items of different weights and bins each of capacity c, assign each item to a bin such that number of total used bins is minimized. It may be assumed that all items have weights smaller than bin capacity."</p></blockquote>
+<p>OK, so we have a couple of variables to shoehorn our analogies into.</p>
+<ol><li><code>W</code>: The set of weights that need to be bin packed from 1…N. Such that ∑ W = w₁+w₂ + … + wₙ.</li><li><code>c</code>: The capacity of each bin.</li></ol>
+<p>So, let's start by assuming there is a minimum amount of code necessary to create our system. This is represented in the problem as ∑ W. Let's call bins modules. This can be kept very generic. A module may be a service in a micro-service architecture, an <code>Actor</code> (which is kind of the same thing as a micro-service), a Class in an OOP system, or maybe a Big Class (one that brings together a lot of smaller classes to accomplish a larger goal).</p>
+<p>As any module grows, its internal complexity grows, so we want to limit its size. This limit on the size of a module, since we have identified modules with bins, is, of course, our variable <code>c</code>.</p>
+<p>In principle, one module can communicate with any other. As a result, the complexity of these potential interactions is <code>O(n!)</code>.</p>
+<p>This leaves the smaller pieces of code that modules are made of. These are our little <code>w</code>'s (w₁ through wₙ). So now we have the following model.</p>
+<ol><li>A program is the sum of all of its modules which are limited in size by <code>c</code> before they become too large and complex.</li><li>The subcomponents of a module (little <code>w</code>'s) add complexity to a module.</li><li>If a module's complexity is greater than <code>c</code>, it must be broken up into smaller modules.</li><li>The more modules you have, the more potential interactions between modules. Growing the architectural complexity factorially.</li></ol>
+<p>If we accept these assumptions, we have mapped the problem of code complexity onto the bin packing problem. We must then conclude that designing an optimally simple software system is NP.</p>
+<p>To state the obvious, software design is difficult. You suspected that, but now you have math to back up your suspicions.</p>
+<p><img src="/content/blog-archive/images/bin-packing-02-gvz42.png" alt=""> <em>Photo by <a href="https://unsplash.com/@gvz42">GVZ 42</a> on <a href="https://unsplash.com">Unsplash</a> | Image cropped</em></p>
+<h2>So What?</h2>
+<p>We can describe the problem of software design in terms of the binning problem. And? We certainly cannot use binning algorithms to design our software, so what gives?</p>
+<p>Look again at the work we did above. We have split the complexity into inter-module and intra-module complexity. We have also shown that these two types of complexity are in tension with one another.</p>
+<p>To reduce intra-module complexity, we could make our modules simpler by making them smaller (decrease <code>c</code>). However, the number of modules then increase. If we increase our module size (increase <code>c</code>), we get the opposite effect.</p>
+<p>Looking at system design through this lens, we can evaluate our design decisions based on how well they balance these two constraints. While this does not cover all considerations that go into system design, it is an essential component.</p>
+<p><img src="/content/blog-archive/images/bin-packing-03-kraakmo.jpg" alt=""> <em>Photo by Stephen Kraakmo on Unsplash</em></p>
+<p>This lens also informs us that we should be wary of things like the SOLID Principles. It's unlikely that mechanically applying five rules to our design will result in a satisfactorily optimum solution to complexity balancing. That's not to say they can't be decent guides, but filter everything between your ears.</p>
+<h2>Applying the Model</h2>
+<p>For simplicity's sake, let's refer to everything above as "The Model." We can look at different software development practices and see how they try and deal with the tension between intra-module and inter-module complexity. This will be a healthy final exercise for exploring the Model.</p>
+<h3>Monoliths and the model</h3>
+<p>Monolithic programs usually bring to mind old, poorly designed programs. This stereotype may even be true. If there is a function or class that people refer to by name when talking about software changes, your company may have a monolith.</p>
+<p>When we examine monoliths in terms of the model, we see they are a method of reducing certain types of complexity. Monoliths trade intra-module complexity in exchange for reducing the number of modules. To put it in terms of The Model's variables, Monoliths make the value of <code>c</code> really large. In principle, if <code>c &gt; ∑ W</code>, there is only one module, and the bin packing problem disappears. You don't have to worry about how modules interact with each other, but understanding anything about a module's inner workings can approach impossibility.</p>
+<p>You probably actually write monoliths. Most of my internal utility programs are written with no consideration of software architecture because the total amount of code is small enough that the complexity doesn't matter.</p>
+<h3>Microservices and the model</h3>
+<p>Microservices take the opposite strategy to Monoliths. They keep your value c small to cut down on intra-module complexity while letting the number of modules get very large. This seems like a disaster. As we stated in the description of The Model, the complexity of your module communication grows in factorial time with the number of modules. Microservices usually have rules set up around them that limit this damage. For example:</p>
+<blockquote><p>A micorservice may either answer internal or external requests.  A microservice that answers internal requests may not make requests to other microservices.  A microservice that answers external requests may make requests only to microservices that handle internal requests.</p></blockquote>
+<p>If you can follow this constraint, it does limit your module-level complexity. Given <code>N</code> modules, you have modules of type internal or external. If we call these two groups <code>i</code> and <code>e</code>, then <code>N = i+e</code>. The number of interactions is limited to <code>i</code> multiplied by <code>e</code>. Since <code>i</code> and <code>e</code> must be less than <code>N</code>, then your module-level complexity grows at the rate <code>N²</code> instead of <code>N!</code>.</p>
+<p><img src="/content/blog-archive/images/bin-packing-04-khalfalli.jpg" alt=""> <em>Photo by Yassine Khalfalli on Unsplash</em></p>
+<h2>Conclusion</h2>
+<p>This article was written experimentally. I wanted to try and prove that software design is fundamentally hard using discrete mathematics. You can decide if I succeeded in that or not. I am confident, however, that I've demonstrated that discrete mathematics can be used to gain insights into software design and architecture. It's a topic I hope to approach again in the future.</p>
+<p>If you want to hear more of my thoughts on software design, please check out my criminally under-read piece on <a href="#/blog-archive/legacy-code">legacy code</a>.</p>
+<p>Thanks again for reading.</p>
+<hr>
+<p><a href="#/blog-archive/blog-archive">Back to Blog Archive</a></p></main>
+
+  <footer class="site-footer">
+    <span>Consoland &mdash; built by hand, no framework was harmed.</span>
+    <span>&copy; 2026 Marcus Haberling</span>
+  </footer>
+
+  <script type="module" src="/js/main.js"></script>
+  <script src="/js/widgets/downloads.js" defer></script>
+<script src="/js/widgets/slideshow.js" defer></script>
+
+</body>
+</html>

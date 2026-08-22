@@ -2,28 +2,34 @@
   "nav": [
     {
       "title": "Home",
-      "path": "home"
+      "path": "",
+      "children": null
     },
     {
       "title": "Games",
+      "path": null,
       "children": [
         {
           "title": "Another Game",
-          "path": "games/another-game"
+          "path": "games/another-game",
+          "children": null
         },
         {
           "title": "Tesselate",
-          "path": "games/Tesselate"
+          "path": "games/Tesselate",
+          "children": null
         }
       ]
     },
     {
       "title": "Utilities",
-      "path": "utilities/utilities"
+      "path": "utilities",
+      "children": null
     },
     {
       "title": "Blog Archive",
-      "path": "blog-archive/blog-archive"
+      "path": "blog-archive",
+      "children": null
     }
   ]
 }

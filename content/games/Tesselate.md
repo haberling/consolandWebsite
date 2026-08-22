@@ -1,11 +1,17 @@
 # Tesselate
 
 A vibe coded falling block game in the soviet tradition. All on your command line.
-```slideshow:Screenshots
-   content/games/images/tesselate11.png | Gameplay
-   content/games/images/tesselate18.png | On Fire
-   content/games/images/tesselate26.png | Game Over
-   content/games/images/tesselate1.png | Music Credits
+```slideshow
+title: Screenshots
+slides:
+  - src: !url "content/games/images/tesselate11.png"
+    caption: "Gameplay"
+  - src: !url "content/games/images/tesselate18.png"
+    caption: "On Fire"
+  - src: !url "content/games/images/tesselate26.png"
+    caption: "Game Over"
+  - src: !url "content/games/images/tesselate1.png"
+    caption: "Music Credits"
 ```
 ## Features
 
@@ -31,9 +37,14 @@ A vibe coded falling block game in the soviet tradition. All on your command lin
 
 
 ```downloads
-copy: Install via PowerShell | msiexec /i https://github.com/haberling/consolandWebsite/releases/download/tesselate-v1.0.0/Tesselate-1.0.0-x64.msi /quiet /norestart
-Windows Installer | https://github.com/haberling/consolandWebsite/releases/download/tesselate-v1.0.0/Tesselate-1.0.0-x64.msi
-Readme | https://github.com/haberling/consolandWebsite/releases/download/tesselate-v1.0.0/Tesselate-1.0.0-README.md
+items:
+  - copy: true
+    label: "Install via PowerShell"
+    command: "msiexec /i https://github.com/haberling/consolandWebsite/releases/download/tesselate-v1.0.0/Tesselate-1.0.0-x64.msi /quiet /norestart"
+  - label: "Windows Installer"
+    url: "https://github.com/haberling/consolandWebsite/releases/download/tesselate-v1.0.0/Tesselate-1.0.0-x64.msi"
+  - label: "Readme"
+    url: "https://github.com/haberling/consolandWebsite/releases/download/tesselate-v1.0.0/Tesselate-1.0.0-README.md"
 ```
 # Windows 10
 Tesselate uses the high degree of Unicode support, emoji's and the like, in its "graphics". For this reason the old powershell terminal and command prompt wont display the game perfectly. Its still very playable, but I would reccomend installing [Windows Terminal](https://apps.microsoft.com/detail/9n0dx20hk701?launch=true&mode=full&hl=en-US&gl=US&ocid=bingwebsearch) for the best experience. I would recomend installing Windows Terminal if your not planning  on downloading the game as well. 

@@ -1,0 +1,26 @@
+/*
+ * Consoland's branding, loaded after css/framework.css. Overrides the
+ * generic color tokens and wordmark treatment framework.css defines
+ * defaults for.
+ */
+
+:root {
+  --bg: #14161a;
+  --bg-elevated: #1c1f24;
+  --text: #e6e8eb;
+  --text-dim: #9aa1ab;
+  --accent: #ffb000;
+  --border: #2a2e35;
+}
+
+.site-title {
+  font-family: Consolas, "Cascadia Code", "SF Mono", Menlo, "Liberation Mono", monospace;
+  font-size: 2.5rem;
+}
+
+.site-logo {
+  height: 54px;
+  aspect-ratio: 4 / 3;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+}

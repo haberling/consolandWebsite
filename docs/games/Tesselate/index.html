@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L0SF9VQEKN"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-L0SF9VQEKN');
+  </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tesselate — Consoland</title>
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="stylesheet" href="/css/framework.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/widgets/code.css">
+<link rel="stylesheet" href="/css/widgets/downloads.css">
+<link rel="stylesheet" href="/css/widgets/slideshow.css">
+
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header-top">
+      <a class="site-title" href="/"><img class="site-logo" src="/img/logo.png" alt="">Consoland</a>
+      <div class="site-tagline">
+        <p>A website about software, which is really software about software.</p>
+      </div>
+    </div>
+    <nav id="site-nav" class="site-nav">
+      <!-- populated client-side from /content/manifest.json -->
+    </nav>
+  </header>
+
+  <main id="app"><h1>Tesselate</h1>
+<p>A vibe coded falling block game in the soviet tradition. All on your command line.</p>
+<!--
+  Standard widget contract (see PLAN.md's widget-controversy notes): a plain
+  Mustache-syntax HTML template, filled from the fence block's YAML body.
+  No code -- this template only knows how to lay out slides; slideshow.js
+  (shared, referenced once per page) decides at runtime whether there's
+  enough slides to bother with nav/dots/autoplay at all.
+
+  A site-root-relative "src:" (matching how markdown-authored images are
+  written elsewhere, e.g. "content/games/images/x.png") needs the explicit
+  "!url" tag shown below to get rewritten to a root-relative path -- see
+  Canary.Core.Templating.YamlParser/UrlResolver. Deliberately explicit, not
+  automatic -- see PLAN.md's widget-controversy notes. A plain "src: ..."
+  with no tag is left exactly as written (fine for an already-absolute
+  https:// URL, broken for a relative one on any page that isn't the site
+  root).
+-->
+<!--clipboard
+```slideshow
+title: Optional Title
+slides:
+  - src: "https://example.com/shot1.png"
+    caption: "Optional caption"
+  - src: !url "content/games/images/shot2.png"
+```
+-->
+
+<div class="slideshow-widget" data-widget="slideshow" data-index="0" tabindex="0">
+  <div class="slideshow-header">
+    <h3>Screenshots</h3>
+    <button type="button" class="slideshow-toggle" aria-label="Pause slideshow">⏸</button>
+  </div>
+  <div class="slideshow-viewport">
+    <div class="slideshow-track">
+      
+      <figure class="slideshow-slide" aria-roledescription="slide">
+        <img src="/content/games/images/tesselate11.png" alt="Gameplay" loading="lazy">
+        <figcaption class="slideshow-caption">Gameplay</figcaption>
+      </figure>
+      
+      <figure class="slideshow-slide" aria-roledescription="slide">
+        <img src="/content/games/images/tesselate18.png" alt="On Fire" loading="lazy">
+        <figcaption class="slideshow-caption">On Fire</figcaption>
+      </figure>
+      
+      <figure class="slideshow-slide" aria-roledescription="slide">
+        <img src="/content/games/images/tesselate26.png" alt="Game Over" loading="lazy">
+        <figcaption class="slideshow-caption">Game Over</figcaption>
+      </figure>
+      
+      <figure class="slideshow-slide" aria-roledescription="slide">
+        <img src="/content/games/images/tesselate1.png" alt="Music Credits" loading="lazy">
+        <figcaption class="slideshow-caption">Music Credits</figcaption>
+      </figure>
+      
+    </div>
+    <button type="button" class="slideshow-nav slideshow-prev" aria-label="Previous slide">&#10094;</button>
+    <button type="button" class="slideshow-nav slideshow-next" aria-label="Next slide">&#10095;</button>
+  </div>
+  <div class="slideshow-footer">
+    <div class="slideshow-dots">
+      <button type="button" class="slideshow-dot"></button><button type="button" class="slideshow-dot"></button><button type="button" class="slideshow-dot"></button><button type="button" class="slideshow-dot"></button>
+    </div>
+    <span class="slideshow-counter"></span>
+  </div>
+</div>
+
+<h2>Features</h2>
+<ol><li>Playable from the command line, while your waiting for a task to complete or an agent to finish</li><li>Updated mechanics: Lives, On Fire bar, Preview Swap</li><li>Great Midi Soundtrack (Game defaults to no music)</li><li>Local Highscore List saved in user app-data</li><li>Pointless save game feature you will never use</li><li>Command line options you will never use</li></ol>
+<h2>Reviews</h2>
+<blockquote><p>★★★★★<br> This game has never beamed messages into my head instructing me to harm myself or others. But if it did, I would listen. It's THAT GOOD.<br> - Anonymous from Dayton Ohio</p></blockquote>
+<blockquote><p>★★★★★<br> Well, I guess the the Industrial Revolution and its consequences haven't been a COMPLETE disaster.<br> - Ted Kaczynski</p></blockquote>
+<blockquote><p>★★☆☆☆<br> Eh, it's Ok.<br> - Charles Manson</p></blockquote>
+<!--
+  Standard widget contract (see PLAN.md's widget-controversy notes): a plain
+  Mustache-syntax HTML template, filled from the fence block's YAML body.
+  No code -- an "items" section iterates the items list below; a "copy"
+  conditional (normal and inverted) branches between a plain link row and a
+  copy-command row. NOTE: this comment deliberately never writes the actual
+  double-brace tag syntax -- the templater has no notion of "this is just a
+  comment," so literal tags typed here would be executed for real (this bit
+  the shell.html chrome template earlier in the project the same way).
+
+  Interactivity (the Copy button) lives in the sibling downloads.js, shared
+  across every instance on a page -- see that file.
+
+  A site-root-relative "url:" (e.g. "content/games/manual.pdf", matching how
+  markdown-authored links/images are written elsewhere) needs the explicit
+  "!url" tag shown below to get rewritten to a root-relative path -- see
+  Canary.Core.Templating.YamlParser/UrlResolver. Deliberately explicit, not
+  automatic: nothing resolves just because a field happens to be named
+  "url" -- see PLAN.md's widget-controversy notes for why. A plain
+  "url: ..." with no tag is left exactly as written (fine for an already-
+  absolute https:// URL, broken for a relative one on any page that isn't
+  the site root).
+-->
+<!--clipboard
+```downloads
+title: Optional Title
+items:
+  - label: "Windows Installer"
+    url: "https://example.com/file.msi"
+  - label: "User Manual"
+    url: !url "content/games/manual.pdf"
+  - copy: true
+    label: "Install via PowerShell"
+    command: "msiexec /i ... /quiet /norestart"
+```
+-->
+<div class="downloads-widget" data-widget="downloads">
+  <h3>Downloads</h3>
+  <ul>
+    
+    
+    
+    <li class="copy-command" data-command="msiexec /i https://github.com/haberling/consolandWebsite/releases/download/tesselate-v1.0.0/Tesselate-1.0.0-x64.msi /quiet /norestart">
+      <span class="copy-command-label">Install via PowerShell</span>
+      <div class="copy-command-row">
+        <code class="copy-command-text">msiexec /i https://github.com/haberling/consolandWebsite/releases/download/tesselate-v1.0.0/Tesselate-1.0.0-x64.msi /quiet /norestart</code>
+        <button type="button" class="copy-command-button">Copy</button>
+      </div>
+    </li>
+    
+    
+    
+    <li><a class="download-button" href="https://github.com/haberling/consolandWebsite/releases/download/tesselate-v1.0.0/Tesselate-1.0.0-x64.msi">Windows Installer</a></li>
+    
+    
+    
+    
+    <li><a class="download-button" href="https://github.com/haberling/consolandWebsite/releases/download/tesselate-v1.0.0/Tesselate-1.0.0-README.md">Readme</a></li>
+    
+    
+    
+  </ul>
+</div>
+
+<h1>Windows 10</h1>
+<p>Tesselate uses the high degree of Unicode support, emoji's and the like, in its "graphics". For this reason the old powershell terminal and command prompt wont display the game perfectly. Its still very playable, but I would reccomend installing <a href="https://apps.microsoft.com/detail/9n0dx20hk701?launch=true&amp;mode=full&amp;hl=en-US&amp;gl=US&amp;ocid=bingwebsearch">Windows Terminal</a> for the best experience. I would recomend installing Windows Terminal if your not planning  on downloading the game as well.</p></main>
+
+  <footer class="site-footer">
+    <span>Consoland &mdash; built by hand, no framework was harmed.</span>
+    <span>&copy; 2026 Marcus Haberling</span>
+  </footer>
+
+  <script type="module" src="/js/main.js"></script>
+  <script src="/js/widgets/downloads.js" defer></script>
+<script src="/js/widgets/slideshow.js" defer></script>
+
+</body>
+</html>

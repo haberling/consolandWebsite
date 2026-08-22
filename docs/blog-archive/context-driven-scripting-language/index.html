@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L0SF9VQEKN"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-L0SF9VQEKN');
+  </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Why You Should Write a Context-Driven Scripting Language — Consoland</title>
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="stylesheet" href="/css/framework.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/widgets/code.css">
+<link rel="stylesheet" href="/css/widgets/downloads.css">
+<link rel="stylesheet" href="/css/widgets/slideshow.css">
+
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header-top">
+      <a class="site-title" href="/"><img class="site-logo" src="/img/logo.png" alt="">Consoland</a>
+      <div class="site-tagline">
+        <p>A website about software, which is really software about software.</p>
+      </div>
+    </div>
+    <nav id="site-nav" class="site-nav">
+      <!-- populated client-side from /content/manifest.json -->
+    </nav>
+  </header>
+
+  <main id="app"><h1>Why You Should Write a Context-Driven Scripting Language</h1>
+<p><em>Sometimes the best way out of code complexity is to go deeper — originally published May 11, 2022 on Medium (<a href="https://medium.com/better-programming/why-you-should-write-a-context-driven-scripting-language-6714581e98b4">Better Programming</a>)</em></p>
+<p><img src="/content/blog-archive/images/cdsl-01-francisca.jpg" alt="Photo by Arnold Francisca on Unsplash"> <em>Photo by Arnold Francisca on Unsplash</em></p>
+<p>Have you, Dear Reader, ever gotten caught in a customization trap?</p>
+<p>Example 0: You add custom range checking to input fields with ranges defined in the database. People are delighted. Until they want the range of inputs conditionally defined by another field.</p>
+<p>Example 1: You create a settings page that loads in different settings for free and premium accounts. "Perfect, this is exactly what we wanted." Until, of course, some settings need to be shown based on the type or types of devices the user has active sessions on.</p>
+<p>I could go on ad infinitum. The point is the more flexible you or your team make your front end, the more flexibility is demanded. Features beget more features. Maybe the Children's Book: "If you Give a Mouse a Cookie" was actually about feature creep and software bloat.</p>
+<p><img src="/content/blog-archive/images/cdsl-02-publisher.jpg" alt="If You Give a Mouse a Cookie book cover"> <em>This image was yanked from the publisher's website and put here. (haha Vim joke). Anyways link to its owners is <a href="https://www.harpercollins.com/">here</a>.</em></p>
+<p>And that's what is summoned into your once simple, elegant codebase: bloat. You could maybe write a bunch of different UI components and switch between them. Or, you could fill a single UI with such an unholy amount of special cases, that it becomes unworkable. Whatever poison you choose, it's yours to swallow.</p>
+<h2>Context-Driven Scripting Languages</h2>
+<p>If you read the title, I'm assuming you've deduced the thesis: A Context-Driven Scripting Language can make your code more flexible while cutting down on code bloat and complexity.</p>
+<p>But what is a Context-Driven Scripting Language (CDSL)? Well, it's a term I made up (It is the sacred right of all software engineers to make up terms). It is defined thusly:</p>
+<blockquote><p>A Context-Driven Scripting Language (CDSL) is a small language, not usually Turing complete, that is given access to a predefined set of values (context) in order to generate an output.</p></blockquote>
+<p><img src="/content/blog-archive/images/cdsl-03-robot.gif" alt="A pixel-art robot with a plug"> <em>Image by gandalfhardcore. Copyright Marcus Haberling 2022. The robot is the scripting engine, the context that drives and binds it is the plug. My metaphors transcend the written word.</em></p>
+<h2>Example 0 with a CDSL</h2>
+<p>So a CDSL may have access to the values of every field on a settings page, which it uses to output a range checking error message, or an empty string if the current field is valid. A CDSL takes this formatting code, which was previously meshed into the rest of the User Interface, and puts it somewhere else. Probably a database. Let's take a look at the advantages this buys you.</p>
+<ol><li>Code Readability: By taking this validation logic out of your front-end code, you can remove a lot of the special cases that plague front-end development.</li><li>Flexibility: Remember, in Example 0 we had previously added code to do a range check validation, when our new requirement came, we then would have had to either rewrite the old system or create a parallel system. With a CDSL, the only code that changes corresponds directly to the field behavior you're changing.</li><li>Code Reusability: Once the interpreter for your CDSL is in place, the code that it executes can be used on the multiple platforms you support. Changing the validation code for our field changes it across the different front ends we support: Mobile, Web, Etc. We can also use the same code for our secondary validation on the backend. It's a common requirement to provide validation on the UI and API layers.</li><li>Fast Deployment: Because the validation logic is no longer part of your codebase, you can update the behavior of applications outside of a versioned deployment. For Phone Apps, this means sidestepping Apple's and Android's approval processes.</li></ol>
+<h2>Writing a Context-Driven Scripting Language</h2>
+<p>It's almost impossible to talk about writing scripting languages in general. That's more appropriate for a Textbook than an article. Let's then discuss one CDSL in particular. To write this CDSL, we need to adhere to a few principles.</p>
+<h2>Principles of our CDSL</h2>
+<p>Prefix Notation: Sometimes known as Polish Notation, Prefix notation is very simple to process. In prefix notation, operators come before the operands.</p>
+<pre><code>Eg: 3+4/5 turns into +3/45.</code></pre>
+<p>Note that prefix notation does not have an order of operations. This is one of the great simplifications it affords us. Prefix notation can also be thought of as function notation.</p>
+<p><img src="/content/blog-archive/images/cdsl-04-compiler-book.png" alt="A compilers textbook"> <em>No, we're not writing a Compiler, this is a scripting language after all. But this text is useful all the same. You can still get a used copy of the classic Compilers textbook for $11 on Amazon at the time of writing.</em></p>
+<p>No Whitespace: Our script should be able to be written without whitespace and a minimum number of control characters. This will help us to write small scripts, especially when only one conditional statement is necessary.</p>
+<p>Pure Functionality: Our scripts should not be modifying any state. Therefore, we should make the language a pure functional language.</p>
+<h2>Syntax of our CDSL</h2>
+<p>We need to establish a syntax for our language, later we will need to parse this syntax and tokenize our script. People have smeared the term tokenization into other parts of computer science, so it may be better to call this lexical analysis. Either way, we'll be accomplishing both tasks of defining and tokenizing using regular expressions. Warning: if you have trouble with regular expressions, (Stop lying to yourself, you do have trouble with regular expressions) then please check out Regex101. I wrote a piece about it <a href="#/blog-archive/meet-regex101">here</a>.</p>
+<p><img src="/content/blog-archive/images/cdsl-05-dhage.jpg" alt="Photo by Shubham Dhage on Unsplash"> <em>Photo by Shubham Dhage on Unsplash</em></p>
+<h3>Operators</h3>
+<pre><code>? &lt;condition&gt; &lt;true return&gt; &lt;false return&gt; | If-Else Statement
+= &lt;left hand side&gt; &lt;right hand side&gt;       | Equality
+! &lt;argument&gt;                               | Not
+&gt; &lt;left hand side&gt; &lt;right hand side&gt;       | Greater Than
+&lt; &lt;left hand side&gt; &lt;right hand side&gt;       | Less Than
++ &lt;left hand side&gt; &lt;right hand side&gt;       | Addition
+- &lt;left hand side&gt; &lt;right hand side&gt;       | Subtraction
+* &lt;left hand side&gt; &lt;right hand side&gt;       | Multiplication
+/ &lt;left hand side&gt; &lt;right hand side&gt;       | Division
+% &lt;left hand side&gt; &lt;right hand side&gt;       | Modulus (Remainder)
+| &lt;left hand side&gt; &lt;right hand side&gt;       | Logical Or
+&amp; &lt;left hand side&gt; &lt;right hand side&gt;       | Logical And</code></pre>
+<p>Note: Logical operators will treat any non-zero number as zero, there is no boolean number type.</p>
+<h3>Data Types</h3>
+<p>Integers: This CDSL will only have integer values. If you need floats when implementing your own, then so be it. For now, integers will do. We'll precede all of our integers with a <code>#</code> character to denote them.</p>
+<pre><code>#[-]?[0-9]+</code></pre>
+<p>Strings: If we are going to solve problems like stated in example zero, we are going to need to output string values. Simple double-quotes notation will do fine. We can escape double quotes with a backslash.</p>
+<pre><code>"((\\[\\,"])|[^",\\])*"</code></pre>
+<p>Interpolated Strings: If we want to use our scripts to make strings, interpolation can make the code to do so more concise. Therefore we will do string interpolation using the following syntax.</p>
+<pre><code>"String with arguments {1}, {2}, {1} and {3}" #1 "insertMe" #-1</code></pre>
+<pre><code>Produces: String with arguments 1, insertMe, 1 and -1</code></pre>
+<p>The numbers won't have to follow a strict natural number sequence but will be taken in as arguments from least to greatest. If we add that to our regex we get this:</p>
+<pre><code>"((\\[\\,",{,}])|[^",{,},\\]|({[0-9]+}))*"</code></pre>
+<h3>Functions</h3>
+<p>We don't need the ability to define functions inside of a CDSL, but that doesn't mean we won't ever want predefined functions outside of our operators. Let's denote them with a '~' in front of alphabetic characters.</p>
+<pre><code>~[A-Za-z]+</code></pre>
+<h3>Context Values</h3>
+<p>We did say this was a context-driven language, didn't we? Of course, we need a way of accessing this context inside of our script code. This is also the most custom piece of the language.</p>
+<p>Say you have a settings object you want to access fields in. I would access it with the notation, s.fieldName. The specifics will depend on what your CDSL is trying to accomplish.</p>
+<p>We'll keep our definition flexible. One lower case character, followed by a dot and the alphabetic name of the "context" we are trying to access.</p>
+<pre><code>[a-z]\.[a-zA-Z]+</code></pre>
+<p>There is a problem with the regex above. It both greedily captures alphabetic characters and starts with an alphabetic character. This means if we put two of them next to each other, we will capture the prefix of the second context with the name of the first. This violates our no whitespace principle.</p>
+<p>We need to add a negative lookahead to not capture a character followed by a period. This must be added to our function regex for the same purpose.</p>
+<pre><code>([a-z]\.[a-zA-Z]+(?!\.)) - Context Values
+(~[A-Za-z]+(?!\.))       - Functions</code></pre>
+<h3>Bringing it all Together</h3>
+<p>Now we just need to combine our regex statements from operators, value types, functions, and contexts. We end up with a terribly long regular expression, but one that can split our script into token strings in one pass.</p>
+<pre><code>([\?,\=,!,&lt;,&gt;,\+,\-,\*,\/,%,\|,\&amp;])|(#[-]?[0-9]+)|("((\\[\\,",{,}])|[^",{,},\\]|({[0-9]+}))*")|(~[A-Za-z]+(?!\.))|([a-z]\.[a-zA-Z]+(?!\.))</code></pre>
+<h2>Making the Engine</h2>
+<p>Now that we have a well-defined syntax, we need a means of turning that syntax into output. Let's call that the Scripting Engine. I don't know if anyone else calls it that, but they should.</p>
+<p>Take note that this will be a very bare-bones description of an engine. The very minimum to get our CDSL off the ground. I think you'll see how some of the decisions we've made so far make this process far easier than it could have been.</p>
+<p><img src="/content/blog-archive/images/cdsl-06-attwood.jpg" alt="Photo by lee attwood on Unsplash"> <em>Photo by lee attwood on Unsplash</em></p>
+<h3>Parsing</h3>
+<p>First, we need to transform our script into a list of token strings. This is simple enough, just extract them using the great and terrible regex we created above.</p>
+<h3>Tokenization</h3>
+<p>Once we have token strings, we have to turn them into tokens (Shocking, I know). Notice that each token string actually starts with a different character! I may have planned this in advance. Using this character, we'll turn each token string into a token object. Here is a little pseudocode.</p>
+<pre><code>function Tokenize(string tokenString) returns token {
+    if tokenString[0] in listOfOperators:
+        return CreateOperatorToken(tokenString)
+    if tokenString[0] == " :
+        return CreateStringToken(tokenString)
+    if tokenString[0] == # :
+        return CreateIntegerToken(tokenString)
+    if tokenString[0] == ~ :
+        return CreateFunctionToken(tokenString)
+    if tokenString[0] in lowerCaseLetters :
+        return CreateContextToken(tokenString)
+    throw TokenizationException
+}</code></pre>
+<p>Things certainly don't have to be broken up precisely this way. But whatever your method, we need to create token objects with a few pieces of data.</p>
+<pre><code>Token {
+    TokenType,
+    IntegerValue,
+    StringValue,
+    NumberOfArguments
+}</code></pre>
+<p>NumberOfArguments reveals the structure of our CDSL's execution. Think of every token as a function, if it takes zero arguments then it returns its value, if it takes one or more arguments, some execution must be done before you can get said value.</p>
+<h3>Stack it Up</h3>
+<p>We have gone from a string to a list of token strings, to a list of tokens. The next step is to prepare them for execution. To that, we need to turn our list into a stack with the 0th element on top. This doesn't even mean that we necessarily have to shift the tokens into another data structure. It only means that from now on we'll be at minimum using the list in this manner. Here is an inefficient method, just to demonstrate.</p>
+<pre><code>function StackTokens(listOfTokens) returns Stack&lt;Tokens&gt; {
+    let tempStack = new Stack&lt;Tokens&gt;
+    let returnStack = new Stack&lt;Tokens&gt;
+
+    for each token in listOfTokens:
+        tempStack.Push(token)
+
+    while tempStack is not empty:
+        returnStack.Push(tempStack.Pop())
+}</code></pre>
+<p>It's now obvious why sticking to prefix notation was important. By putting our program into a stack with the leftmost token on top, we put the tokens in perfect order for recursive execution.</p>
+<h3>Recursive Execution</h3>
+<p>I really am flying in the dark on the level of explanation I should be giving. Too specific and your eyes will glaze over. Too little, and a may fail to communicate to some members of the audience. But either way, we have reached the final step; running the script and generating an output. This can be done iteratively but is easier to demonstrate (and code) recursively.</p>
+<pre><code>recursiveExec(tokenStack){
+    if tokenStack is empty:
+        throw EmptyStackException
+
+    let token = tokenStack.Pop()
+    if token.NumberOfArguments is 0:
+        return executeWithNoArguments(token)
+
+    let args = list of type Token size token.NumberOfArguments
+    for i in range 0 to token.NumberOfArguments:
+        let arg = recursiveExec(tokenStack)
+        args[i] = arg
+
+    return executeWithArguments(token, args)
+}</code></pre>
+<p>If this looks a little bit too simple, it's because I'm cheating. The functions executeWithNoArguments and executeWithArguments are doing some heavy lifting here. Obviously, things like string interpolation and function calls will take a bit of code.</p>
+<p>This is also a very basic execution. We do no error checking, besides throwing an exception when we can't execute the script. We could do things like making sure the stack is empty at the end of execution, or provide a stack trace when there is a failure.</p>
+<p>I'll leave those niceties to your own implementation.</p>
+<h3>Example Code</h3>
+<p>Let's say you allow a user to send themselves an alert once they use a certain amount of data on their plan. They are not allowed to set this alert at a higher amount of data than their plan's MaxMb. If their plan is unlimited, the MaxMb is set to zero, and they can set the warning at any level. We want our script to output an error message, or an empty string if the input is valid. Our context plan is denoted with a p prefix inside our CDSL. Our context settings are denoted with the prefix s.</p>
+<pre><code>?|=p.MaxMb#0&lt;s.MaxMbWarnp.MaxMb"""You cannot set your warning level greater than your data limit of {1}Gb(s)"/p.MaxMb#1000</code></pre>
+<p>Its a bit more readable with whitespace between our tokens:</p>
+<pre><code>? | = p.MaxMb #0 &lt; s.MaxMbWarn p.MaxMb
+  ""
+  "You cannot set your warning level greater than your data limit of {1}Gb(s)" / p.MaxMb #1000</code></pre>
+<p>If you put both of these into Regex101 with the regular expression we created for tokenization, you'll see they create the same matches. Prefix notation can be a bit weird when you're not adjusted to it, but it's easy to pick up.</p>
+<h2>Conclusion</h2>
+<p>I think I've laid out a good case as to why a CDSL could be good for your project, as well as an excellent description of how to go about making one. If you think I got anything wrong, let me know in the comments. This turned into a rather long piece, but I hope you found it interesting.</p>
+<hr>
+<p><a href="#/blog-archive/blog-archive">Back to Blog Archive</a></p></main>
+
+  <footer class="site-footer">
+    <span>Consoland &mdash; built by hand, no framework was harmed.</span>
+    <span>&copy; 2026 Marcus Haberling</span>
+  </footer>
+
+  <script type="module" src="/js/main.js"></script>
+  <script src="/js/widgets/downloads.js" defer></script>
+<script src="/js/widgets/slideshow.js" defer></script>
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L0SF9VQEKN"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-L0SF9VQEKN');
+  </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{title}}</title>
+  {{favicon}}
+  <link rel="stylesheet" href="/css/framework.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  {{widgetStyles}}
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header-top">
+      <a class="site-title" href="/">{{logoImg}}{{siteName}}</a>
+      <div class="site-tagline">
+        <p>A website about software, which is really software about software.</p>
+      </div>
+    </div>
+    <nav id="site-nav" class="site-nav">
+      <!-- populated client-side from /content/manifest.json -->
+    </nav>
+  </header>
+
+  <main id="app">{{content}}</main>
+
+  <footer class="site-footer">
+    <span>Consoland &mdash; built by hand, no framework was harmed.</span>
+    <span>&copy; 2026 Marcus Haberling</span>
+  </footer>
+
+  <script type="module" src="/js/main.js"></script>
+  {{widgetScripts}}
+</body>
+</html>

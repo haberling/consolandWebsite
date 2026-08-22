@@ -1,16 +1,24 @@
 # Consoland
 
-Welcome to Consoland. This site is an experiment in building a website framework with the help of Claude Code — a really bare-bones way to assemble a site out of markdown documents. It's also a repository for software I think is worth sharing, with a real focus on command-line applications for Windows, though other programs may end up here too — like the bit of software holding this site together. (Working name is **Canary**)
+Welcome to Consoland.
+This site is a repository for software I think is worth sharing, focusing on command line tools for Windows — plus the odd game and the wreckage of a short-lived blog.
+A *new* blog will be starting soon where I tell the development stories of some of my projects; starting with Canary.
 
-## What's here
+## Canary
+
+This site runs on **Canary**, a new tiny Web Framework I developed. [Read more →](canary)
+
+## Tesselate
+
+**Tesselate**, a falling block game for your command line.
+Some of the features like a lives system and *on fire* bar
+mix up the gameplay. And it comes with a soundtrack that I am really proud of. [Check it out →](games/Tesselate)
+
+## Everything else
 
 - **Games** — small hand-built games
-- **Utilities** — command-line tools
-- **Blog Archive** — archive of my short-lived Medium blog
-
-## Objection! that's not all actually here.
-
-- Yes, VERY TRUE! 
+- **Utilities** — command-line tools (still coming)
+- **Blog** — New posts coming as well as an archive of my short-lived Medium blog
 
 ## Buy Me A Coffee
 

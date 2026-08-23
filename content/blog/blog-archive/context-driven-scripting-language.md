@@ -1,6 +1,12 @@
-# Why You Should Write a Context-Driven Scripting Language
+---
+author: Marcus Haberling
+authorDate: 2022-05-11
+---
 
-*Sometimes the best way out of code complexity is to go deeper — originally published May 11, 2022 on Medium ([Better Programming](https://medium.com/better-programming/why-you-should-write-a-context-driven-scripting-language-6714581e98b4))*
+# Why You Should Write a Context-Driven Scripting Language
+*Sometimes the best way out of code complexity is to go deeper* 
+
+*Originally published May 11, 2022 on Medium ([Better Programming](https://medium.com/better-programming/why-you-should-write-a-context-driven-scripting-language-6714581e98b4))*
 
 ![Photo by Arnold Francisca on Unsplash](content/blog-archive/images/cdsl-01-francisca.jpg)
 *Photo by Arnold Francisca on Unsplash*
@@ -269,4 +275,4 @@ I think I've laid out a good case as to why a CDSL could be good for your projec
 
 ---
 
-[Back to Blog Archive](#/blog-archive/blog-archive)
+

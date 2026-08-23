@@ -30,14 +30,54 @@
     </nav>
   </header>
 
+  <div id="logo-zoom-modal" class="logo-zoom-modal" hidden>
+    <button type="button" class="logo-zoom-modal-close" aria-label="Close">&times;</button>
+    <img class="logo-zoom-modal-img" src="" alt="">
+  </div>
+
   <main id="app">{{content}}</main>
 
   <footer class="site-footer">
-    <span>Consoland &mdash; built by hand, no framework was harmed.</span>
+    <span>Consoland &mdash; Built with Canary</span>
     <span>&copy; 2026 Marcus Haberling</span>
   </footer>
 
   <script type="module" src="/js/main.js"></script>
   {{widgetScripts}}
+
+  <script>
+    (() => {
+      const modal = document.getElementById('logo-zoom-modal');
+      const modalImg = modal.querySelector('.logo-zoom-modal-img');
+      const closeBtn = modal.querySelector('.logo-zoom-modal-close');
+
+      function openModal(logoImg) {
+        modalImg.src = logoImg.src;
+        modalImg.alt = logoImg.alt;
+        modal.hidden = false;
+      }
+
+      function closeModal() {
+        modal.hidden = true;
+        modalImg.src = '';
+      }
+
+      document.querySelectorAll('.site-logo').forEach((img) => {
+        img.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          openModal(img);
+        });
+      });
+
+      closeBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !modal.hidden) closeModal();
+      });
+    })();
+  </script>
 </body>
 </html>

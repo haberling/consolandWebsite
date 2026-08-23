@@ -1,0 +1,26 @@
+/*
+ * Styling for the blogheader widget (see blogheader.html) -- title,
+ * tagline, byline packed tight with minimal margin between them, instead
+ * of the loose default spacing a plain h1/p/p sequence gets from
+ * framework.css. Uses the site's color tokens (--text-dim), which cascade
+ * globally so this file doesn't need to redefine them.
+ */
+
+.blogheader {
+  margin: 0 0 1.25rem;
+}
+
+.blogheader-title {
+  margin: 0 0 0.2rem;
+}
+
+.blogheader-tagline {
+  margin: 0 0 0.35rem;
+  font-style: italic;
+}
+
+.blogheader-byline {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}

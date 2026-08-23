@@ -17,6 +17,17 @@
       ]
     },
     {
+      "title": "Blog",
+      "path": "blog",
+      "children": [
+        {
+          "title": "Blog Archive",
+          "path": "blog/blog-archive",
+          "children": null
+        }
+      ]
+    },
+    {
       "title": "Canary",
       "path": "canary",
       "children": null
@@ -24,11 +35,6 @@
     {
       "title": "Utilities",
       "path": "utilities",
-      "children": null
-    },
-    {
-      "title": "Blog Archive",
-      "path": "blog-archive",
       "children": null
     }
   ]

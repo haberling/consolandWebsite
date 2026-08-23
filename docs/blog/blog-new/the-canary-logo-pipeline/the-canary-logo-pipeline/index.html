@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L0SF9VQEKN"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-L0SF9VQEKN');
+  </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Canary Logo Pipeline — Consoland</title>
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="stylesheet" href="/css/framework.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/widgets/blogheader.css">
+<link rel="stylesheet" href="/css/widgets/code.css">
+<link rel="stylesheet" href="/css/widgets/downloads.css">
+<link rel="stylesheet" href="/css/widgets/postlink.css">
+<link rel="stylesheet" href="/css/widgets/slideshow.css">
+
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header-top">
+      <a class="site-title" href="/"><img class="site-logo" src="/img/logo.png" alt="">Consoland</a>
+      <div class="site-tagline">
+        <p>A website about software, which is really software about software.</p>
+      </div>
+    </div>
+    <nav id="site-nav" class="site-nav">
+      <!-- populated client-side from /content/manifest.json -->
+    </nav>
+  </header>
+
+  <div id="logo-zoom-modal" class="logo-zoom-modal" hidden>
+    <button type="button" class="logo-zoom-modal-close" aria-label="Close">&times;</button>
+    <img class="logo-zoom-modal-img" src="" alt="">
+  </div>
+
+  <main id="app"><p><a href="/blog">&lt; Return to Blog</a></p>
+<!--
+  Site-authored widget (consolandWebsite/widgets/, not a Canary built-in --
+  see WIDGETS.md in the canary repo for the discovery rules). A blog post's
+  header -- title, optional italic tagline, optional "Written by X on Y"
+  byline -- packed tight instead of the loose default spacing a plain
+  h1/p/p sequence gets. No JS sibling, fully static.
+
+  Built for tools/format-blogpost.cs: it extracts the title/tagline from a
+  post's own markdown and author/authorDate from its frontmatter, then
+  emits this widget instead of writing them out as plain markdown/italics.
+  Never write a literal double-brace tag in this comment block -- the
+  templater has no notion of "this is a comment," see WIDGETS.md's gotcha
+  section.
+-->
+<!--clipboard
+```blogheader
+title: The Canary Logo Pipeline
+tagline: A prequel to the Canary Story
+author: Marcus Haberling
+date: August 23, 2026
+```
+-->
+<div class="blogheader" data-widget="blogheader">
+  <h1 class="blogheader-title">The Canary Logo Pipeline</h1>
+  <p class="blogheader-tagline">A prequel to the Canary Story</p>
+  <p class="blogheader-byline">Written by Marcus Haberling on August 23, 2026</p>
+</div>
+
+<p><img src="/content/blog/blog-new/the-canary-logo-pipeline/canary-logo-small.svg" alt="Final canary logo"></p>
+<h2>A story that doesn't quite fit.</h2>
+<p>I'm about a third of the way through my explainer on Canary v0.1.0. This <em>prequel</em> is a short story about how the canary logo came to be. It makes more sense to keep this as a separate piece. The Canary story is about developing an idea and how general principles for a project became an implementation, this is about using AI in a different way to achieve something that it couldn't easily given the naive approach.</p>
+<h2>Problem</h2>
+<p>I suck at inkscape. I can't make a logo on my own, or I can't very quickly or very well. So the idea was to get a basic 2 tone logo as an svg to use for the application using AI. I tackled this 2 different ways with very different results.</p>
+<p>Our graphics guy at work could have probably made a better logo than what I eventually generated in an hour, but Canary is not a work project. Heading down-stairs with that request may have raised an eyebrow.</p>
+<h2>The Naive Approach</h2>
+<p>Ok. Well we need a logo, 2 colors, a canary. So you ask claude to make you an svg of a canary with a 'canary' yellow color and a complementary accent color. Given simple instructions, Claude takes off, eager as ever to burn tokens on futile tasks.</p>
+<ul><li><strong>Claude:</strong> makes 2 ovals and a triangle in an svg file, then opens it in a design language guide html page you never asked it to Build.</li><li><strong>Dev:</strong> Responds that the logo doesn't look much like a bird and that Claude should try harder.</li><li><strong>Claude:</strong> Runs the process again, shoves the head oval up a bit so the <em>bird</em> looks less like a malformed <em>peanut</em>. Presents this to the dev.</li><li><strong>Dev:</strong> Tells claude to maybe look up a reference image and try a little harder. This is a background session after all so it doesn't matter if claude cooks on it for a while.</li><li><strong>Claude:</strong> Has received its divine mandate, it will now turn any and all potential energy it can and turn it into heat. Claude decides to try harder it will look at the image in the browser tool, generate a new version, look at a new image, generate, until it hits the five-hour token limit.</li><li><strong>Dev:</strong> Logs a message for Claude to stop when it ever comes up for air.</li></ul>
+<p>So then, even though claude can and will <em>edit</em> svgs this approach was never going to work. The final cycle, where at least some progress was being made, of nudge-check-nudge-check was expensive from both a time and token perspective. Fortunately, there was another way, in which claude could use tools to guarantee that it got closer to a good final output at every step.</p>
+<h2>The Toolchain Approach</h2>
+<p>In this approach, the approach that works, we have the AI generate the image in a series of steps, producing a copy at each step. This gives us visibility of where the process is going wrong and might need adjustment. It also offloads a lot of the actual image manipulation onto tool use. Because tools are known to work, at least for their small step, we leave less room for the AI to make mistakes.</p>
+<h3>0 - Find an Image</h3>
+<p><em>Find an image of a canary on a perch.</em> AIs can be funny. Grok tried to pull a real CC0 photo from Wikimedia Commons to sidestep any copyright issues. The download got rate limited and failed. Rather than stop and ask, it quietly generated a photorealistic canary image instead and used that as the source. I didn't actually know this until I was trying to find the original image for this blog post. Starting with an AI image actually works fine here though, since we are just getting a source to trace.</p>
+<p><img src="/content/blog/blog-new/the-canary-logo-pipeline/00-source-ai-generated.png" alt="AI-generated source photo of a canary in profile, gripping a wooden perch"></p>
+<h3>1 - Remove the Background</h3>
+<p><em>Remove the Background From The Image and then make the Canary all one color and the perch another.</em> Disclaimer here: Here I originally did this with Grok Cursor, instructing it to make the whole image one color and trace it and it did fine. It was only on the second run, when I wanted a multi color output, that it started to struggle. Luckily because Grok was saving all its output steps, it was easy to check where the process had gone wrong.</p>
+<p><img src="/content/blog/blog-new/the-canary-logo-pipeline/03-failure.png" alt="Bird and perch masks from the failed two-tone color-classification attempt"></p>
+<h3>1.5 - Helping the AI</h3>
+<p>We were done with Grok after this because I was out of trial tokens. So we would be restarting with claude on the next run (paid subscription). But first I wanted to try and help things along. Thanks to the output files, I had good vision on the AI's whole process. It was then immediately clear how I could help. I could also eliminate a weirdness the output was going to have: the post extending down to the bottom of the image frame. So I opened the source image in Paint.NET and with my middling graphics skills produced this: <img src="/content/blog/blog-new/the-canary-logo-pipeline/01-source.png" alt="Source photo edited in Paint.NET: the wooden perch painted over with a solid black circle, cropped so it no longer runs to the bottom of the frame"> I highly recommend Paint.NET btw. If you need to do light image editing and are not a graphics person, it's fairly easy to use. But now the next AI Tool chain run will have a much cleaner image to split into 2 colors.</p>
+<h3>2 - Making the SVG</h3>
+<p><em>Then trace the output to make a 2 color svg with canary yellow and a complementing color.</em> This step, both Grok and Claude did fine at. I got a crisp outline of the bird on every run. This ultimately resulted in an .svg version of this image, which is close to our final logo result:</p>
+<p><img src="/content/blog/blog-new/the-canary-logo-pipeline/v2-04-preview.png" alt="Two-tone SVG preview: canary-yellow bird traced cleanly against a solid blue perch"></p>
+<h3>3 - Toolchain is Working, Refine the request</h3>
+<p><em>Now run through the entire process again, but this time make the Canary's eye the same color as the perch.</em> A simple change that I knew would be trivial given the eye's dark color and the visibility the toolchain's output had given me. Here is the entire output as a slideshow:</p>
+<!--
+  Standard widget contract (see PLAN.md's widget-controversy notes): a plain
+  Mustache-syntax HTML template, filled from the fence block's YAML body.
+  No code -- this template only knows how to lay out slides; slideshow.js
+  (shared, referenced once per page) decides at runtime whether there's
+  enough slides to bother with nav/dots/autoplay at all.
+
+  A site-root-relative "src:" (matching how markdown-authored images are
+  written elsewhere, e.g. "content/games/images/x.png") needs the explicit
+  "!url" tag shown below to get rewritten to a root-relative path -- see
+  Canary.Core.Templating.YamlParser/UrlResolver. Deliberately explicit, not
+  automatic -- see PLAN.md's widget-controversy notes. A plain "src: ..."
+  with no tag is left exactly as written (fine for an already-absolute
+  https:// URL, broken for a relative one on any page that isn't the site
+  root).
+-->
+<!--clipboard
+```slideshow
+title: Optional Title
+slides:
+  - src: "https://example.com/shot1.png"
+    caption: "Optional caption"
+  - src: !url "content/games/images/shot2.png"
+```
+-->
+
+<div class="slideshow-widget" data-widget="slideshow" data-index="0" tabindex="0">
+  <div class="slideshow-header">
+    <h3>The v3 Pipeline Run</h3>
+    <button type="button" class="slideshow-toggle" aria-label="Pause slideshow">⏸</button>
+  </div>
+  <div class="slideshow-viewport">
+    <div class="slideshow-track">
+      
+      <figure class="slideshow-slide" aria-roledescription="slide">
+        <img src="/content/blog/blog-new/the-canary-logo-pipeline/01-source.png" alt="Source: perch painted black in Paint.NET" loading="lazy">
+        <figcaption class="slideshow-caption">Source: perch painted black in Paint.NET</figcaption>
+      </figure>
+      
+      <figure class="slideshow-slide" aria-roledescription="slide">
+        <img src="/content/blog/blog-new/the-canary-logo-pipeline/v3-02-no-background.png" alt="Background removed" loading="lazy">
+        <figcaption class="slideshow-caption">Background removed</figcaption>
+      </figure>
+      
+      <figure class="slideshow-slide" aria-roledescription="slide">
+        <img src="/content/blog/blog-new/the-canary-logo-pipeline/v3-03-bird-mask.png" alt="Bird isolated as one color" loading="lazy">
+        <figcaption class="slideshow-caption">Bird isolated as one color</figcaption>
+      </figure>
+      
+      <figure class="slideshow-slide" aria-roledescription="slide">
+        <img src="/content/blog/blog-new/the-canary-logo-pipeline/v3-03-blue-mask.png" alt="Perch and eye isolated as the second color" loading="lazy">
+        <figcaption class="slideshow-caption">Perch and eye isolated as the second color</figcaption>
+      </figure>
+      
+      <figure class="slideshow-slide" aria-roledescription="slide">
+        <img src="/content/blog/blog-new/the-canary-logo-pipeline/v3-04-preview.png" alt="Traced SVG preview — eye now matches the perch" loading="lazy">
+        <figcaption class="slideshow-caption">Traced SVG preview — eye now matches the perch</figcaption>
+      </figure>
+      
+    </div>
+    <button type="button" class="slideshow-nav slideshow-prev" aria-label="Previous slide">&#10094;</button>
+    <button type="button" class="slideshow-nav slideshow-next" aria-label="Next slide">&#10095;</button>
+  </div>
+  <div class="slideshow-footer">
+    <div class="slideshow-dots">
+      <button type="button" class="slideshow-dot"></button><button type="button" class="slideshow-dot"></button><button type="button" class="slideshow-dot"></button><button type="button" class="slideshow-dot"></button><button type="button" class="slideshow-dot"></button>
+    </div>
+    <span class="slideshow-counter"></span>
+  </div>
+</div>
+
+<h2>Conclusions</h2>
+<p>So in about an hour, I was able to generate (at least by my eyes) a pretty nice logo for Canary. Minus some of the learning curves along the way. The Naive approach wasted time and tokens, but I learned an important lesson in using AI tools. When you are operating at the edge or beyond an AI's capability, thinking about how to structure the task in a series of smaller visible steps can still produce a good output. Here are a few takeaways from this toolchaining method:</p>
+<ul><li><strong>Structure:</strong> Clear steps with output at the end of each, allowed greater visibility into the AI's process. When things went wrong, I knew where it happened.</li><li><strong>Manual Assistance:</strong> I could have argued with the AI for a while trying to get it to edit the source file, but the change was easy, so it was quicker to inject myself into the process.</li><li><strong>Scaled up Toaster:</strong> AI's are not just scaled up toasters. They really are an incredible piece of technology. It is, however, <em>useful</em> to think of them that way. Toolchaining is an example of that, breaking up a task into smaller more accomplishable steps.</li></ul>
+<p><a href="/blog">&lt; Return to Blog</a></p></main>
+
+  <footer class="site-footer">
+    <span>Consoland &mdash; Built with Canary</span>
+    <span>&copy; 2026 Marcus Haberling</span>
+  </footer>
+
+  <script type="module" src="/js/main.js"></script>
+  <script src="/js/widgets/downloads.js" defer></script>
+<script src="/js/widgets/slideshow.js" defer></script>
+
+
+  <script>
+    (() => {
+      const modal = document.getElementById('logo-zoom-modal');
+      const modalImg = modal.querySelector('.logo-zoom-modal-img');
+      const closeBtn = modal.querySelector('.logo-zoom-modal-close');
+
+      function openModal(logoImg) {
+        modalImg.src = logoImg.src;
+        modalImg.alt = logoImg.alt;
+        modal.hidden = false;
+      }
+
+      function closeModal() {
+        modal.hidden = true;
+        modalImg.src = '';
+      }
+
+      document.querySelectorAll('.site-logo').forEach((img) => {
+        img.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          openModal(img);
+        });
+      });
+
+      closeBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !modal.hidden) closeModal();
+      });
+    })();
+  </script>
+</body>
+</html>

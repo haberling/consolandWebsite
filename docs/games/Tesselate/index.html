@@ -15,8 +15,10 @@
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="stylesheet" href="/css/framework.css">
   <link rel="stylesheet" href="/css/theme.css">
-  <link rel="stylesheet" href="/css/widgets/code.css">
+  <link rel="stylesheet" href="/css/widgets/blogheader.css">
+<link rel="stylesheet" href="/css/widgets/code.css">
 <link rel="stylesheet" href="/css/widgets/downloads.css">
+<link rel="stylesheet" href="/css/widgets/postlink.css">
 <link rel="stylesheet" href="/css/widgets/slideshow.css">
 
 </head>
@@ -32,6 +34,11 @@
       <!-- populated client-side from /content/manifest.json -->
     </nav>
   </header>
+
+  <div id="logo-zoom-modal" class="logo-zoom-modal" hidden>
+    <button type="button" class="logo-zoom-modal-close" aria-label="Close">&times;</button>
+    <img class="logo-zoom-modal-img" src="" alt="">
+  </div>
 
   <main id="app"><h1>Tesselate</h1>
 <p>A vibe coded falling block game in the soviet tradition. All on your command line.</p>
@@ -175,7 +182,7 @@ items:
 <p>Tesselate uses the high degree of Unicode support, emoji's and the like, in its "graphics". For this reason the old powershell terminal and command prompt wont display the game perfectly. Its still very playable, but I would reccomend installing <a href="https://apps.microsoft.com/detail/9n0dx20hk701?launch=true&amp;mode=full&amp;hl=en-US&amp;gl=US&amp;ocid=bingwebsearch">Windows Terminal</a> for the best experience. I would recomend installing Windows Terminal if your not planning  on downloading the game as well.</p></main>
 
   <footer class="site-footer">
-    <span>Consoland &mdash; built by hand, no framework was harmed.</span>
+    <span>Consoland &mdash; Built with Canary</span>
     <span>&copy; 2026 Marcus Haberling</span>
   </footer>
 
@@ -183,5 +190,40 @@ items:
   <script src="/js/widgets/downloads.js" defer></script>
 <script src="/js/widgets/slideshow.js" defer></script>
 
+
+  <script>
+    (() => {
+      const modal = document.getElementById('logo-zoom-modal');
+      const modalImg = modal.querySelector('.logo-zoom-modal-img');
+      const closeBtn = modal.querySelector('.logo-zoom-modal-close');
+
+      function openModal(logoImg) {
+        modalImg.src = logoImg.src;
+        modalImg.alt = logoImg.alt;
+        modal.hidden = false;
+      }
+
+      function closeModal() {
+        modal.hidden = true;
+        modalImg.src = '';
+      }
+
+      document.querySelectorAll('.site-logo').forEach((img) => {
+        img.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          openModal(img);
+        });
+      });
+
+      closeBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !modal.hidden) closeModal();
+      });
+    })();
+  </script>
 </body>
 </html>

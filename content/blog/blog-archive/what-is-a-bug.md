@@ -1,6 +1,12 @@
-# What is a "Bug" Anyways?
+---
+author: Marcus Haberling
+authorDate: 2022-04-27
+---
 
-*Understanding the defects in your code — originally published April 27, 2022 on Medium ([Better Programming](https://medium.com/better-programming/what-is-a-bug-anyways-dd5700e89589))*
+# What is a "Bug" Anyways?
+*Understanding the defects in your code*
+
+*Originally published April 27, 2022 on Medium ([Better Programming](https://medium.com/better-programming/what-is-a-bug-anyways-dd5700e89589))*
 
 ![Photo by Daniel K Cheung on Unsplash](content/blog-archive/images/bug-01-cheung.jpg)
 *Photo by Daniel K Cheung on Unsplash*
@@ -97,4 +103,3 @@ This article had two parts: reclassification and prescriptions for the new class
 
 ---
 
-[Back to Blog Archive](#/blog-archive/blog-archive)

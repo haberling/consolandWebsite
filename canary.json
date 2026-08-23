@@ -3,7 +3,7 @@
   "content": { "root": "content" },
   "output": { "dir": "docs" },
   "renderMode": "hybrid",
-  "nav": { "depth": 1 },
+  "nav": { "depth": 2 },
   "serve": { "port": 6913 },
   "theme": {
     "shell": "shell.html",
@@ -13,6 +13,11 @@
     "favicon": "img/logo.png"
   },
   "widgets": { "copyDefaultsOnInit": false, "preferBuiltIn": true },
-  "tools": {},
+  "tools": {
+    "blog-list-generator": "dotnet run tools/blog-list-generator.cs",
+    "clear-metadata": "dotnet run tools/clear-metadata.cs",
+    "format-blogpost-new": "dotnet run tools/format-blogpost.cs -- new",
+    "format-blogpost-archive": "dotnet run tools/format-blogpost.cs -- archive"
+  },
   "publish": "dotnet run tools/publish.cs"
 }

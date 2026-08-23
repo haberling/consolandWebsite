@@ -1,0 +1,27 @@
+<!--
+  Site-authored widget (consolandWebsite/widgets/, not a Canary built-in --
+  see WIDGETS.md in the canary repo for the discovery rules). Plain
+  Mustache template, no JS sibling: a single inline line -- link icon,
+  title, date -- not a bordered card. The icon is an inline SVG rather
+  than an emoji glyph so it can be colored with currentColor/accent; an
+  emoji ignores CSS color entirely on most platforms. Never write a
+  literal double-brace tag in this comment block -- the templater has no
+  notion of "this is a comment," see WIDGETS.md's gotcha section.
+
+  "url" is a page's actual route, not a filesystem path: it's the file's
+  content-root-relative path with ".md" stripped (an index.md instead maps
+  to its own containing directory) -- see Canary.Core.Build.ContentScanner.
+  No leading "content/" segment.
+-->
+<!--clipboard
+```postlink
+title: The Canary Logo Pipeline
+date: August 23, 2026
+url: !url "blog/blog-new/the-canary-logo-pipeline/the-canary-logo-pipeline"
+```
+-->
+<p class="postlink" data-widget="postlink">
+  <a class="postlink-url" href="{{url}}" title="{{url}}" aria-label="Read the post"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M6.5 9.5 9.5 6.5"/><path d="M7 4.5 8.6 2.9a2.4 2.4 0 0 1 3.4 3.4L10.4 7.9"/><path d="M9 11.5 7.4 13.1a2.4 2.4 0 0 1-3.4-3.4L5.6 8.1"/></svg></a>
+  <span class="postlink-title">{{title}}</span>
+  {{#date}}<span class="postlink-date">{{date}}</span>{{/date}}
+</p>

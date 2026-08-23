@@ -1,0 +1,39 @@
+/*
+ * Styling for the postlink widget (see postlink.html) -- one inline line
+ * (icon, title, date), no card/border. Uses the site's color tokens from
+ * framework.css (--text-dim, --accent), which cascade globally so this
+ * file doesn't need to redefine them.
+ */
+
+.postlink {
+  display: flex;
+  align-items: center;
+  flex-flow: row wrap;
+  gap: 0.6rem;
+  margin: 1rem 0;
+  font-size: 1.25rem;
+}
+
+.postlink-url {
+  display: inline-flex;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.postlink-url svg {
+  width: 1.1em;
+  height: 1.1em;
+}
+
+.postlink-url:hover {
+  opacity: 0.75;
+}
+
+.postlink-title {
+  font-weight: 600;
+}
+
+.postlink-date {
+  color: var(--text-dim);
+  font-size: 0.8em;
+}

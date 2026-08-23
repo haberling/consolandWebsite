@@ -15,8 +15,10 @@
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="stylesheet" href="/css/framework.css">
   <link rel="stylesheet" href="/css/theme.css">
-  <link rel="stylesheet" href="/css/widgets/code.css">
+  <link rel="stylesheet" href="/css/widgets/blogheader.css">
+<link rel="stylesheet" href="/css/widgets/code.css">
 <link rel="stylesheet" href="/css/widgets/downloads.css">
+<link rel="stylesheet" href="/css/widgets/postlink.css">
 <link rel="stylesheet" href="/css/widgets/slideshow.css">
 
 </head>
@@ -33,13 +35,185 @@
     </nav>
   </header>
 
+  <div id="logo-zoom-modal" class="logo-zoom-modal" hidden>
+    <button type="button" class="logo-zoom-modal-close" aria-label="Close">&times;</button>
+    <img class="logo-zoom-modal-img" src="" alt="">
+  </div>
+
   <main id="app"><h1>Blog Archive</h1>
 <p>I had a blog for a short time on medium. Its still there, but dead. I talked a bit about software engineering, and made one post about math. Really what it was if anything was venting frustrations I had with "Conference Talks" I was watching at the time and how they didnt match up with my own understanding. I stopped once I realized that I was trying to come up with topics for the blog instead of writing things I cared about.</p>
 <h2>Old Posts</h2>
-<ul><li><a href="/blog-archive/legacy-code">Legacy Code</a> — April 1, 2022</li><li><a href="/blog-archive/what-is-a-bug">What is a "Bug" Anyways?</a> — April 27, 2022</li><li><a href="/blog-archive/meet-regex101">Meet Regex101: The Vital Software Tool You're Not Using</a> — May 3, 2022</li><li><a href="/blog-archive/context-driven-scripting-language">Why You Should Write a Context-Driven Scripting Language</a> — May 11, 2022</li><li><a href="/blog-archive/bin-packing">Code Complexity and the Bin Packing Problem</a> — May 25, 2022</li><li><a href="/blog-archive/9ish-numbers">On 9 and 9ish Numbers</a> — June 16, 2022</li></ul></main>
+<!--
+  Site-authored widget (consolandWebsite/widgets/, not a Canary built-in --
+  see WIDGETS.md in the canary repo for the discovery rules). Plain
+  Mustache template, no JS sibling: a single inline line -- link icon,
+  title, date -- not a bordered card. The icon is an inline SVG rather
+  than an emoji glyph so it can be colored with currentColor/accent; an
+  emoji ignores CSS color entirely on most platforms. Never write a
+  literal double-brace tag in this comment block -- the templater has no
+  notion of "this is a comment," see WIDGETS.md's gotcha section.
+
+  "url" is a page's actual route, not a filesystem path: it's the file's
+  content-root-relative path with ".md" stripped (an index.md instead maps
+  to its own containing directory) -- see Canary.Core.Build.ContentScanner.
+  No leading "content/" segment.
+-->
+<!--clipboard
+```postlink
+title: The Canary Logo Pipeline
+date: August 23, 2026
+url: !url "blog/blog-new/the-canary-logo-pipeline/the-canary-logo-pipeline"
+```
+-->
+<p class="postlink" data-widget="postlink">
+  <a class="postlink-url" href="/blog-archive/9ish-numbers" title="/blog-archive/9ish-numbers" aria-label="Read the post"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M6.5 9.5 9.5 6.5"/><path d="M7 4.5 8.6 2.9a2.4 2.4 0 0 1 3.4 3.4L10.4 7.9"/><path d="M9 11.5 7.4 13.1a2.4 2.4 0 0 1-3.4-3.4L5.6 8.1"/></svg></a>
+  <span class="postlink-title">On 9 and 9ish Numbers</span>
+  <span class="postlink-date">June 16, 2022</span>
+</p>
+
+<!--
+  Site-authored widget (consolandWebsite/widgets/, not a Canary built-in --
+  see WIDGETS.md in the canary repo for the discovery rules). Plain
+  Mustache template, no JS sibling: a single inline line -- link icon,
+  title, date -- not a bordered card. The icon is an inline SVG rather
+  than an emoji glyph so it can be colored with currentColor/accent; an
+  emoji ignores CSS color entirely on most platforms. Never write a
+  literal double-brace tag in this comment block -- the templater has no
+  notion of "this is a comment," see WIDGETS.md's gotcha section.
+
+  "url" is a page's actual route, not a filesystem path: it's the file's
+  content-root-relative path with ".md" stripped (an index.md instead maps
+  to its own containing directory) -- see Canary.Core.Build.ContentScanner.
+  No leading "content/" segment.
+-->
+<!--clipboard
+```postlink
+title: The Canary Logo Pipeline
+date: August 23, 2026
+url: !url "blog/blog-new/the-canary-logo-pipeline/the-canary-logo-pipeline"
+```
+-->
+<p class="postlink" data-widget="postlink">
+  <a class="postlink-url" href="/blog-archive/bin-packing" title="/blog-archive/bin-packing" aria-label="Read the post"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M6.5 9.5 9.5 6.5"/><path d="M7 4.5 8.6 2.9a2.4 2.4 0 0 1 3.4 3.4L10.4 7.9"/><path d="M9 11.5 7.4 13.1a2.4 2.4 0 0 1-3.4-3.4L5.6 8.1"/></svg></a>
+  <span class="postlink-title">Code Complexity and the Bin Packing Problem</span>
+  <span class="postlink-date">May 25, 2022</span>
+</p>
+
+<!--
+  Site-authored widget (consolandWebsite/widgets/, not a Canary built-in --
+  see WIDGETS.md in the canary repo for the discovery rules). Plain
+  Mustache template, no JS sibling: a single inline line -- link icon,
+  title, date -- not a bordered card. The icon is an inline SVG rather
+  than an emoji glyph so it can be colored with currentColor/accent; an
+  emoji ignores CSS color entirely on most platforms. Never write a
+  literal double-brace tag in this comment block -- the templater has no
+  notion of "this is a comment," see WIDGETS.md's gotcha section.
+
+  "url" is a page's actual route, not a filesystem path: it's the file's
+  content-root-relative path with ".md" stripped (an index.md instead maps
+  to its own containing directory) -- see Canary.Core.Build.ContentScanner.
+  No leading "content/" segment.
+-->
+<!--clipboard
+```postlink
+title: The Canary Logo Pipeline
+date: August 23, 2026
+url: !url "blog/blog-new/the-canary-logo-pipeline/the-canary-logo-pipeline"
+```
+-->
+<p class="postlink" data-widget="postlink">
+  <a class="postlink-url" href="/blog-archive/context-driven-scripting-language" title="/blog-archive/context-driven-scripting-language" aria-label="Read the post"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M6.5 9.5 9.5 6.5"/><path d="M7 4.5 8.6 2.9a2.4 2.4 0 0 1 3.4 3.4L10.4 7.9"/><path d="M9 11.5 7.4 13.1a2.4 2.4 0 0 1-3.4-3.4L5.6 8.1"/></svg></a>
+  <span class="postlink-title">Why You Should Write a Context-Driven Scripting Language</span>
+  <span class="postlink-date">May 11, 2022</span>
+</p>
+
+<!--
+  Site-authored widget (consolandWebsite/widgets/, not a Canary built-in --
+  see WIDGETS.md in the canary repo for the discovery rules). Plain
+  Mustache template, no JS sibling: a single inline line -- link icon,
+  title, date -- not a bordered card. The icon is an inline SVG rather
+  than an emoji glyph so it can be colored with currentColor/accent; an
+  emoji ignores CSS color entirely on most platforms. Never write a
+  literal double-brace tag in this comment block -- the templater has no
+  notion of "this is a comment," see WIDGETS.md's gotcha section.
+
+  "url" is a page's actual route, not a filesystem path: it's the file's
+  content-root-relative path with ".md" stripped (an index.md instead maps
+  to its own containing directory) -- see Canary.Core.Build.ContentScanner.
+  No leading "content/" segment.
+-->
+<!--clipboard
+```postlink
+title: The Canary Logo Pipeline
+date: August 23, 2026
+url: !url "blog/blog-new/the-canary-logo-pipeline/the-canary-logo-pipeline"
+```
+-->
+<p class="postlink" data-widget="postlink">
+  <a class="postlink-url" href="/blog-archive/meet-regex101" title="/blog-archive/meet-regex101" aria-label="Read the post"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M6.5 9.5 9.5 6.5"/><path d="M7 4.5 8.6 2.9a2.4 2.4 0 0 1 3.4 3.4L10.4 7.9"/><path d="M9 11.5 7.4 13.1a2.4 2.4 0 0 1-3.4-3.4L5.6 8.1"/></svg></a>
+  <span class="postlink-title">Meet Regex101: The Vital Software Tool You're Not Using</span>
+  <span class="postlink-date">May 3, 2022</span>
+</p>
+
+<!--
+  Site-authored widget (consolandWebsite/widgets/, not a Canary built-in --
+  see WIDGETS.md in the canary repo for the discovery rules). Plain
+  Mustache template, no JS sibling: a single inline line -- link icon,
+  title, date -- not a bordered card. The icon is an inline SVG rather
+  than an emoji glyph so it can be colored with currentColor/accent; an
+  emoji ignores CSS color entirely on most platforms. Never write a
+  literal double-brace tag in this comment block -- the templater has no
+  notion of "this is a comment," see WIDGETS.md's gotcha section.
+
+  "url" is a page's actual route, not a filesystem path: it's the file's
+  content-root-relative path with ".md" stripped (an index.md instead maps
+  to its own containing directory) -- see Canary.Core.Build.ContentScanner.
+  No leading "content/" segment.
+-->
+<!--clipboard
+```postlink
+title: The Canary Logo Pipeline
+date: August 23, 2026
+url: !url "blog/blog-new/the-canary-logo-pipeline/the-canary-logo-pipeline"
+```
+-->
+<p class="postlink" data-widget="postlink">
+  <a class="postlink-url" href="/blog-archive/what-is-a-bug" title="/blog-archive/what-is-a-bug" aria-label="Read the post"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M6.5 9.5 9.5 6.5"/><path d="M7 4.5 8.6 2.9a2.4 2.4 0 0 1 3.4 3.4L10.4 7.9"/><path d="M9 11.5 7.4 13.1a2.4 2.4 0 0 1-3.4-3.4L5.6 8.1"/></svg></a>
+  <span class="postlink-title">What is a &quot;Bug&quot; Anyways?</span>
+  <span class="postlink-date">April 27, 2022</span>
+</p>
+
+<!--
+  Site-authored widget (consolandWebsite/widgets/, not a Canary built-in --
+  see WIDGETS.md in the canary repo for the discovery rules). Plain
+  Mustache template, no JS sibling: a single inline line -- link icon,
+  title, date -- not a bordered card. The icon is an inline SVG rather
+  than an emoji glyph so it can be colored with currentColor/accent; an
+  emoji ignores CSS color entirely on most platforms. Never write a
+  literal double-brace tag in this comment block -- the templater has no
+  notion of "this is a comment," see WIDGETS.md's gotcha section.
+
+  "url" is a page's actual route, not a filesystem path: it's the file's
+  content-root-relative path with ".md" stripped (an index.md instead maps
+  to its own containing directory) -- see Canary.Core.Build.ContentScanner.
+  No leading "content/" segment.
+-->
+<!--clipboard
+```postlink
+title: The Canary Logo Pipeline
+date: August 23, 2026
+url: !url "blog/blog-new/the-canary-logo-pipeline/the-canary-logo-pipeline"
+```
+-->
+<p class="postlink" data-widget="postlink">
+  <a class="postlink-url" href="/blog-archive/legacy-code" title="/blog-archive/legacy-code" aria-label="Read the post"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M6.5 9.5 9.5 6.5"/><path d="M7 4.5 8.6 2.9a2.4 2.4 0 0 1 3.4 3.4L10.4 7.9"/><path d="M9 11.5 7.4 13.1a2.4 2.4 0 0 1-3.4-3.4L5.6 8.1"/></svg></a>
+  <span class="postlink-title">Legacy Code</span>
+  <span class="postlink-date">April 1, 2022</span>
+</p>
+</main>
 
   <footer class="site-footer">
-    <span>Consoland &mdash; built by hand, no framework was harmed.</span>
+    <span>Consoland &mdash; Built with Canary</span>
     <span>&copy; 2026 Marcus Haberling</span>
   </footer>
 
@@ -47,5 +221,40 @@
   <script src="/js/widgets/downloads.js" defer></script>
 <script src="/js/widgets/slideshow.js" defer></script>
 
+
+  <script>
+    (() => {
+      const modal = document.getElementById('logo-zoom-modal');
+      const modalImg = modal.querySelector('.logo-zoom-modal-img');
+      const closeBtn = modal.querySelector('.logo-zoom-modal-close');
+
+      function openModal(logoImg) {
+        modalImg.src = logoImg.src;
+        modalImg.alt = logoImg.alt;
+        modal.hidden = false;
+      }
+
+      function closeModal() {
+        modal.hidden = true;
+        modalImg.src = '';
+      }
+
+      document.querySelectorAll('.site-logo').forEach((img) => {
+        img.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          openModal(img);
+        });
+      });
+
+      closeBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !modal.hidden) closeModal();
+      });
+    })();
+  </script>
 </body>
 </html>

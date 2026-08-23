@@ -15,8 +15,10 @@
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="stylesheet" href="/css/framework.css">
   <link rel="stylesheet" href="/css/theme.css">
-  <link rel="stylesheet" href="/css/widgets/code.css">
+  <link rel="stylesheet" href="/css/widgets/blogheader.css">
+<link rel="stylesheet" href="/css/widgets/code.css">
 <link rel="stylesheet" href="/css/widgets/downloads.css">
+<link rel="stylesheet" href="/css/widgets/postlink.css">
 <link rel="stylesheet" href="/css/widgets/slideshow.css">
 
 </head>
@@ -33,8 +35,41 @@
     </nav>
   </header>
 
-  <main id="app"><h1>Why You Should Write a Context-Driven Scripting Language</h1>
-<p><em>Sometimes the best way out of code complexity is to go deeper — originally published May 11, 2022 on Medium (<a href="https://medium.com/better-programming/why-you-should-write-a-context-driven-scripting-language-6714581e98b4">Better Programming</a>)</em></p>
+  <div id="logo-zoom-modal" class="logo-zoom-modal" hidden>
+    <button type="button" class="logo-zoom-modal-close" aria-label="Close">&times;</button>
+    <img class="logo-zoom-modal-img" src="" alt="">
+  </div>
+
+  <main id="app"><p><a href="/blog-archive">&lt; Return to Archive</a></p>
+<!--
+  Site-authored widget (consolandWebsite/widgets/, not a Canary built-in --
+  see WIDGETS.md in the canary repo for the discovery rules). A blog post's
+  header -- title, optional italic tagline, optional "Written by X on Y"
+  byline -- packed tight instead of the loose default spacing a plain
+  h1/p/p sequence gets. No JS sibling, fully static.
+
+  Built for tools/format-blogpost.cs: it extracts the title/tagline from a
+  post's own markdown and author/authorDate from its frontmatter, then
+  emits this widget instead of writing them out as plain markdown/italics.
+  Never write a literal double-brace tag in this comment block -- the
+  templater has no notion of "this is a comment," see WIDGETS.md's gotcha
+  section.
+-->
+<!--clipboard
+```blogheader
+title: The Canary Logo Pipeline
+tagline: A prequel to the Canary Story
+author: Marcus Haberling
+date: August 23, 2026
+```
+-->
+<div class="blogheader" data-widget="blogheader">
+  <h1 class="blogheader-title">Why You Should Write a Context-Driven Scripting Language</h1>
+  <p class="blogheader-tagline">Sometimes the best way out of code complexity is to go deeper</p>
+  <p class="blogheader-byline">Written by Marcus Haberling on May 11, 2022</p>
+</div>
+
+<p><em>Originally published May 11, 2022 on Medium (<a href="https://medium.com/better-programming/why-you-should-write-a-context-driven-scripting-language-6714581e98b4">Better Programming</a>)</em></p>
 <p><img src="/content/blog-archive/images/cdsl-01-francisca.jpg" alt="Photo by Arnold Francisca on Unsplash"> <em>Photo by Arnold Francisca on Unsplash</em></p>
 <p>Have you, Dear Reader, ever gotten caught in a customization trap?</p>
 <p>Example 0: You add custom range checking to input fields with ranges defined in the database. People are delighted. Until they want the range of inputs conditionally defined by another field.</p>
@@ -174,10 +209,10 @@
 <h2>Conclusion</h2>
 <p>I think I've laid out a good case as to why a CDSL could be good for your project, as well as an excellent description of how to go about making one. If you think I got anything wrong, let me know in the comments. This turned into a rather long piece, but I hope you found it interesting.</p>
 <hr>
-<p><a href="#/blog-archive/blog-archive">Back to Blog Archive</a></p></main>
+<p><a href="/blog-archive">&lt; Return to Archive</a></p></main>
 
   <footer class="site-footer">
-    <span>Consoland &mdash; built by hand, no framework was harmed.</span>
+    <span>Consoland &mdash; Built with Canary</span>
     <span>&copy; 2026 Marcus Haberling</span>
   </footer>
 
@@ -185,5 +220,40 @@
   <script src="/js/widgets/downloads.js" defer></script>
 <script src="/js/widgets/slideshow.js" defer></script>
 
+
+  <script>
+    (() => {
+      const modal = document.getElementById('logo-zoom-modal');
+      const modalImg = modal.querySelector('.logo-zoom-modal-img');
+      const closeBtn = modal.querySelector('.logo-zoom-modal-close');
+
+      function openModal(logoImg) {
+        modalImg.src = logoImg.src;
+        modalImg.alt = logoImg.alt;
+        modal.hidden = false;
+      }
+
+      function closeModal() {
+        modal.hidden = true;
+        modalImg.src = '';
+      }
+
+      document.querySelectorAll('.site-logo').forEach((img) => {
+        img.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          openModal(img);
+        });
+      });
+
+      closeBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !modal.hidden) closeModal();
+      });
+    })();
+  </script>
 </body>
 </html>

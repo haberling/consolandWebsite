@@ -1,6 +1,12 @@
-# Meet Regex101: The Vital Software Tool You're Not Using
+---
+author: Marcus Haberling
+authorDate: 2022-05-03
+---
 
-*Breaking out of the regular expressions cycle — originally published May 3, 2022 on Medium ([Better Programming](https://medium.com/better-programming/meet-regex101-the-vital-software-tool-youre-not-using-24aa93518db4))*
+# Meet Regex101: The Vital Software Tool You're Not Using
+*Breaking out of the regular expressions cycle*
+
+*Originally published May 3, 2022 on Medium ([Better Programming](https://medium.com/better-programming/meet-regex101-the-vital-software-tool-youre-not-using-24aa93518db4))*
 
 ![Photo by Ante Hamersmit on Unsplash](content/blog-archive/images/regex101-01-hamersmit.jpg)
 *Photo by Ante Hamersmit on Unsplash*
@@ -54,5 +60,3 @@ Regular expressions are a powerful tool in Software Engineering. They can make y
 It was never my intention to write this post. I was writing an article on a software pattern I call Context-Driven Scripting Languages. But regular expressions are a big part of that discussion, so I wanted another article about Regex101 that I could link to. I've also written more high-level articles on [Legacy Code](#/blog-archive/legacy-code) and [Classifying Bugs](#/blog-archive/what-is-a-bug). Click through if you're interested.
 
 ---
-
-[Back to Blog Archive](#/blog-archive/blog-archive)

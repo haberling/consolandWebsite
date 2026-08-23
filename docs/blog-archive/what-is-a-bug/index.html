@@ -15,8 +15,10 @@
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="stylesheet" href="/css/framework.css">
   <link rel="stylesheet" href="/css/theme.css">
-  <link rel="stylesheet" href="/css/widgets/code.css">
+  <link rel="stylesheet" href="/css/widgets/blogheader.css">
+<link rel="stylesheet" href="/css/widgets/code.css">
 <link rel="stylesheet" href="/css/widgets/downloads.css">
+<link rel="stylesheet" href="/css/widgets/postlink.css">
 <link rel="stylesheet" href="/css/widgets/slideshow.css">
 
 </head>
@@ -33,14 +35,47 @@
     </nav>
   </header>
 
-  <main id="app"><h1>What is a "Bug" Anyways?</h1>
-<p><em>Understanding the defects in your code — originally published April 27, 2022 on Medium (<a href="https://medium.com/better-programming/what-is-a-bug-anyways-dd5700e89589">Better Programming</a>)</em></p>
+  <div id="logo-zoom-modal" class="logo-zoom-modal" hidden>
+    <button type="button" class="logo-zoom-modal-close" aria-label="Close">&times;</button>
+    <img class="logo-zoom-modal-img" src="" alt="">
+  </div>
+
+  <main id="app"><p><a href="/blog-archive">&lt; Return to Archive</a></p>
+<!--
+  Site-authored widget (consolandWebsite/widgets/, not a Canary built-in --
+  see WIDGETS.md in the canary repo for the discovery rules). A blog post's
+  header -- title, optional italic tagline, optional "Written by X on Y"
+  byline -- packed tight instead of the loose default spacing a plain
+  h1/p/p sequence gets. No JS sibling, fully static.
+
+  Built for tools/format-blogpost.cs: it extracts the title/tagline from a
+  post's own markdown and author/authorDate from its frontmatter, then
+  emits this widget instead of writing them out as plain markdown/italics.
+  Never write a literal double-brace tag in this comment block -- the
+  templater has no notion of "this is a comment," see WIDGETS.md's gotcha
+  section.
+-->
+<!--clipboard
+```blogheader
+title: The Canary Logo Pipeline
+tagline: A prequel to the Canary Story
+author: Marcus Haberling
+date: August 23, 2026
+```
+-->
+<div class="blogheader" data-widget="blogheader">
+  <h1 class="blogheader-title">What is a &quot;Bug&quot; Anyways?</h1>
+  <p class="blogheader-tagline">Understanding the defects in your code</p>
+  <p class="blogheader-byline">Written by Marcus Haberling on April 27, 2022</p>
+</div>
+
+<p><em>Originally published April 27, 2022 on Medium (<a href="https://medium.com/better-programming/what-is-a-bug-anyways-dd5700e89589">Better Programming</a>)</em></p>
 <p><img src="/content/blog-archive/images/bug-01-cheung.jpg" alt="Photo by Daniel K Cheung on Unsplash"> <em>Photo by Daniel K Cheung on Unsplash</em></p>
 <p>In software, we talk a lot about bugs.</p>
 <p>Where they come from, how to avoid them, how to deal with them, etc. But what actually is a bug?</p>
 <p>I've seen projects that have over a hundred bugs, each one well documented and tracked, but the code base still ran. I wrote a bug yesterday that stopped an entire class of devices from communicating with the server. How is it that the entities in both of these scenarios get the same label?</p>
 <p>How similar are they really? If you say there is a Reptile at the back door and you could mean an iguana sunbathing or a velociraptor fiddling with the door nob, have you truly said anything useful?</p>
-<p>I mean sure, maybe taxonomically the creatures are simular¹. That doesn't tell us anything about how we should act in response. Software engineering is all about acting. We are trying to make products. Any definitions we use should be helping us achieve this goal.</p>
+<p>I mean sure, maybe taxonomically the creatures are simular1. That doesn't tell us anything about how we should act in response. Software engineering is all about acting. We are trying to make products. Any definitions we use should be helping us achieve this goal.</p>
 <p><img src="/content/blog-archive/images/bug-02-reptile.gif" alt="A robot with a plug, representing a reptile metaphor"> <em>I Got this image made on Fivvr by gandalfhardcore. I believe I own it so Copyright Marcus Haberling 2022.</em></p>
 <p>Of course, no one ever really talks about Reptiles. Biology provides much more specific strata of classification. Ladies and gentlemen, we have arrived at the thesis statement: We need a more specific classification of software bugs to handle them appropriately.</p>
 <p>And you thought this article was not a listicle. Fool! I shall be listing things!</p>
@@ -49,7 +84,7 @@
 <h2>Catastrophes</h2>
 <p>Catastrophes are the simplest bugs to talk about and identify. They are defined thusly: "A bug that prevents you from shipping the next release of your software."</p>
 <p>If you find this bug deployed in production, it usually means a special release to get it fixed. This is still a broad category and is highly dependent on the sort of system you are creating.</p>
-<p>It could be a security vulnerability, a broken core feature, buttons that are halfway off the screen on the new iPhone, A UI problem that makes your customers suicidal², etc, etc.</p>
+<p>It could be a security vulnerability, a broken core feature, buttons that are halfway off the screen on the new iPhone, A UI problem that makes your customers suicidal╬ô├╢┬╝╬ô├╗├┤, etc, etc.</p>
 <p>Catastrophes must be dealt with now. If it will only take a few hours to fix and you cannot ship without fixing it, then there is no reason not to take care of it now when it's fresh in your mind.</p>
 <p>If you do not know how long it will take to fix, You must work on it now. If you cannot say how long a bug will take to fix and it must be fixed before release, then you are incapable of even making any time estimates as to when you will be able to ship the next version.</p>
 <p>You are dead in the water. The dead do not work on new features, they must first claw their way back to the land of the living.</p>
@@ -63,7 +98,7 @@
 <p>If QA is filling up your issue tracking software with multitudes of quibbles and a few catastrophic bugs, soon both classes start to get ignored. Quibbles should be identified separately from bugs, or they can impede development more than support it.</p>
 <h2>Fungus</h2>
 <p>As we move into the third category, you may find cause to accuse me of reinventing technical debt. And sure, there is a lot of overlap between Technical Debt and Fungus.</p>
-<p>I am attempting to create a new Taxonomy of software bugs. Some retreading is necessary. Also, I don't want to recycle the term Technical Debt. It has too much baggage and too many syllables. The terms Quibble and Fungus MUST have fewer syllables than Catastrophe³.</p>
+<p>I am attempting to create a new Taxonomy of software bugs. Some retreading is necessary. Also, I don't want to recycle the term Technical Debt. It has too much baggage and too many syllables. The terms Quibble and Fungus MUST have fewer syllables than Catastrophe3.</p>
 <p>Fungus is any defect in your code that will grow over time. You probably have heard, "The longer we wait, the harder it will be to fix." You have probably even said it. Note that Fungus can never be a Catastrophe. Fungus may or may not be a quibble. This leaves us with the following chart:</p>
 <p><img src="/content/blog-archive/images/bug-03-chart.png" alt="Fungus/Quibble/Catastrophe Venn-style chart"> <em>Stare longingly into the brilliance of MS Excel "Smart Art" and be humbled by its glory.</em></p>
 <p>Fungus cannot be a Catastrophe because Catastrophes must be dealt with now. They will have no chance to grow as problems. Quibbles of course can be fungus, because they may be easier to fix now than later. In some circumstances, Fungus will not point to any visible defects in your code.</p>
@@ -79,10 +114,10 @@
 <p><strong>Footnotes</strong></p>
 <ol><li>If your reaction to this is to say "Actually scientists believe that velociraptors were more birdlike than reptilian." Just know that I hold you in contempt.</li><li>Yes, it was Robinhood. Forbes did a decent write-up on it here.</li><li>No, I'm not going to explain this claim.</li></ol>
 <hr>
-<p><a href="#/blog-archive/blog-archive">Back to Blog Archive</a></p></main>
+<p><a href="/blog-archive">&lt; Return to Archive</a></p></main>
 
   <footer class="site-footer">
-    <span>Consoland &mdash; built by hand, no framework was harmed.</span>
+    <span>Consoland &mdash; Built with Canary</span>
     <span>&copy; 2026 Marcus Haberling</span>
   </footer>
 
@@ -90,5 +125,40 @@
   <script src="/js/widgets/downloads.js" defer></script>
 <script src="/js/widgets/slideshow.js" defer></script>
 
+
+  <script>
+    (() => {
+      const modal = document.getElementById('logo-zoom-modal');
+      const modalImg = modal.querySelector('.logo-zoom-modal-img');
+      const closeBtn = modal.querySelector('.logo-zoom-modal-close');
+
+      function openModal(logoImg) {
+        modalImg.src = logoImg.src;
+        modalImg.alt = logoImg.alt;
+        modal.hidden = false;
+      }
+
+      function closeModal() {
+        modal.hidden = true;
+        modalImg.src = '';
+      }
+
+      document.querySelectorAll('.site-logo').forEach((img) => {
+        img.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          openModal(img);
+        });
+      });
+
+      closeBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !modal.hidden) closeModal();
+      });
+    })();
+  </script>
 </body>
 </html>

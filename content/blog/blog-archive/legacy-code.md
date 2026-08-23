@@ -1,4 +1,10 @@
+---
+author: Marcus Haberling
+authorDate: 2022-04-01
+---
+
 # Legacy Code
+*My very first post, is probably pretty rough*
 
 *Originally published April 1, 2022 on Medium ([CodeX](https://medium.com/codex/legacy-code-2cb94a33dcd0))*
 
@@ -34,4 +40,3 @@ Yes, Legacy Code has problems. That's why we have a special name for it. It can 
 
 ---
 
-[Back to Blog Archive](#/blog-archive/blog-archive)

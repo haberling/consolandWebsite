@@ -1,6 +1,12 @@
-# Code Complexity and the Bin Packing Problem
+---
+author: Marcus Haberling
+authorDate: 2022-05-25
+---
 
-*A mental tool for software system design — originally published May 25, 2022 on Medium ([Better Programming](https://medium.com/better-programming/code-complexity-and-the-bin-packing-problem-928538d72a29))*
+# Code Complexity and the Bin Packing Problem
+*A mental tool for software system design* 
+
+*Originally published May 25, 2022 on Medium ([Better Programming](https://medium.com/better-programming/code-complexity-and-the-bin-packing-problem-928538d72a29))*
 
 ![Generated at Hotpot.ai](content/blog-archive/images/bin-packing-01-header.jpg)
 *Generated at Hotpot.ai and licensed for use by me. For all the hype around AI making art, this doesn't REALLY look like the prompt "Ten Bins in a row," does it?*
@@ -88,4 +94,3 @@ Thanks again for reading.
 
 ---
 
-[Back to Blog Archive](#/blog-archive/blog-archive)

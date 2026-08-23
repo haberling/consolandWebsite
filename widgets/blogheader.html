@@ -1,0 +1,27 @@
+<!--
+  Site-authored widget (consolandWebsite/widgets/, not a Canary built-in --
+  see WIDGETS.md in the canary repo for the discovery rules). A blog post's
+  header -- title, optional italic tagline, optional "Written by X on Y"
+  byline -- packed tight instead of the loose default spacing a plain
+  h1/p/p sequence gets. No JS sibling, fully static.
+
+  Built for tools/format-blogpost.cs: it extracts the title/tagline from a
+  post's own markdown and author/authorDate from its frontmatter, then
+  emits this widget instead of writing them out as plain markdown/italics.
+  Never write a literal double-brace tag in this comment block -- the
+  templater has no notion of "this is a comment," see WIDGETS.md's gotcha
+  section.
+-->
+<!--clipboard
+```blogheader
+title: The Canary Logo Pipeline
+tagline: A prequel to the Canary Story
+author: Marcus Haberling
+date: August 23, 2026
+```
+-->
+<div class="blogheader" data-widget="blogheader">
+  <h1 class="blogheader-title">{{title}}</h1>
+  {{#tagline}}<p class="blogheader-tagline">{{tagline}}</p>{{/tagline}}
+  {{#author}}<p class="blogheader-byline">Written by {{author}}{{#date}} on {{date}}{{/date}}</p>{{/author}}
+</div>

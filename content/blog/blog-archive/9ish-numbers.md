@@ -1,6 +1,12 @@
-# On 9 and 9ish Numbers
+---
+author: Marcus Haberling
+authorDate: 2022-06-16
+---
 
-*A brief jaunt into amateur number theory — originally published June 16, 2022 on Medium ([Intuition](https://medium.com/intuition/on-9-and-9ish-numbers-f77e285c19f4))*
+# On 9 and 9ish Numbers
+*A brief jaunt into amateur number theory*
+
+*Originally published June 16, 2022 on Medium ([Intuition](https://medium.com/intuition/on-9-and-9ish-numbers-f77e285c19f4))*
 
 ![Wait… it's all nines?](content/blog-archive/images/9ish-01-header.png)
 *Wait… It's all nines?*
@@ -90,4 +96,3 @@ I usually write about software development. If you like this article, please giv
 
 ---
 
-[Back to Blog Archive](#/blog-archive/blog-archive)

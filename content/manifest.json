@@ -7,7 +7,7 @@
     },
     {
       "title": "Games",
-      "path": null,
+      "path": "games",
       "children": [
         {
           "title": "Tesselate",

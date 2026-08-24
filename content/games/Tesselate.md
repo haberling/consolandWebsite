@@ -48,3 +48,9 @@ items:
 ```
 # Windows 10
 Tesselate uses the high degree of Unicode support, emoji's and the like, in its "graphics". For this reason the old powershell terminal and command prompt wont display the game perfectly. Its still very playable, but I would reccomend installing [Windows Terminal](https://apps.microsoft.com/detail/9n0dx20hk701?launch=true&mode=full&hl=en-US&gl=US&ocid=bingwebsearch) for the best experience. I would recomend installing Windows Terminal if your not planning  on downloading the game as well. 
+
+## Comments
+
+```chirp
+page: "games|Tesselate"
+```

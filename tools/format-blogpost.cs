@@ -1,4 +1,4 @@
-// Toolchain tool -- three independent insertions into a blog post:
+// Toolchain tool -- four independent insertions into a blog post:
 //
 //   1. A "< Return to Blog" / "< Return to Archive" link directly above the
 //      post's title, linking back to that blog's own index page.
@@ -9,7 +9,20 @@
 //      byline, all packed tight. See widgets/blogheader.html/.css. Anything
 //      after the title/tagline (a header image, the rest of the post) is
 //      left completely untouched.
-//   3. The same return link again, appended at the very end of the post --
+//   3. A "chirp" comment-widget block, appended after the post's content --
+//      see widgets/chirp.html/.js/.css. "new" posts only (blogKind == "new")
+//      -- archive posts are old, largely dormant pages nobody's asked to
+//      reopen for discussion, so this step is skipped entirely for them.
+//      Its required "page" field is "blog|<file-name>" -- just the post's
+//      own markdown file name (CANARY_ROUTE_PATH's last "/"-segment, which
+//      is always the file name minus ".md" by construction), not the full
+//      route. Still exactly the kind of stable-across-renames-unless-the-
+//      file-moves identifier Chirp's own docs ask for (see
+//      ../../chirp/PLAN.md's "Page identity" and DEPLOYMENT_GUIDE.md's
+//      widget section), just shorter/tidier as a database column value --
+//      no
+//      separate id to invent or maintain per post.
+//   4. The same return link again, appended at the very end of the post --
 //      so a reader who scrolls all the way through doesn't have to scroll
 //      back up to leave.
 //
@@ -100,6 +113,14 @@ else
 
 while (result.Count > 0 && result[^1].Trim().Length == 0) result.RemoveAt(result.Count - 1);
 result.Add("");
+if (blogKind == "new")
+{
+    var fileName = routePath[(routePath.LastIndexOf('/') + 1)..];
+    result.Add("```chirp");
+    result.Add($"page: {YamlQuote($"blog|{fileName}")}");
+    result.Add("```");
+    result.Add("");
+}
 result.Add($"[< Return to {label}](/{indexRoute})");
 
 Console.Out.Write(string.Join('\n', result));

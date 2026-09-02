@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <!-- Google tag (gtag.js) -->
+  
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-L0SF9VQEKN"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -13,6 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Canary — Consoland</title>
   <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="alternate" type="application/rss+xml" title="Consoland" href="/rss.xml">
   <link rel="stylesheet" href="/css/framework.css">
   <link rel="stylesheet" href="/css/theme.css">
   <link rel="stylesheet" href="/css/widgets/blogheader.css">
@@ -21,6 +22,7 @@
 <link rel="stylesheet" href="/css/widgets/downloads.css">
 <link rel="stylesheet" href="/css/widgets/postlink.css">
 <link rel="stylesheet" href="/css/widgets/slideshow.css">
+<link rel="stylesheet" href="/css/widgets/wasmterm.css">
 
 </head>
 <body>
@@ -32,7 +34,7 @@
       </div>
     </div>
     <nav id="site-nav" class="site-nav">
-      <!-- populated client-side from /content/manifest.json -->
+      
     </nav>
   </header>
 
@@ -42,52 +44,15 @@
   </div>
 
   <main id="app"><h1>Canary</h1>
-<p><em>A web framework for those with enough web development skills to want to avoid it.</em> <img src="/content/canary/images/canary-logo.svg" alt="canary logo"> Canary is a framework for making websites out of a directory of markdown documents. It consists of a typescript client router, paired with a C# build and deploy tool for rendering your pages in HTML at build time. This makes a site with smooth SPA like page navigation while still playing nice with web crawlers, direct links, and preview scrapers.</p>
+<p><em>Markdown In -&gt; Website Out. A web framework for those with enough web development skills to want to avoid it.</em> <img src="/content/canary/images/canary-logo-small.svg" alt="canary logo"> Canary is a framework for making websites out of a directory of markdown documents. It consists of a typescript client router, paired with a C# build and deploy tool for rendering your pages in HTML at build time. This makes a site with smooth SPA like page navigation while still playing nice with web crawlers, direct links, and preview scrapers.</p>
 <h2>Why it exists</h2>
 <p>Canary comes out of Consoland development. There was always a plan of at least publishing a collection of tools. When it became clear that SEO wasn't going to be possible with the # navigation of the original site, I decided to start that process earlier than originally planned.</p>
+<h2>v0.2.0</h2>
+<ul><li><code>canary build --clean</code>, plus a <code>root-copy/</code> folder so a clean rebuild doesn't wipe extra files you keep in the output dir.</li><li>Toolchain C# tools can be Native AOT-precompiled (<code>canary tools build</code>). <code>canary tools validate</code> catches UTF-8 mangling before it hits a page.</li><li><code>canary explore nav</code> and <code>canary explore toolchain</code> for looking at a site without grepping JSON.</li></ul>
 <h2>What's under the hood</h2>
 <ul><li>Markdown -&gt; HTML renderer.</li><li>Widgets -&gt; made using JavaScript and templated HTML (mustache) Downloads and Slideshow are examples on this site.</li><li>Toolchain -&gt; optionally transform your markdown files before render to keep the source markdown documents cleaner.</li><li>Client Router -&gt; Rebuilds using history API to give you a live editing experience.</li><li>Command Line Interface</li></ul>
-<!--
-  Standard widget contract (see PLAN.md's widget-controversy notes): a plain
-  Mustache-syntax HTML template, filled from the fence block's YAML body.
-  Renders its lines back out as an escaped, verbatim code block -- the
-  general answer to "how do I show a widget's own fence syntax as example
-  text instead of it actually running as that widget," since a fence's info
-  string always dispatches to the matching widget with no escape sequence
-  otherwise (see PLAN.md's docsite notes). NOTE: this comment deliberately
-  never writes the actual double-brace tag syntax -- the templater has no
-  notion of "this is just a comment," so literal tags typed here would be
-  executed for real (this bit the downloads widget's own doc comment
-  earlier in the project the same way).
 
-  Canary.Core.Templating.YamlParser has no multi-line block-scalar support
-  (see PLAN.md) -- a multi-line example is written as one list entry per
-  source line, each its own quoted "text" field, rather than one big block
-  of text. Each entry has to be a one-field map, not a bare scalar list
-  item: the templater has no "current item" self-reference for a bare
-  scalar inside a section, only field lookups against a map. An optional
-  top-level "lang" field is cosmetic only (no syntax highlighting is
-  implemented) -- rendered as a small label and a language-<lang> class, a
-  hook for later.
 
-  A line containing a literal double quote needs single quotes as its OWN
-  YAML delimiter instead ('    - label: "My File"' below) -- YamlParser
-  only strips a scalar's matching outer quote pair, it never unescapes a
-  backslash inside one, so a line written as "...\"...\"" comes out with
-  literal backslashes still in it rather than the quote you meant. Found by
-  actually rendering this exact example and reading the output, not by
-  inspection -- see PLAN.md's docsite notes.
--->
-<!--clipboard
-```code
-lang: yaml
-lines:
-  - text: "downloads:"
-  - text: "  title: Example"
-  - text: "  items:"
-  - text: '    - label: "My File"'
-```
--->
 <div class="code-widget" data-widget="code">
   <div class="code-widget-lang">CLI</div>
   <pre><code class="language-CLI">canary build | canary serve | canary publish | [and more]
@@ -97,59 +62,25 @@ lines:
 <h2>Status</h2>
 <p>Alpha release is out and functional (if this site is working at least). Source is on <a href="https://github.com/haberling/canary">GitHub</a> and open under the MIT License. Would be happy to receive any suggestions or contributions there.</p>
 <h2>Downloads</h2>
-<p>Try Canary out for yourself!</p>
-<!--
-  Standard widget contract (see PLAN.md's widget-controversy notes): a plain
-  Mustache-syntax HTML template, filled from the fence block's YAML body.
-  No code -- an "items" section iterates the items list below; a "copy"
-  conditional (normal and inverted) branches between a plain link row and a
-  copy-command row. NOTE: this comment deliberately never writes the actual
-  double-brace tag syntax -- the templater has no notion of "this is just a
-  comment," so literal tags typed here would be executed for real (this bit
-  the shell.html chrome template earlier in the project the same way).
+<p>Try Canary out for yourself! Every published release is on the <a href="/canary/archive">Canary Archive</a>.</p>
 
-  Interactivity (the Copy button) lives in the sibling downloads.js, shared
-  across every instance on a page -- see that file.
 
-  A site-root-relative "url:" (e.g. "content/games/manual.pdf", matching how
-  markdown-authored links/images are written elsewhere) needs the explicit
-  "!url" tag shown below to get rewritten to a root-relative path -- see
-  Canary.Core.Templating.YamlParser/UrlResolver. Deliberately explicit, not
-  automatic: nothing resolves just because a field happens to be named
-  "url" -- see PLAN.md's widget-controversy notes for why. A plain
-  "url: ..." with no tag is left exactly as written (fine for an already-
-  absolute https:// URL, broken for a relative one on any page that isn't
-  the site root).
--->
-<!--clipboard
-```downloads
-title: Optional Title
-items:
-  - label: "Windows Installer"
-    url: "https://example.com/file.msi"
-  - label: "User Manual"
-    url: !url "content/games/manual.pdf"
-  - copy: true
-    label: "Install via PowerShell"
-    command: "msiexec /i ... /quiet /norestart"
-```
--->
 <div class="downloads-widget" data-widget="downloads">
-  <h3>Release 0.1.0</h3>
+  <h3>Release 0.2.0</h3>
   <ul>
     
     
-    <li><a class="download-button" href="https://github.com/haberling/canary/releases/download/v0.1.0/CanaryInstaller.msi">Windows Installer</a></li>
+    <li><a class="download-button" href="https://github.com/haberling/canary/releases/download/v0.2.0/CanaryInstaller.msi">Windows Installer</a></li>
     
     
     
     
-    <li><a class="download-button" href="https://github.com/haberling/canary/archive/refs/tags/v0.1.0.zip">Source Code (zip)</a></li>
+    <li><a class="download-button" href="https://github.com/haberling/canary/archive/refs/tags/v0.2.0.zip">Source Code (zip)</a></li>
     
     
     
     
-    <li><a class="download-button" href="https://github.com/haberling/canary/archive/refs/tags/v0.1.0.tar.gz">Source Code (tar.gz)</a></li>
+    <li><a class="download-button" href="https://github.com/haberling/canary/archive/refs/tags/v0.2.0.tar.gz">Source Code (tar.gz)</a></li>
     
     
     
@@ -159,6 +90,7 @@ items:
 
   <footer class="site-footer">
     <span>Consoland &mdash; Built with Canary</span>
+    <span><a href="/rss.xml" download="rss.xml" class="footer-rss"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg>RSS Feed</a></span>
     <span>&copy; 2026 Marcus Haberling</span>
   </footer>
 
@@ -166,6 +98,7 @@ items:
   <script src="/js/widgets/chirp.js" defer></script>
 <script src="/js/widgets/downloads.js" defer></script>
 <script src="/js/widgets/slideshow.js" defer></script>
+<script src="/js/widgets/wasmterm.js" defer></script>
 
 
   <script>

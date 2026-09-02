@@ -1,6 +1,6 @@
 // Toolchain tool -- expands a `[!BLOG LIST|<List Title>|<relative-path>]`
 // tag into a heading plus one `postlink` widget block per post found under
-// <relative-path>. Registered as "blog-list-generator" in canary.json's
+// <relative-path>. Registered as "blog-list-generator" in canary.jsonc's
 // "tools" registry; applied via content/blog/.toolchain.json.
 //
 // Contract (see docsite/content/guide/toolchain.md): read a page's raw
@@ -29,6 +29,13 @@
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
+
+// Canary writes/reads this tool's stdio as UTF-8 (see ToolchainRunner) --
+// match that here, since Console.In/Out otherwise default to the OS
+// console codepage (commonly not UTF-8 on Windows), which corrupts any
+// non-ASCII character (math symbols, smart quotes, accents) passing through.
+Console.InputEncoding = new UTF8Encoding(false);
+Console.OutputEncoding = new UTF8Encoding(false);
 
 var routePath = Environment.GetEnvironmentVariable("CANARY_ROUTE_PATH") ?? "";
 var pageDir = routePath.Length == 0

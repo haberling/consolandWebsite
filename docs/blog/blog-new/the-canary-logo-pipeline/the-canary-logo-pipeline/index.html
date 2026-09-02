@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <!-- Google tag (gtag.js) -->
+  
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-L0SF9VQEKN"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -13,6 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>The Canary Logo Pipeline — Consoland</title>
   <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="alternate" type="application/rss+xml" title="Consoland" href="/rss.xml">
   <link rel="stylesheet" href="/css/framework.css">
   <link rel="stylesheet" href="/css/theme.css">
   <link rel="stylesheet" href="/css/widgets/blogheader.css">
@@ -21,6 +22,7 @@
 <link rel="stylesheet" href="/css/widgets/downloads.css">
 <link rel="stylesheet" href="/css/widgets/postlink.css">
 <link rel="stylesheet" href="/css/widgets/slideshow.css">
+<link rel="stylesheet" href="/css/widgets/wasmterm.css">
 
 </head>
 <body>
@@ -32,7 +34,7 @@
       </div>
     </div>
     <nav id="site-nav" class="site-nav">
-      <!-- populated client-side from /content/manifest.json -->
+      
     </nav>
   </header>
 
@@ -42,28 +44,8 @@
   </div>
 
   <main id="app"><p><a href="/blog">&lt; Return to Blog</a></p>
-<!--
-  Site-authored widget (consolandWebsite/widgets/, not a Canary built-in --
-  see WIDGETS.md in the canary repo for the discovery rules). A blog post's
-  header -- title, optional italic tagline, optional "Written by X on Y"
-  byline -- packed tight instead of the loose default spacing a plain
-  h1/p/p sequence gets. No JS sibling, fully static.
 
-  Built for tools/format-blogpost.cs: it extracts the title/tagline from a
-  post's own markdown and author/authorDate from its frontmatter, then
-  emits this widget instead of writing them out as plain markdown/italics.
-  Never write a literal double-brace tag in this comment block -- the
-  templater has no notion of "this is a comment," see WIDGETS.md's gotcha
-  section.
--->
-<!--clipboard
-```blogheader
-title: The Canary Logo Pipeline
-tagline: A prequel to the Canary Story
-author: Marcus Haberling
-date: August 23, 2026
-```
--->
+
 <div class="blogheader" data-widget="blogheader">
   <h1 class="blogheader-title">The Canary Logo Pipeline</h1>
   <p class="blogheader-tagline">A prequel to the Canary Story</p>
@@ -95,31 +77,8 @@ date: August 23, 2026
 <p><img src="/content/blog/blog-new/the-canary-logo-pipeline/v2-04-preview.png" alt="Two-tone SVG preview: canary-yellow bird traced cleanly against a solid blue perch"></p>
 <h3>3 - Toolchain is Working, Refine the request</h3>
 <p><em>Now run through the entire process again, but this time make the Canary's eye the same color as the perch.</em> A simple change that I knew would be trivial given the eye's dark color and the visibility the toolchain's output had given me. Here is the entire output as a slideshow:</p>
-<!--
-  Standard widget contract (see PLAN.md's widget-controversy notes): a plain
-  Mustache-syntax HTML template, filled from the fence block's YAML body.
-  No code -- this template only knows how to lay out slides; slideshow.js
-  (shared, referenced once per page) decides at runtime whether there's
-  enough slides to bother with nav/dots/autoplay at all.
 
-  A site-root-relative "src:" (matching how markdown-authored images are
-  written elsewhere, e.g. "content/games/images/x.png") needs the explicit
-  "!url" tag shown below to get rewritten to a root-relative path -- see
-  Canary.Core.Templating.YamlParser/UrlResolver. Deliberately explicit, not
-  automatic -- see PLAN.md's widget-controversy notes. A plain "src: ..."
-  with no tag is left exactly as written (fine for an already-absolute
-  https:// URL, broken for a relative one on any page that isn't the site
-  root).
--->
-<!--clipboard
-```slideshow
-title: Optional Title
-slides:
-  - src: "https://example.com/shot1.png"
-    caption: "Optional caption"
-  - src: !url "content/games/images/shot2.png"
-```
--->
+
 
 <div class="slideshow-widget" data-widget="slideshow" data-index="0" tabindex="0">
   <div class="slideshow-header">
@@ -150,8 +109,8 @@ slides:
       </figure>
       
       <figure class="slideshow-slide" aria-roledescription="slide">
-        <img src="/content/blog/blog-new/the-canary-logo-pipeline/v3-04-preview.png" alt="Traced SVG preview - eye now matches the perch" loading="lazy">
-        <figcaption class="slideshow-caption">Traced SVG preview - eye now matches the perch</figcaption>
+        <img src="/content/blog/blog-new/the-canary-logo-pipeline/v3-04-preview.png" alt="Traced SVG preview — eye now matches the perch" loading="lazy">
+        <figcaption class="slideshow-caption">Traced SVG preview — eye now matches the perch</figcaption>
       </figure>
       
     </div>
@@ -169,41 +128,8 @@ slides:
 <h2>Conclusions</h2>
 <p>So in about an hour, I was able to generate (at least by my eyes) a pretty nice logo for Canary. Minus some of the learning curves along the way. The Naive approach wasted time and tokens, but I learned an important lesson in using AI tools. When you are operating at the edge or beyond an AI's capability, thinking about how to structure the task in a series of smaller visible steps can still produce a good output. Here are a few takeaways from this toolchaining method:</p>
 <ul><li><strong>Structure:</strong> Clear steps with output at the end of each, allowed greater visibility into the AI's process. When things went wrong, I knew where it happened.</li><li><strong>Manual Assistance:</strong> I could have argued with the AI for a while trying to get it to edit the source file, but the change was easy, so it was quicker to inject myself into the process.</li><li><strong>Scaled up Toaster:</strong> AI's are not just scaled up toasters. They really are an incredible piece of technology. It is, however, <em>useful</em> to think of them that way. Toolchaining is an example of that, breaking up a task into smaller more accomplishable steps.</li></ul>
-<!--
-  Standard Canary widget contract (see ../canary/WIDGETS.md): a plain
-  Mustache-syntax HTML template, filled from the fence block's YAML body.
-  No dynamic comment list at build time -- comments are fetched at runtime
-  by chirp.js, same as the generic embed's chirp-core.js (this template
-  only lays out the mount points and the submit form skeleton).
 
-  "page" is required and has no fallback -- a missing page id is a content
-  bug in the page author's fence block, not something to paper over with a
-  derived default. Page identity needs to stay stable across URL renames
-  (see the parent Chirp project's PLAN.md, "Decisions locked in: Page
-  identity"), so it's never auto-derived from the current URL.
 
-  The Worker's API origin and the Turnstile site key can't come from this
-  YAML body -- they're deployment config, not per-instance content -- so
-  they're hardcoded constants at the top of the sibling chirp.js, following
-  this project's own established pattern (widgets get "ejected" into a
-  site's own widgets/ folder for exactly this kind of one-time local
-  customization).
-
-  NOTE: this comment deliberately never writes a literal double-brace tag
-  -- the templater has no notion of "this is just a comment," so real tag
-  syntax typed here would be executed for real. See WIDGETS.md.
-
-  The inline <svg> below is chirp-logo.svg (see the sibling file) with its
-  Inkscape editor metadata stripped -- none of it renders, it's just noise
-  in a shipped template. aria-hidden because it's a decorative wordmark,
-  not a heading; keeps this instance-repeatable safe too (no id to collide
-  if two chirp widgets land on the same page).
--->
-<!--clipboard
-```chirp
-page: my-page-id
-```
--->
 <div class="chirp-widget" data-widget="chirp" data-chirp-page="blog|the-canary-logo-pipeline">
   <svg class="chirp-logo" viewBox="28 0 162 64" aria-hidden="true">
     <text x="66" y="33" dominant-baseline="central" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-weight="800" font-size="30" fill="var(--text, #1a1a1a)">Chirp</text>
@@ -253,6 +179,7 @@ page: my-page-id
 
   <footer class="site-footer">
     <span>Consoland &mdash; Built with Canary</span>
+    <span><a href="/rss.xml" download="rss.xml" class="footer-rss"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg>RSS Feed</a></span>
     <span>&copy; 2026 Marcus Haberling</span>
   </footer>
 
@@ -260,6 +187,7 @@ page: my-page-id
   <script src="/js/widgets/chirp.js" defer></script>
 <script src="/js/widgets/downloads.js" defer></script>
 <script src="/js/widgets/slideshow.js" defer></script>
+<script src="/js/widgets/wasmterm.js" defer></script>
 
 
   <script>

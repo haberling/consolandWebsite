@@ -28,7 +28,7 @@
 //
 // Does nothing to any of these when run against the blog's own index page.
 //
-// Registered twice in canary.json under different names, each baking in a
+// Registered twice in canary.jsonc under different names, each baking in a
 // different CLI argument -- .toolchain.json can only reference a tool by
 // name, it has no way to pass a per-invocation argument, so the argument
 // has to live in the registered command string instead:
@@ -62,7 +62,15 @@
 // no need to inspect the filesystem or manifest.json for that.
 
 using System.Globalization;
+using System.Text;
 using System.Text.RegularExpressions;
+
+// Canary writes/reads this tool's stdio as UTF-8 (see ToolchainRunner) --
+// match that here, since Console.In/Out otherwise default to the OS
+// console codepage (commonly not UTF-8 on Windows), which corrupts any
+// non-ASCII character (math symbols, smart quotes, accents) passing through.
+Console.InputEncoding = new UTF8Encoding(false);
+Console.OutputEncoding = new UTF8Encoding(false);
 
 var blogKind = args.Length > 0 ? args[0] : null;
 var (indexRoute, label) = blogKind switch

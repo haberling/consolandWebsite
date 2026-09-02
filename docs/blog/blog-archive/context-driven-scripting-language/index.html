@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <!-- Google tag (gtag.js) -->
+  
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-L0SF9VQEKN"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -13,6 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Why You Should Write a Context-Driven Scripting Language — Consoland</title>
   <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="alternate" type="application/rss+xml" title="Consoland" href="/rss.xml">
   <link rel="stylesheet" href="/css/framework.css">
   <link rel="stylesheet" href="/css/theme.css">
   <link rel="stylesheet" href="/css/widgets/blogheader.css">
@@ -21,6 +22,7 @@
 <link rel="stylesheet" href="/css/widgets/downloads.css">
 <link rel="stylesheet" href="/css/widgets/postlink.css">
 <link rel="stylesheet" href="/css/widgets/slideshow.css">
+<link rel="stylesheet" href="/css/widgets/wasmterm.css">
 
 </head>
 <body>
@@ -32,7 +34,7 @@
       </div>
     </div>
     <nav id="site-nav" class="site-nav">
-      <!-- populated client-side from /content/manifest.json -->
+      
     </nav>
   </header>
 
@@ -42,28 +44,8 @@
   </div>
 
   <main id="app"><p><a href="/blog/blog-archive">&lt; Return to Archive</a></p>
-<!--
-  Site-authored widget (consolandWebsite/widgets/, not a Canary built-in --
-  see WIDGETS.md in the canary repo for the discovery rules). A blog post's
-  header -- title, optional italic tagline, optional "Written by X on Y"
-  byline -- packed tight instead of the loose default spacing a plain
-  h1/p/p sequence gets. No JS sibling, fully static.
 
-  Built for tools/format-blogpost.cs: it extracts the title/tagline from a
-  post's own markdown and author/authorDate from its frontmatter, then
-  emits this widget instead of writing them out as plain markdown/italics.
-  Never write a literal double-brace tag in this comment block -- the
-  templater has no notion of "this is a comment," see WIDGETS.md's gotcha
-  section.
--->
-<!--clipboard
-```blogheader
-title: The Canary Logo Pipeline
-tagline: A prequel to the Canary Story
-author: Marcus Haberling
-date: August 23, 2026
-```
--->
+
 <div class="blogheader" data-widget="blogheader">
   <h1 class="blogheader-title">Why You Should Write a Context-Driven Scripting Language</h1>
   <p class="blogheader-tagline">Sometimes the best way out of code complexity is to go deeper</p>
@@ -214,6 +196,7 @@ date: August 23, 2026
 
   <footer class="site-footer">
     <span>Consoland &mdash; Built with Canary</span>
+    <span><a href="/rss.xml" download="rss.xml" class="footer-rss"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg>RSS Feed</a></span>
     <span>&copy; 2026 Marcus Haberling</span>
   </footer>
 
@@ -221,6 +204,7 @@ date: August 23, 2026
   <script src="/js/widgets/chirp.js" defer></script>
 <script src="/js/widgets/downloads.js" defer></script>
 <script src="/js/widgets/slideshow.js" defer></script>
+<script src="/js/widgets/wasmterm.js" defer></script>
 
 
   <script>

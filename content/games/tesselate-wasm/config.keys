@@ -1,0 +1,13 @@
+// Keys the wasmterm widget captures and forwards to InputBridge.OnKeyEvent
+// instead of letting xterm.js handle them. Mirrors ConsoleKeyMap's mapped
+// keys -- see that file before adding/removing anything here.
+
+ArrowLeft ArrowRight   // held movement (DAS/ARR)
+ArrowUp ArrowDown      // held soft/hard drop
+
+Enter Escape           // menu confirm / back-out
+Space                  // hard drop, and menu confirm in some screens
+
+z Z x X                // piece rotation (CCW / CW)
+p P                    // pause
+q Q                    // quit -- disabled in the browser preview (QuitCapability), key still forwarded

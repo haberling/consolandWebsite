@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L0SF9VQEKN"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-L0SF9VQEKN');
+  </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Canary Development: Toolchain — Consoland</title>
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="alternate" type="application/rss+xml" title="Consoland" href="/rss.xml">
+  <link rel="stylesheet" href="/css/framework.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/widgets/blogheader.css">
+<link rel="stylesheet" href="/css/widgets/chirp.css">
+<link rel="stylesheet" href="/css/widgets/code.css">
+<link rel="stylesheet" href="/css/widgets/downloads.css">
+<link rel="stylesheet" href="/css/widgets/postlink.css">
+<link rel="stylesheet" href="/css/widgets/slideshow.css">
+<link rel="stylesheet" href="/css/widgets/wasmterm.css">
+
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header-top">
+      <a class="site-title" href="/"><img class="site-logo" src="/img/logo.png" alt="">Consoland</a>
+      <div class="site-tagline">
+        <p>A website about software, which is really software about software.</p>
+      </div>
+    </div>
+    <nav id="site-nav" class="site-nav">
+      
+    </nav>
+  </header>
+
+  <div id="logo-zoom-modal" class="logo-zoom-modal" hidden>
+    <button type="button" class="logo-zoom-modal-close" aria-label="Close">&times;</button>
+    <img class="logo-zoom-modal-img" src="" alt="">
+  </div>
+
+  <main id="app"><p><a href="/blog">&lt; Return to Blog</a></p>
+
+
+<div class="blogheader" data-widget="blogheader">
+  <h1 class="blogheader-title">Canary Development: Toolchain</h1>
+  <p class="blogheader-tagline">Keeping the source markdown clean</p>
+  <p class="blogheader-byline">Written by Marcus Haberling on September 1, 2026</p>
+</div>
+
+<h2>Origin</h2>
+<p>So when I started Canary, I had a few goals in mind. One of those was that the site should be able to use modern site features. See the slideshows and download widgets as <a href="https://canary.consoland.net/guide/widgets">examples</a>. But the site's source files are markdown documents, and I wanted to keep those mostly clean. Like, you could print out the source and it would be a basically readable document, not polluted with all sorts of strange formatting syntax.</p>
+<p>Obviously adding features and keeping clean markdown fight against each other. There has to be 'something' on the page to define behavior. Toolchain allows those elements to be coded in, or expanded at the last possible moment. This way the original source stays clean.</p>
+<h2>How Toolchain Works</h2>
+<p>Toolchain is a dead simple system. The tools themselves are command line calls, registered by name in the project's canary.jsonc file. Each subdirectory in the website content folder (usually called content) has a .toolchain.json that lists out which of those names should be run on the files in that directory. When canary build is going to push a file through the HTML renderer, it first runs that file through each of the listed commands, in order. Each command reads markdown on stdin and writes markdown on stdout — the next tool gets whatever the last one wrote, until the last tool's output is passed to the renderer. One may say we are chaining a list of tools together, get it? Bueller?</p>
+<h2>Example (This Post)</h2>
+<p>OOOH META! That's right, since this page is run through a toolchain, we can use it as an example of how it can clean things up. Blog posts on Consoland use a couple of tools to prep them for rendering. In the source .md for this page, there are a few things missing that show up on the site.</p>
+<ul><li>Blogheader: a widget that makes a title block with title, tagline, author, and date</li><li>Chirp: a comments section widget</li><li>"Return to Blog" links at the top and bottom of the page</li></ul>
+<p>The tool <strong>format-blogpost-new</strong> allows these elements to be added before rendering. Then, <strong>clear-metadata</strong> takes the metadata block off the top of the file before the renderer can see it.</p>
+<h3>Blogheader</h3>
+<p>If I was going to inline a Canary widget, the "Title Block" of the page would have to look like this:</p>
+
+
+<div class="code-widget" data-widget="code">
+  <div class="code-widget-lang">yaml</div>
+  <pre><code class="language-yaml">```blogheader
+title: &quot;Canary Development: Toolchain&quot;
+tagline: &quot;Keeping the source markdown clean&quot;
+author: &quot;Marcus Haberling&quot;
+date: &quot;September 1, 2026&quot;
+```
+</code></pre>
+</div>
+
+<p>The format-blogpost-new tool collects the author and date from metadata, then finds the title and tagline and replaces both of them with the fenced YAML shown above.</p>
+<h3>Chirp and Return Links</h3>
+<p>Same deal for the comments widget and the pair of "back to the blog" links: none of it is in the source. If it were, the end of this page would look like this:</p>
+
+
+<div class="code-widget" data-widget="code">
+  <div class="code-widget-lang">markdown</div>
+  <pre><code class="language-markdown">```chirp
+page: &quot;blog|canary-development-toolchain&quot;
+```
+
+[&lt; Return to Blog](/blog)
+</code></pre>
+</div>
+
+<p><strong>format-blogpost-new</strong> appends the Chirp block and writes that return link above the title and again at the very end. The Chirp "page" field is "blog|" + this file's name, so the comments stay tied to the post instead of its URL.</p>
+<h2>Toolchain's Weakness</h2>
+<p>One issue with this (very slick much cool) Toolchain system is that it slows down build times in two ways. First, to maintain flexibility in tools, Canary has to build every page on every build. Some tools may look at <em>other</em> pages in source to determine how to edit the page that it's on, so just because a page hasn't changed doesn't mean that rebuilding isn't necessary. I have <em>partially</em> addressed this in Canary v0.2.0. After the first pass, <strong>serve</strong> only rebuilds what changed, which can be wrong, and that's acceptable while you are editing.</p>
+<p>Second, the startup times for a tool may end up compounding into a decent chunk of time as tools are started over and over again on different pages. In my case, the tools were originally written in C# and invoked with <em>dotnet run</em>. This page is the example: <strong>format-blogpost-new</strong> and <strong>clear-metadata</strong> each start once per post. The load time for a <em>dotnet run</em> call is trivial in most cases but does stack up when call after call occurs. I have addressed this by adding an AOT compilation feature for C# files to v0.2.0 of Canary. That way the tools are compiled and open much quicker. One, of course, could do this manually for any other language where this crops up.</p>
+<h2>Conclusion</h2>
+<p>What I think (hope? pray?) this post does is show how a software goal can transition into a feature and then how the nature of that feature causes problems that require further evolution of the code base. Clean markdown (goal) -&gt; Toolchain (feature) -&gt; slow builds (problem) -&gt; serve and AOT compilation (evolution).</p>
+<p>I plan to explore other parts of Canary and how they were developed in future blog posts. Thanks for reading, and feel free to leave a comment/question below.</p>
+
+
+<div class="chirp-widget" data-widget="chirp" data-chirp-page="blog|canary-development-toolchain">
+  <svg class="chirp-logo" viewBox="28 0 162 64" aria-hidden="true">
+    <text x="66" y="33" dominant-baseline="central" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-weight="800" font-size="30" fill="var(--text, #1a1a1a)">Chirp</text>
+    <path fill="var(--accent, #d9760a)" d="M 56.601562,14.630859 32.178694,31.942385 56.591797,49.255859 42.412109,31.951172 Z"/>
+    <path fill="var(--accent, #d9760a)" d="m 48.482447,31.975813 12.653233,0.37052 -0.01853,-0.703987 z"/>
+    <path fill="var(--accent, #d9760a)" d="M 48.671023,28.248019 60.821306,24.696652 60.586484,24.032724 Z"/>
+    <path fill="var(--accent, #d9760a)" d="m 48.553335,35.710017 12.150283,3.551367 -0.234822,0.663928 z"/>
+  </svg>
+  <div class="chirp-list" data-chirp-list></div>
+  <button type="button" class="chirp-load-more" data-chirp-load-more hidden>Load more</button>
+  <div class="chirp-status" role="status" aria-live="polite" data-chirp-status></div>
+  <button type="button" class="chirp-toggle" data-chirp-toggle aria-expanded="false">
+    <span class="chirp-toggle-icon">+</span> Post a comment
+  </button>
+  <div class="chirp-form-wrap" data-chirp-form-wrap>
+    <div class="chirp-form-inner">
+      <div class="chirp-reply-indicator" data-chirp-reply-indicator hidden>
+        Replying to <strong data-chirp-reply-name></strong>
+        <button type="button" data-chirp-reply-cancel>Cancel</button>
+      </div>
+      <form class="chirp-form" data-chirp-form novalidate>
+        <div class="chirp-form-row">
+          <label>
+            Name
+            <input type="text" name="authorName" required maxlength="100" autocomplete="name">
+          </label>
+          <label>
+            Email (optional, never shown)
+            <input type="email" name="authorEmail" maxlength="254" autocomplete="email">
+          </label>
+        </div>
+        <label>
+          Comment
+          <textarea name="body" required maxlength="500"></textarea>
+        </label>
+        <div class="chirp-honeypot" aria-hidden="true">
+          <label>Leave this field blank<input type="text" name="honeypot" tabindex="-1" autocomplete="off"></label>
+        </div>
+        <div class="chirp-turnstile" data-chirp-turnstile></div>
+        <button type="submit">Post comment</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<p><a href="/blog">&lt; Return to Blog</a></p></main>
+
+  <footer class="site-footer">
+    <span>Consoland &mdash; Built with Canary</span>
+    <span><a href="/rss.xml" download="rss.xml" class="footer-rss"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg>RSS Feed</a></span>
+    <span>&copy; 2026 Marcus Haberling</span>
+  </footer>
+
+  <script type="module" src="/js/main.js"></script>
+  <script src="/js/widgets/chirp.js" defer></script>
+<script src="/js/widgets/downloads.js" defer></script>
+<script src="/js/widgets/slideshow.js" defer></script>
+<script src="/js/widgets/wasmterm.js" defer></script>
+
+
+  <script>
+    (() => {
+      const modal = document.getElementById('logo-zoom-modal');
+      const modalImg = modal.querySelector('.logo-zoom-modal-img');
+      const closeBtn = modal.querySelector('.logo-zoom-modal-close');
+
+      function openModal(logoImg) {
+        modalImg.src = logoImg.src;
+        modalImg.alt = logoImg.alt;
+        modal.hidden = false;
+      }
+
+      function closeModal() {
+        modal.hidden = true;
+        modalImg.src = '';
+      }
+
+      document.querySelectorAll('.site-logo').forEach((img) => {
+        img.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          openModal(img);
+        });
+      });
+
+      closeBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !modal.hidden) closeModal();
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,13 +1,13 @@
 // Publishes docs/ (Canary's build output) to GitHub Pages.
 //
-// This is consolandWebsite's canary.json "publish" command -- `canary
+// This is consolandWebsite's canary.jsonc "publish" command -- `canary
 // publish` already ran a fresh `canary build` before invoking this, so this
 // script's only job is the git side: stage the output dir, refuse to do
 // anything if the build produced no changes, commit with a message built
 // from the actual file names that changed, and push.
 //
 // Usage: dotnet run tools/publish.cs
-// (invoked by `canary publish` via canary.json's "publish" field, but safe
+// (invoked by `canary publish` via canary.jsonc's "publish" field, but safe
 // to run directly too)
 
 using System.Diagnostics;

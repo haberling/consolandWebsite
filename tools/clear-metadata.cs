@@ -3,7 +3,7 @@
 // it never reaches the renderer. Canary itself doesn't parse frontmatter
 // at all right now (see blog-list-generator.cs's own note on this) -- it
 // just renders as a literal paragraph at the top of the page, which is
-// the bug this fixes. Registered as "clear-metadata" in canary.json's
+// the bug this fixes. Registered as "clear-metadata" in canary.jsonc's
 // "tools" registry; applied per-post via that post's own .toolchain.json
 // (no cascading -- every post folder that has frontmatter needs it added
 // there individually).
@@ -19,7 +19,15 @@
 // mangled.
 
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
+
+// Canary writes/reads this tool's stdio as UTF-8 (see ToolchainRunner) --
+// match that here, since Console.In/Out otherwise default to the OS
+// console codepage (commonly not UTF-8 on Windows), which corrupts any
+// non-ASCII character (math symbols, smart quotes, accents) passing through.
+Console.InputEncoding = new UTF8Encoding(false);
+Console.OutputEncoding = new UTF8Encoding(false);
 
 var input = Console.In.ReadToEnd();
 var lines = input.Replace("\r\n", "\n").Split('\n');

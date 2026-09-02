@@ -359,3 +359,13 @@ a.nav-dropdown-label {
   color: var(--text-dim);
   font-size: 0.85rem;
 }
+
+.footer-rss {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.footer-rss svg {
+  flex: none;
+}

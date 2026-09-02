@@ -12,6 +12,28 @@
         {
           "title": "Tesselate",
           "path": "games/Tesselate",
+          "children": [
+            {
+              "title": "Play",
+              "path": "games/Tesselate/play",
+              "children": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Canary",
+      "path": "canary",
+      "children": null
+    },
+    {
+      "title": "Utilities",
+      "path": "utilities",
+      "children": [
+        {
+          "title": "ScanMan",
+          "path": "utilities/ScanMan",
           "children": null
         }
       ]
@@ -26,16 +48,6 @@
           "children": null
         }
       ]
-    },
-    {
-      "title": "Canary",
-      "path": "canary",
-      "children": null
-    },
-    {
-      "title": "Utilities",
-      "path": "utilities",
-      "children": null
     }
   ]
 }

@@ -1,0 +1,80 @@
+/*
+ * Styling for the wasmterm widget (see wasmterm.html for the markup). Uses
+ * the site's own color tokens with fallbacks (var(--token, fallback)) so
+ * this still looks reasonable when tested standalone, outside a Canary
+ * site that actually defines --bg/--border/--accent on :root.
+ */
+
+.wasmterm-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 5 / 4; /* placeholder only -- wasmterm.js's fitViewport overrides this once the terminal's real measured size is known, same reasoning as an 80x32 grid's shape depending on actual monospace cell metrics, not a naive cols:rows guess */
+  background: #000;
+  border: 1px solid var(--border, #2a2f37);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.wasmterm-viewport {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center center; /* scaled by wasmterm.js's fitViewport to fit .wasmterm-frame */
+}
+
+/* Fixed single-screen grid (scrollback: 0) -- no scrollbar needed, and
+   xterm.css's default overflow-y:scroll on .xterm-viewport reserves a
+   scrollbar track that eats into the grid width even with nothing to
+   scroll. */
+.wasmterm-frame .xterm-viewport {
+  overflow-y: hidden !important;
+}
+
+/* Covers the (otherwise blank/inert) terminal while the wasm runtime and
+   the app's own assets load. */
+.wasmterm-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  background: #000;
+  font-family: monospace;
+  color: var(--text-dim, #ccc);
+  z-index: 10;
+}
+
+.wasmterm-loading-label {
+  font-size: 14px;
+  letter-spacing: 0.05em;
+}
+
+.wasmterm-loading-track {
+  width: 280px;
+  height: 10px;
+  border: 1px solid var(--border, #444);
+  overflow: hidden;
+}
+
+.wasmterm-loading-fill {
+  height: 100%;
+  width: 30%;
+  background: var(--accent, #0f0);
+  /* Indeterminate by default (runtime-bootstrap phase, no real progress
+     available yet) -- wasmterm.js switches to a determinate width once the
+     app reports real fetch progress via the loading.setProgress bridge. */
+  animation: wasmterm-loading-indeterminate 1.1s ease-in-out infinite;
+}
+
+.wasmterm-loading-fill.determinate {
+  animation: none;
+}
+
+@keyframes wasmterm-loading-indeterminate {
+  0% { margin-left: -30%; }
+  100% { margin-left: 100%; }
+}

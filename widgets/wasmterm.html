@@ -1,0 +1,45 @@
+<!--
+  Generic xterm.js + .NET browser-wasm terminal embed -- not specific to
+  Tesselate. Loads any published .NET console-wasm app (built with the
+  browser-wasm workload's dotnet.js bootstrap) into an xterm.js grid that
+  scales to fit whatever container the embedding page gives it. See
+  ../INTEROP.md for exactly what the .NET app side needs to expose to be
+  usable here, and wasmterm.js for the runtime behavior.
+
+  "app" is the root-relative URL of the app's published wwwroot output --
+  the folder containing _framework/ and dotnet's boot config. xterm.js is
+  not part of the app bundle: the widget loads a single site-root copy
+  from /lib/xterm/ (see root-copy/lib/xterm/). !url-tag app so it resolves
+  correctly from a nested page route. Required, no fallback: a missing app
+  path is a content bug in the fence block, not something to paper over.
+
+  cols/rows/fontSize default to an 80x32 grid at 24px if omitted -- these
+  are the only fields here, deliberately: which keys the app captures and
+  which JSExports it wires up are facts about the app, not this specific
+  embedding, so they live in two conventional files wasmterm.js fetches
+  straight from the app's own base URL instead of being repeated in every
+  page that embeds it -- see ../INTEROP.md's "App manifest" and "Captured
+  keys" sections for wasmterm.manifest and config.keys.
+-->
+<!--clipboard
+```wasmterm
+app: !url "content/apps/tesselate-wasm"
+cols: 80
+rows: 32
+fontSize: 24
+```
+-->
+<div class="wasmterm-frame"
+     data-widget="wasmterm"
+     data-wasmterm-app="{{app}}"
+     data-wasmterm-cols="{{^cols}}80{{/cols}}{{cols}}"
+     data-wasmterm-rows="{{^rows}}32{{/rows}}{{rows}}"
+     data-wasmterm-fontsize="{{^fontSize}}24{{/fontSize}}{{fontSize}}">
+  <div class="wasmterm-loading" data-wasmterm-loading>
+    <div class="wasmterm-loading-label" data-wasmterm-loading-label>Loading…</div>
+    <div class="wasmterm-loading-track"><div class="wasmterm-loading-fill" data-wasmterm-loading-fill></div></div>
+  </div>
+  <div class="wasmterm-viewport" data-wasmterm-viewport>
+    <div data-wasmterm-mount></div>
+  </div>
+</div>

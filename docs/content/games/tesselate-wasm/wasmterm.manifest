@@ -1,0 +1,4 @@
+// wasmterm app manifest -- see web-widgets/wasmterm/INTEROP.md in the
+// tetris repo for the file format and what each field wires up.
+keyEventExport: Tesselate.InputBridge.OnKeyEvent
+audioFillExport: Tesselate.Audio.WebAudioOutput.FillBuffer

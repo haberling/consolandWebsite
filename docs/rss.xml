@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Consoland</title>
+    <link>https://consoland.net/</link>
+    <description>Software releases and development stories from Consoland.</description>
+    <language>en-us</language>
+    <atom:link href="https://consoland.net/rss.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 01 Sep 2026 00:00:00 GMT</lastBuildDate>
+    <item>
+      <title>Canary Development: Toolchain</title>
+      <link>https://consoland.net/blog/blog-new/canary-development-toolchain/canary-development-toolchain/</link>
+      <guid isPermaLink="true">https://consoland.net/blog/blog-new/canary-development-toolchain/canary-development-toolchain/</guid>
+      <pubDate>Tue, 01 Sep 2026 00:00:00 GMT</pubDate>
+      <dc:creator>Marcus Haberling</dc:creator>
+      <description>Keeping the source markdown clean.</description>
+    </item>
+    <item>
+      <title>Tesselate v1.1.0</title>
+      <link>https://consoland.net/games/Tesselate/</link>
+      <guid isPermaLink="true">https://consoland.net/games/Tesselate/</guid>
+      <pubDate>Tue, 01 Sep 2026 00:00:00 GMT</pubDate>
+      <description>A falling block game for the command line, now with a web playable version.</description>
+    </item>
+    <item>
+      <title>Canary v0.2.0</title>
+      <link>https://consoland.net/canary/</link>
+      <guid isPermaLink="true">https://consoland.net/canary/</guid>
+      <pubDate>Tue, 01 Sep 2026 00:00:00 GMT</pubDate>
+      <description>A tiny web framework, markdown in -&gt; website out.</description>
+    </item>
+    <item>
+      <title>ScanMan v1.0.0</title>
+      <link>https://consoland.net/utilities/ScanMan/</link>
+      <guid isPermaLink="true">https://consoland.net/utilities/ScanMan/</guid>
+      <pubDate>Tue, 01 Sep 2026 00:00:00 GMT</pubDate>
+      <description>A barcode scanner clipboard utility for Windows.</description>
+    </item>
+    <item>
+      <title>The Canary Logo Pipeline</title>
+      <link>https://consoland.net/blog/blog-new/the-canary-logo-pipeline/the-canary-logo-pipeline/</link>
+      <guid isPermaLink="true">https://consoland.net/blog/blog-new/the-canary-logo-pipeline/the-canary-logo-pipeline/</guid>
+      <pubDate>Sun, 23 Aug 2026 00:00:00 GMT</pubDate>
+      <dc:creator>Marcus Haberling</dc:creator>
+      <description>A prequel to the Canary Story.</description>
+    </item>
+  </channel>
+</rss>

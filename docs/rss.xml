@@ -6,7 +6,14 @@
     <description>Software releases and development stories from Consoland.</description>
     <language>en-us</language>
     <atom:link href="https://consoland.net/rss.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Tue, 01 Sep 2026 00:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 07 Sep 2026 00:00:00 GMT</lastBuildDate>
+    <item>
+      <title>llote v1.0.0</title>
+      <link>https://consoland.net/utilities/llote/</link>
+      <guid isPermaLink="true">https://consoland.net/utilities/llote/</guid>
+      <pubDate>Mon, 07 Sep 2026 00:00:00 GMT</pubDate>
+      <description>A Windows command-line note-taker with local semantic search. Ask by meaning; it only ever returns a line you already wrote.</description>
+    </item>
     <item>
       <title>Canary Development: Toolchain</title>
       <link>https://consoland.net/blog/blog-new/canary-development-toolchain/canary-development-toolchain/</link>

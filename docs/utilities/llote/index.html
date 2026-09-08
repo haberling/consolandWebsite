@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L0SF9VQEKN"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-L0SF9VQEKN');
+  </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>llote — Consoland</title>
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="alternate" type="application/rss+xml" title="Consoland" href="/rss.xml">
+  <link rel="stylesheet" href="/css/framework.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/widgets/blogheader.css">
+<link rel="stylesheet" href="/css/widgets/chirp.css">
+<link rel="stylesheet" href="/css/widgets/code.css">
+<link rel="stylesheet" href="/css/widgets/downloads.css">
+<link rel="stylesheet" href="/css/widgets/postlink.css">
+<link rel="stylesheet" href="/css/widgets/slideshow.css">
+<link rel="stylesheet" href="/css/widgets/wasmterm.css">
+
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header-top">
+      <a class="site-title" href="/"><img class="site-logo" src="/img/logo.png" alt="">Consoland</a>
+      <div class="site-tagline">
+        <p>A website about software, which is really software about software.</p>
+      </div>
+    </div>
+    <nav id="site-nav" class="site-nav">
+      
+    </nav>
+  </header>
+
+  <div id="logo-zoom-modal" class="logo-zoom-modal" hidden>
+    <button type="button" class="logo-zoom-modal-close" aria-label="Close">&times;</button>
+    <img class="logo-zoom-modal-img" src="" alt="">
+  </div>
+
+  <main id="app"><h1>llote</h1>
+<p>A Windows command-line note-taker. Write a line, get a timestamp. Ask later by meaning — <code>ask</code> only ever returns a line you already wrote, verbatim. Nothing leaves your machine.</p>
+<p><code>v1.0.0</code> out for windows.</p>
+
+
+
+<div class="slideshow-widget" data-widget="slideshow" data-index="0" tabindex="0">
+  <div class="slideshow-header">
+    <h3>Screenshots</h3>
+    <button type="button" class="slideshow-toggle" aria-label="Pause slideshow">⏸</button>
+  </div>
+  <div class="slideshow-viewport">
+    <div class="slideshow-track">
+      
+      <figure class="slideshow-slide" aria-roledescription="slide">
+        <img src="/content/utilities/images/llote-splash.png" alt="Startup splash" loading="lazy">
+        <figcaption class="slideshow-caption">Startup splash</figcaption>
+      </figure>
+      
+      <figure class="slideshow-slide" aria-roledescription="slide">
+        <img src="/content/utilities/images/llote-cli.png" alt="Ask by meaning, then keep writing" loading="lazy">
+        <figcaption class="slideshow-caption">Ask by meaning, then keep writing</figcaption>
+      </figure>
+      
+      <figure class="slideshow-slide" aria-roledescription="slide">
+        <img src="/content/utilities/images/llote-browse.png" alt="browse TUI" loading="lazy">
+        <figcaption class="slideshow-caption">browse TUI</figcaption>
+      </figure>
+      
+      <figure class="slideshow-slide" aria-roledescription="slide">
+        <img src="/content/utilities/images/llote-docs.png" alt="User's guide" loading="lazy">
+        <figcaption class="slideshow-caption">User's guide</figcaption>
+      </figure>
+      
+    </div>
+    <button type="button" class="slideshow-nav slideshow-prev" aria-label="Previous slide">&#10094;</button>
+    <button type="button" class="slideshow-nav slideshow-next" aria-label="Next slide">&#10095;</button>
+  </div>
+  <div class="slideshow-footer">
+    <div class="slideshow-dots">
+      <button type="button" class="slideshow-dot"></button><button type="button" class="slideshow-dot"></button><button type="button" class="slideshow-dot"></button><button type="button" class="slideshow-dot"></button>
+    </div>
+    <span class="slideshow-counter"></span>
+  </div>
+</div>
+
+<h2>Features</h2>
+<ol><li>Single-line notes, timestamped the moment you write them</li><li><code>llote ask</code> searches by meaning, not exact wording — and never generates text</li><li><code>llote browse</code> is a pageable TUI for adding, searching, and reading the file</li><li>Notes stay on disk as plain text; the embedding model downloads once (~100MB) and then works offline</li><li>A local <code>log.llote</code> in the current folder, or a global notes file in app data</li><li>Append-only <code>.llote</code> files that play nicely with Git and AI assistants</li></ol>
+<h2>Quick start</h2>
+
+
+<div class="code-widget" data-widget="code">
+  <div class="code-widget-lang">text</div>
+  <pre><code class="language-text">llote &quot;bought milk&quot;
+llote
+llote ask &quot;what did I write about the dentist?&quot;
+llote browse
+</code></pre>
+</div>
+
+<p>The full user's guide is at <a href="https://llote.consoland.net/">llote.consoland.net</a>.</p>
+
+
+<div class="downloads-widget" data-widget="downloads">
+  <h3>Get llote</h3>
+  <ul>
+    
+    
+    <li><a class="download-button" href="https://apps.microsoft.com/detail/9N8BHTQZR4L4">Microsoft Store</a></li>
+    
+    
+    
+    
+    <li><a class="download-button" href="https://github.com/haberling/consolandWebsite/releases/download/llote-v1.0.0/llote-setup.exe">Windows Installer</a></li>
+    
+    
+    
+    
+    <li><a class="download-button" href="https://llote.consoland.net/">User's Guide</a></li>
+    
+    
+    
+  </ul>
+</div>
+
+<p>The Store build gives you less fine-grained control over uninstall. The installer here does.</p>
+<p>llote is free to use. Copyright 2026 Habersoft.</p>
+<h2>Comments</h2>
+
+
+<div class="chirp-widget" data-widget="chirp" data-chirp-page="utilities|llote">
+  <svg class="chirp-logo" viewBox="28 0 162 64" aria-hidden="true">
+    <text x="66" y="33" dominant-baseline="central" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-weight="800" font-size="30" fill="var(--text, #1a1a1a)">Chirp</text>
+    <path fill="var(--accent, #d9760a)" d="M 56.601562,14.630859 32.178694,31.942385 56.591797,49.255859 42.412109,31.951172 Z"/>
+    <path fill="var(--accent, #d9760a)" d="m 48.482447,31.975813 12.653233,0.37052 -0.01853,-0.703987 z"/>
+    <path fill="var(--accent, #d9760a)" d="M 48.671023,28.248019 60.821306,24.696652 60.586484,24.032724 Z"/>
+    <path fill="var(--accent, #d9760a)" d="m 48.553335,35.710017 12.150283,3.551367 -0.234822,0.663928 z"/>
+  </svg>
+  <div class="chirp-list" data-chirp-list></div>
+  <button type="button" class="chirp-load-more" data-chirp-load-more hidden>Load more</button>
+  <div class="chirp-status" role="status" aria-live="polite" data-chirp-status></div>
+  <button type="button" class="chirp-toggle" data-chirp-toggle aria-expanded="false">
+    <span class="chirp-toggle-icon">+</span> Post a comment
+  </button>
+  <div class="chirp-form-wrap" data-chirp-form-wrap>
+    <div class="chirp-form-inner">
+      <div class="chirp-reply-indicator" data-chirp-reply-indicator hidden>
+        Replying to <strong data-chirp-reply-name></strong>
+        <button type="button" data-chirp-reply-cancel>Cancel</button>
+      </div>
+      <form class="chirp-form" data-chirp-form novalidate>
+        <div class="chirp-form-row">
+          <label>
+            Name
+            <input type="text" name="authorName" required maxlength="100" autocomplete="name">
+          </label>
+          <label>
+            Email (optional, never shown)
+            <input type="email" name="authorEmail" maxlength="254" autocomplete="email">
+          </label>
+        </div>
+        <label>
+          Comment
+          <textarea name="body" required maxlength="500"></textarea>
+        </label>
+        <div class="chirp-honeypot" aria-hidden="true">
+          <label>Leave this field blank<input type="text" name="honeypot" tabindex="-1" autocomplete="off"></label>
+        </div>
+        <div class="chirp-turnstile" data-chirp-turnstile></div>
+        <button type="submit">Post comment</button>
+      </form>
+    </div>
+  </div>
+</div>
+</main>
+
+  <footer class="site-footer">
+    <span>Consoland &mdash; Built with Canary</span>
+    <span><a href="/rss.xml" download="rss.xml" class="footer-rss"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg>RSS Feed</a></span>
+    <span>&copy; 2026 Marcus Haberling</span>
+  </footer>
+
+  <script type="module" src="/js/main.js"></script>
+  <script src="/js/widgets/chirp.js" defer></script>
+<script src="/js/widgets/downloads.js" defer></script>
+<script src="/js/widgets/slideshow.js" defer></script>
+<script src="/js/widgets/wasmterm.js" defer></script>
+
+
+  <script>
+    (() => {
+      const modal = document.getElementById('logo-zoom-modal');
+      const modalImg = modal.querySelector('.logo-zoom-modal-img');
+      const closeBtn = modal.querySelector('.logo-zoom-modal-close');
+
+      function openModal(logoImg) {
+        modalImg.src = logoImg.src;
+        modalImg.alt = logoImg.alt;
+        modal.hidden = false;
+      }
+
+      function closeModal() {
+        modal.hidden = true;
+        modalImg.src = '';
+      }
+
+      document.querySelectorAll('.site-logo').forEach((img) => {
+        img.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          openModal(img);
+        });
+      });
+
+      closeBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !modal.hidden) closeModal();
+      });
+    })();
+  </script>
+</body>
+</html>

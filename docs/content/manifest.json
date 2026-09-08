@@ -32,6 +32,11 @@
       "path": "utilities",
       "children": [
         {
+          "title": "llote",
+          "path": "utilities/llote",
+          "children": null
+        },
+        {
           "title": "ScanMan",
           "path": "utilities/ScanMan",
           "children": null

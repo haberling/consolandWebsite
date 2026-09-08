@@ -8,6 +8,12 @@ paragraph after the fields is the summary.
 
 Newest date wins; same-day items keep the order they appear here.
 
+## llote v1.0.0
+date: 2026-09-07
+url: utilities/llote
+
+A Windows command-line note-taker with local semantic search. Ask by meaning; it only ever returns a line you already wrote.
+
 ## Canary Development: Toolchain
 date: 2026-09-01
 url: blog/blog-new/canary-development-toolchain/canary-development-toolchain

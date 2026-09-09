@@ -10,6 +10,22 @@
 // static `import`) for the same reason -- Canary links widget scripts as
 // plain <script defer>, so the dotnet.js loader is pulled in with a
 // dynamic import() inside enhance() instead.
+//
+// IIFE-wrapped (rest of the file, closed at the bottom) because every
+// widget script on a page shares one classic global scope -- an unwrapped
+// top-level `enhance`/`enhanceAll` here collided with chirp.js's and
+// slideshow.js's identically-named top-level functions, so whichever
+// widget script's tag happened to come last in the page silently won the
+// global binding for the rest of the browser session. Every other
+// widget's own MutationObserver calls `enhanceAll(document)` by dynamic
+// global lookup, so after that first clobber, only the last-loaded
+// widget's `enhanceAll` ever ran again on any later in-app navigation --
+// 100% reproducible, not flaky, and invisible (nothing throws; it just
+// silently runs the wrong widget's no-op). A real page reload "fixed" it
+// only because that widget's own top-level `enhanceAll(document)` call
+// runs once, synchronously, before a later script tag gets the chance to
+// clobber the name.
+(() => {
 
 // Resolves a dotted JSExport path ("Tesselate.InputBridge.OnKeyEvent")
 // against the assembly's exports object -- lets keyEventExport/
@@ -300,3 +316,5 @@ function enhanceAll(scopeRoot) {
 
 enhanceAll(document);
 new MutationObserver(() => enhanceAll(document)).observe(document.body, { childList: true, subtree: true });
+
+})();

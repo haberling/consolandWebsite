@@ -40,138 +40,153 @@
 // classic or module -- and pointing it at CORE_MODULE_URL below means
 // there's still exactly one copy of chirp-core.js in existence (on the
 // Worker), not a second one hand-maintained per adopter site.
-
-// EDIT THESE after copying this widget into your own widgets/ folder --
-// can't come from the YAML fence block since they're deployment config,
-// not per-instance content, following this project's established
-// "ejected widget, hardcode local config" pattern. The Turnstile site key
-// is meant to be public client-side, unlike the secret -- safe to
-// hardcode here.
 //
-// enhance() below checks these against the exact literals this file
-// shipped with (not a placeholder-shaped-string heuristic) -- a real
-// Worker URL or site key could coincidentally look placeholder-ish, but
-// it can never *equal* what's still sitting here unedited, so an
-// equality check is the one test that can't false-positive on a
-// legitimately configured site.
-const API_ORIGIN = "https://chirp.mhaberling.workers.dev";
-const TURNSTILE_SITE_KEY = "0x4AAAAAAEX86TIDFedSmAWQ";
-// Cross-origin module fetch (unlike a plain <script src>) is CORS-gated,
-// so the Worker sends Access-Control-Allow-Origin on this one file
-// specifically -- see client/_headers.
-const CORE_MODULE_URL = `${API_ORIGIN}/chirp-core.js`;
+// IIFE-wrapped because every widget script on a page shares one classic
+// global scope -- an unwrapped top-level `enhance`/`enhanceAll` here
+// collided with slideshow.js's and wasmterm.js's identically-named
+// top-level functions, so whichever widget script's tag happened to come
+// last in the page silently won the global binding for the rest of the
+// browser session. Every other widget's own MutationObserver calls
+// `enhanceAll(document)` by dynamic global lookup, so after that first
+// clobber, only the last-loaded widget's `enhanceAll` ever ran again on
+// any later in-app navigation -- 100% reproducible, not flaky, and
+// invisible (nothing throws; it just silently runs the wrong widget's
+// no-op). A real page reload "fixed" it only because that widget's own
+// top-level `enhanceAll(document)` call runs once, synchronously, before
+// a later script tag gets the chance to clobber the name.
+(() => {
+  // EDIT THESE after copying this widget into your own widgets/ folder --
+  // can't come from the YAML fence block since they're deployment config,
+  // not per-instance content, following this project's established
+  // "ejected widget, hardcode local config" pattern. The Turnstile site key
+  // is meant to be public client-side, unlike the secret -- safe to
+  // hardcode here.
+  //
+  // enhance() below checks these against the exact literals this file
+  // shipped with (not a placeholder-shaped-string heuristic) -- a real
+  // Worker URL or site key could coincidentally look placeholder-ish, but
+  // it can never *equal* what's still sitting here unedited, so an
+  // equality check is the one test that can't false-positive on a
+  // legitimately configured site.
+  const API_ORIGIN = "https://chirp.mhaberling.workers.dev";
+  const TURNSTILE_SITE_KEY = "0x4AAAAAAEX86TIDFedSmAWQ";
+  // Cross-origin module fetch (unlike a plain <script src>) is CORS-gated,
+  // so the Worker sends Access-Control-Allow-Origin on this one file
+  // specifically -- see client/_headers.
+  const CORE_MODULE_URL = `${API_ORIGIN}/chirp-core.js`;
 
-// root -> its initInstance() controller, so the delegated listeners below
-// can find the right instance's actions for whichever one a click/submit
-// happened in.
-const controllers = new WeakMap();
+  // root -> its initInstance() controller, so the delegated listeners below
+  // can find the right instance's actions for whichever one a click/submit
+  // happened in.
+  const controllers = new WeakMap();
 
-// The browser's module map dedupes repeated import()s of the same URL, so
-// calling this once per enhance() (rather than hoisting a single
-// module-level promise) costs nothing after the first real fetch -- kept
-// simple over "clever" for that reason.
-async function loadCore() {
-  return import(CORE_MODULE_URL);
-}
-
-// Site owners are the audience for this message, not developers -- they
-// may never open devtools, so a console.error alone (as used for the
-// missing-page-id case below) is easy to ship past unnoticed. This
-// renders directly into the widget's own DOM instead, in the one place
-// every visitor -- including the site owner checking their own work --
-// will actually look.
-function showConfigWarning(root, unconfigured) {
-  const warning = document.createElement("p");
-  warning.className = "chirp-config-warning";
-  warning.setAttribute("role", "alert");
-  warning.textContent =
-    `Chirp is not configured: ${unconfigured.join(" and ")} still ` +
-    `${unconfigured.length > 1 ? "have" : "has"} the placeholder value ` +
-    "from the template. Edit the constants at the top of chirp.js in " +
-    "this site's widgets/ folder.";
-  root.prepend(warning);
-}
-
-async function enhance(root) {
-  if (root.__enhanced) return;
-  root.__enhanced = true;
-
-  const pageId = root.dataset.chirpPage;
-  if (!pageId) {
-    console.error("[chirp] missing required page: field in the chirp fence block");
-    return;
+  // The browser's module map dedupes repeated import()s of the same URL, so
+  // calling this once per enhance() (rather than hoisting a single
+  // module-level promise) costs nothing after the first real fetch -- kept
+  // simple over "clever" for that reason.
+  async function loadCore() {
+    return import(CORE_MODULE_URL);
   }
 
-  const unconfigured = [];
-  if (API_ORIGIN === "https://your-chirp-worker.example.workers.dev") unconfigured.push("API_ORIGIN");
-  if (TURNSTILE_SITE_KEY === "REPLACE_WITH_YOUR_TURNSTILE_SITE_KEY") unconfigured.push("TURNSTILE_SITE_KEY");
-  if (unconfigured.length) {
-    // Don't bother attempting the real fetch/Turnstile setup below --
-    // API_ORIGIN's placeholder isn't a real endpoint, so that would just
-    // be a network error in the console instead of this clear message.
-    showConfigWarning(root, unconfigured);
-    return;
+  // Site owners are the audience for this message, not developers -- they
+  // may never open devtools, so a console.error alone (as used for the
+  // missing-page-id case below) is easy to ship past unnoticed. This
+  // renders directly into the widget's own DOM instead, in the one place
+  // every visitor -- including the site owner checking their own work --
+  // will actually look.
+  function showConfigWarning(root, unconfigured) {
+    const warning = document.createElement("p");
+    warning.className = "chirp-config-warning";
+    warning.setAttribute("role", "alert");
+    warning.textContent =
+      `Chirp is not configured: ${unconfigured.join(" and ")} still ` +
+      `${unconfigured.length > 1 ? "have" : "has"} the placeholder value ` +
+      "from the template. Edit the constants at the top of chirp.js in " +
+      "this site's widgets/ folder.";
+    root.prepend(warning);
   }
 
-  // Placeholder for the initial fetch inside initInstance() below --
-  // chirp-core.js's own reload() renders straight into this same list on
-  // success (renderComments() clears it first thing) and simply resolves
-  // without touching it on failure, so isConnected after the await is
-  // enough to tell "did it get replaced already or do I need to clear it
-  // myself" without initInstance() needing to know this placeholder
-  // exists at all -- kept entirely in this format-specific file rather
-  // than added to the shared core, since it's just "what do we show
-  // around a promise we're already awaiting," not fetch/render logic
-  // itself.
-  const listEl = root.querySelector("[data-chirp-list]");
-  const loadingEl = document.createElement("p");
-  loadingEl.className = "chirp-loading";
-  loadingEl.textContent = "Loading comments…";
-  listEl?.replaceChildren(loadingEl);
+  async function enhance(root) {
+    if (root.__enhanced) return;
+    root.__enhanced = true;
 
-  const { initInstance } = await loadCore();
-  const controller = await initInstance(root, {
-    apiOrigin: API_ORIGIN,
-    turnstileSiteKey: TURNSTILE_SITE_KEY,
-    pageId,
-    onReplyRequested: () => root.querySelector("[data-chirp-toggle]")?.setAttribute("aria-expanded", "true"),
+    const pageId = root.dataset.chirpPage;
+    if (!pageId) {
+      console.error("[chirp] missing required page: field in the chirp fence block");
+      return;
+    }
+
+    const unconfigured = [];
+    if (API_ORIGIN === "https://your-chirp-worker.example.workers.dev") unconfigured.push("API_ORIGIN");
+    if (TURNSTILE_SITE_KEY === "REPLACE_WITH_YOUR_TURNSTILE_SITE_KEY") unconfigured.push("TURNSTILE_SITE_KEY");
+    if (unconfigured.length) {
+      // Don't bother attempting the real fetch/Turnstile setup below --
+      // API_ORIGIN's placeholder isn't a real endpoint, so that would just
+      // be a network error in the console instead of this clear message.
+      showConfigWarning(root, unconfigured);
+      return;
+    }
+
+    // Placeholder for the initial fetch inside initInstance() below --
+    // chirp-core.js's own reload() renders straight into this same list on
+    // success (renderComments() clears it first thing) and simply resolves
+    // without touching it on failure, so isConnected after the await is
+    // enough to tell "did it get replaced already or do I need to clear it
+    // myself" without initInstance() needing to know this placeholder
+    // exists at all -- kept entirely in this format-specific file rather
+    // than added to the shared core, since it's just "what do we show
+    // around a promise we're already awaiting," not fetch/render logic
+    // itself.
+    const listEl = root.querySelector("[data-chirp-list]");
+    const loadingEl = document.createElement("p");
+    loadingEl.className = "chirp-loading";
+    loadingEl.textContent = "Loading comments…";
+    listEl?.replaceChildren(loadingEl);
+
+    const { initInstance } = await loadCore();
+    const controller = await initInstance(root, {
+      apiOrigin: API_ORIGIN,
+      turnstileSiteKey: TURNSTILE_SITE_KEY,
+      pageId,
+      onReplyRequested: () => root.querySelector("[data-chirp-toggle]")?.setAttribute("aria-expanded", "true"),
+    });
+    if (loadingEl.isConnected) listEl?.replaceChildren();
+    controllers.set(root, controller);
+  }
+
+  function enhanceAll(root) {
+    root.querySelectorAll('[data-widget="chirp"]').forEach(enhance);
+  }
+
+  enhanceAll(document);
+  new MutationObserver(() => enhanceAll(document)).observe(document.body, { childList: true, subtree: true });
+
+  document.addEventListener("click", (e) => {
+    const root = e.target.closest('[data-widget="chirp"]');
+    if (!root) return;
+
+    if (e.target.closest("[data-chirp-load-more]")) {
+      controllers.get(root)?.loadMore();
+      return;
+    }
+
+    const toggle = e.target.closest("[data-chirp-toggle]");
+    if (toggle) {
+      const expanded = toggle.getAttribute("aria-expanded") === "true";
+      toggle.setAttribute("aria-expanded", String(!expanded));
+    }
   });
-  if (loadingEl.isConnected) listEl?.replaceChildren();
-  controllers.set(root, controller);
-}
 
-function enhanceAll(root) {
-  root.querySelectorAll('[data-widget="chirp"]').forEach(enhance);
-}
+  document.addEventListener("submit", async (e) => {
+    const formEl = e.target.closest("[data-chirp-form]");
+    if (!formEl) return;
+    const root = formEl.closest('[data-widget="chirp"]');
+    if (!root) return;
+    e.preventDefault();
 
-enhanceAll(document);
-new MutationObserver(() => enhanceAll(document)).observe(document.body, { childList: true, subtree: true });
-
-document.addEventListener("click", (e) => {
-  const root = e.target.closest('[data-widget="chirp"]');
-  if (!root) return;
-
-  if (e.target.closest("[data-chirp-load-more]")) {
-    controllers.get(root)?.loadMore();
-    return;
-  }
-
-  const toggle = e.target.closest("[data-chirp-toggle]");
-  if (toggle) {
-    const expanded = toggle.getAttribute("aria-expanded") === "true";
-    toggle.setAttribute("aria-expanded", String(!expanded));
-  }
-});
-
-document.addEventListener("submit", async (e) => {
-  const formEl = e.target.closest("[data-chirp-form]");
-  if (!formEl) return;
-  const root = formEl.closest('[data-widget="chirp"]');
-  if (!root) return;
-  e.preventDefault();
-
-  const result = await controllers.get(root)?.handleSubmit(formEl);
-  if (result?.outcome === "approved") {
-    root.querySelector("[data-chirp-toggle]")?.setAttribute("aria-expanded", "false");
-  }
-});
+    const result = await controllers.get(root)?.handleSubmit(formEl);
+    if (result?.outcome === "approved") {
+      root.querySelector("[data-chirp-toggle]")?.setAttribute("aria-expanded", "false");
+    }
+  });
+})();

@@ -11,6 +11,30 @@ import { loadNav, updateActiveNav } from "./nav.js";
 function prerenderedUrlFor(routePath) {
     return routePath === "" ? "/" : `/${routePath}/`;
 }
+// Widget <script> tags (chirp.js, downloads.js, slideshow.js, ...) are
+// emitted outside #app -- see SiteBuilder.BuildWidgetScriptsHtml and
+// shell.html's {{widgetScripts}} placeholder, which sits after </main> --
+// so the #app-only innerHTML splice below never carries them over. Without
+// this, navigating in-app from a page that doesn't use a given widget to
+// one that does silently strands that widget: its markup lands in the DOM
+// but the script that would enhance it never loads, every single time (a
+// full reload works because that's a genuine cold load of the complete
+// document, trailing scripts included). Reconciles by resolved `src` --
+// already-loaded scripts (from the current page, or appended by an earlier
+// navigation) are left alone -- and appends real elements for the rest,
+// since scripts inside an innerHTML-assigned string never execute.
+function loadMissingWidgetScripts(fetchedDoc) {
+    const alreadyLoaded = new Set(Array.from(document.scripts, (s) => s.src).filter(Boolean));
+    for (const script of Array.from(fetchedDoc.scripts)) {
+        if (!script.src || alreadyLoaded.has(script.src))
+            continue;
+        const clone = document.createElement("script");
+        for (const attr of Array.from(script.attributes)) {
+            clone.setAttribute(attr.name, attr.value);
+        }
+        document.body.appendChild(clone);
+    }
+}
 let initialLoad = true;
 registerRouteHandler(async (route) => {
     const app = document.getElementById("app");
@@ -38,8 +62,11 @@ registerRouteHandler(async (route) => {
             return;
         }
         const html = await res.text();
-        const fragment = new DOMParser().parseFromString(html, "text/html").getElementById("app");
+        const fetchedDoc = new DOMParser().parseFromString(html, "text/html");
+        const fragment = fetchedDoc.getElementById("app");
         app.innerHTML = fragment ? fragment.innerHTML : "<h1>Error</h1><p>Could not parse this page.</p>";
+        if (fragment)
+            loadMissingWidgetScripts(fetchedDoc);
     }
     catch {
         app.innerHTML = "<h1>Error</h1><p>Could not load this page.</p>";

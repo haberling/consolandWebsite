@@ -44,8 +44,8 @@
   </div>
 
   <main id="app"><h1>llote</h1>
-<p>A Windows command-line note-taker. Write a line, get a timestamp. Ask later by meaning — <code>ask</code> only ever returns a line you already wrote, verbatim. Nothing leaves your machine.</p>
-<p><code>v1.0.0</code> out for windows.</p>
+<p>A terminal-native note-taking utility with semantic search.</p>
+<p><code>v1.0.0</code> out for Windows.</p>
 
 
 
@@ -90,7 +90,7 @@
 </div>
 
 <h2>Features</h2>
-<ol><li>Single-line notes, timestamped the moment you write them</li><li><code>llote ask</code> searches by meaning, not exact wording — and never generates text</li><li><code>llote browse</code> is a pageable TUI for adding, searching, and reading the file</li><li>Notes stay on disk as plain text; the embedding model downloads once (~100MB) and then works offline</li><li>A local <code>log.llote</code> in the current folder, or a global notes file in app data</li><li>Append-only <code>.llote</code> files that play nicely with Git and AI assistants</li></ol>
+<ol><li>Single-line notes can be added directly from the command line with <code>llote "note contents"</code>. You can also specify a file.</li><li><code>llote ask</code> searches by meaning, not exact wording, using an embedding model. It returns your note verbatim. AI is used only for search.</li><li><code>llote browse</code> is a pageable TUI for adding, searching, and reading the file.</li><li>Notes stay on disk as plain text; the embedding model downloads once (~100MB) and then works offline.</li><li>By default, notes go to a local <code>log.llote</code>, or to a global default if a local file doesn't exist.</li><li>As plain text, <code>.llote</code> files that play nicely with Git and AI assistants.</li></ol>
 <h2>Quick start</h2>
 
 
@@ -116,7 +116,7 @@ llote browse
     
     
     
-    <li><a class="download-button" href="https://github.com/haberling/consolandWebsite/releases/download/llote-v1.0.0/llote-setup.exe">Windows Installer</a></li>
+    <li><a class="download-button" href="https://github.com/haberling/llote-docs/releases/download/llote-v1.0.0/llote-setup.exe">Windows Installer</a></li>
     
     
     

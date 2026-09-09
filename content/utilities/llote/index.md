@@ -1,8 +1,8 @@
 # llote
 
-A Windows command-line note-taker. Write a line, get a timestamp. Ask later by meaning — `ask` only ever returns a line you already wrote, verbatim. Nothing leaves your machine.
+A terminal-native note-taking utility with semantic search.
 
-`v1.0.0` out for windows.
+`v1.0.0` out for Windows.
 
 ```slideshow
 title: Screenshots
@@ -19,12 +19,12 @@ slides:
 
 ## Features
 
-1. Single-line notes, timestamped the moment you write them
-2. `llote ask` searches by meaning, not exact wording — and never generates text
-3. `llote browse` is a pageable TUI for adding, searching, and reading the file
-4. Notes stay on disk as plain text; the embedding model downloads once (~100MB) and then works offline
-5. A local `log.llote` in the current folder, or a global notes file in app data
-6. Append-only `.llote` files that play nicely with Git and AI assistants
+1. Single-line notes can be added directly from the command line with `llote "note contents"`. You can also specify a file.
+2. `llote ask` searches by meaning, not exact wording, using an embedding model. It returns your note verbatim. AI is used only for search.
+3. `llote browse` is a pageable TUI for adding, searching, and reading the file.
+4. Notes stay on disk as plain text; the embedding model downloads once (~100MB) and then works offline.
+5. By default, notes go to a local `log.llote`, or to a global default if a local file doesn't exist.
+6. As plain text, `.llote` files that play nicely with Git and AI assistants.
 
 ## Quick start
 
@@ -45,7 +45,7 @@ items:
   - label: "Microsoft Store"
     url: "https://apps.microsoft.com/detail/9N8BHTQZR4L4"
   - label: "Windows Installer"
-    url: "https://github.com/haberling/consolandWebsite/releases/download/llote-v1.0.0/llote-setup.exe"
+    url: "https://github.com/haberling/llote-docs/releases/download/llote-v1.0.0/llote-setup.exe"
   - label: "User's Guide"
     url: "https://llote.consoland.net/"
 ```

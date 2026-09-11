@@ -1,5 +1,10 @@
 # llote
 
+```underconstruction
+title: Microsoft Store
+body: Currently hidden because of some instabilities in its setup. The Windows installer here should work. Sorry if it looks scary — it's unsigned, so Windows will likely warn you about it.
+```
+
 A terminal-native note-taking utility with semantic search.
 
 `v1.0.0` out for Windows.
@@ -42,15 +47,11 @@ The full user's guide is at [llote.consoland.net](https://llote.consoland.net/).
 ```downloads
 title: Get llote
 items:
-  - label: "Microsoft Store"
-    url: "https://apps.microsoft.com/detail/9N8BHTQZR4L4"
   - label: "Windows Installer"
     url: "https://github.com/haberling/llote-docs/releases/download/llote-v1.0.0/llote-setup.exe"
   - label: "User's Guide"
     url: "https://llote.consoland.net/"
 ```
-
-The Store build gives you less fine-grained control over uninstall. The installer here does.
 
 llote is free to use. Copyright 2026 Habersoft.
 

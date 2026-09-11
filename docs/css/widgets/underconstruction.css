@@ -1,0 +1,174 @@
+/*
+ * Styling for the underconstruction widget (see underconstruction.html/.js).
+ * Lives beside its template/behavior siblings, discovered and linked the
+ * same way -- see Canary.Core.Widgets.WidgetDiscovery. Relies on the
+ * color tokens framework.css
+ * defines on :root (--bg, --bg-elevated, --text, --text-dim, --border,
+ * --accent); those cascade globally once defined, regardless of which
+ * stylesheet file references them, so this file doesn't need to redefine
+ * or import them -- same reasoning as slideshow.css/downloads.css.
+ *
+ * Sized like a small dialog rather than a full-width card, so it reads as
+ * a window sitting on the page instead of another site section.
+ */
+
+.uc-window {
+  margin: 1.5rem 0;
+  max-width: 28rem;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  border-radius: 6px;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent) 22%, transparent),
+    0 10px 28px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+}
+
+.uc-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.35rem 0.3rem 0.7rem;
+  background: var(--accent);
+  color: var(--bg);
+  font-family: Consolas, "Cascadia Code", "SF Mono", Menlo, "Liberation Mono", monospace;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  user-select: none;
+}
+
+.uc-window.is-collapsed .uc-titlebar {
+  cursor: pointer;
+}
+
+.uc-caption {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.uc-btn {
+  box-sizing: border-box;
+  width: 1.15rem;
+  height: 1.15rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--bg);
+  background: var(--accent);
+  color: var(--bg);
+  font-size: 0.85rem;
+  line-height: 1;
+  padding: 0;
+  font-family: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.uc-btn-toggle:hover,
+.uc-btn-toggle:focus-visible {
+  background: var(--bg);
+  color: var(--accent);
+  outline: none;
+}
+
+.uc-stripes {
+  height: 10px;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    #14161a 0 8px,
+    var(--accent) 8px 16px
+  );
+  background-size: 22px 22px;
+  animation: uc-stripe 0.9s linear infinite;
+}
+
+@keyframes uc-stripe {
+  to { background-position: 22px 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .uc-stripes {
+    animation: none;
+  }
+}
+
+.uc-body {
+  display: flex;
+  gap: 0.9rem;
+  align-items: flex-start;
+  padding: 1rem 1rem 0.7rem;
+}
+
+.uc-cone {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  color: var(--bg);
+}
+
+.uc-copy {
+  min-width: 0;
+}
+
+.uc-heading {
+  margin: 0 0 0.3rem;
+  font-size: 1rem;
+}
+
+.uc-message {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 0.92rem;
+}
+
+.uc-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 1rem 0.85rem;
+}
+
+.uc-ok {
+  padding: 0.25rem 1.1rem;
+  min-width: 4.5rem;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--accent);
+  font: inherit;
+  cursor: pointer;
+}
+
+.uc-ok:hover,
+.uc-ok:focus-visible {
+  background: var(--accent);
+  color: var(--bg);
+  outline: none;
+  text-decoration: none;
+}
+
+.uc-window.is-collapsed .uc-stripes,
+.uc-window.is-collapsed .uc-body,
+.uc-window.is-collapsed .uc-actions {
+  display: none;
+}
+
+@media (max-width: 520px) {
+  .uc-window {
+    max-width: none;
+  }
+
+  .uc-body {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .uc-actions {
+    justify-content: center;
+  }
+}

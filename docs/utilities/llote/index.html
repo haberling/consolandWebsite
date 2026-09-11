@@ -22,6 +22,7 @@
 <link rel="stylesheet" href="/css/widgets/downloads.css">
 <link rel="stylesheet" href="/css/widgets/postlink.css">
 <link rel="stylesheet" href="/css/widgets/slideshow.css">
+<link rel="stylesheet" href="/css/widgets/underconstruction.css">
 <link rel="stylesheet" href="/css/widgets/wasmterm.css">
 
 </head>
@@ -44,6 +45,33 @@
   </div>
 
   <main id="app"><h1>llote</h1>
+
+
+<aside class="uc-window" data-widget="underconstruction">
+  <div class="uc-titlebar" data-uc-titlebar>
+    <span class="uc-caption">Under Construction</span>
+    <button type="button" class="uc-btn uc-btn-toggle" data-uc-toggle aria-expanded="true" aria-label="Minimize under construction notice">-</button>
+  </div>
+  <div class="uc-stripes" aria-hidden="true"></div>
+  <div class="uc-body">
+    <svg class="uc-cone" viewBox="0 0 64 64" aria-hidden="true">
+      <ellipse cx="32" cy="57" rx="22" ry="4" fill="currentColor" opacity="0.25"/>
+      <path d="M12 52h40l-2 4H14z" fill="#9a3412"/>
+      <path d="M18 52 29 10h6l11 42z" fill="#ea580c"/>
+      <path d="M21.2 42h21.6l-2.6-10H23.8z" fill="#f8f4e8"/>
+      <path d="M24.6 26h14.8l-2.2-8H26.8z" fill="#f8f4e8"/>
+      <path d="M29 10h6l1.2 4h-8.4z" fill="#c2410c"/>
+    </svg>
+    <div class="uc-copy">
+      <h3 class="uc-heading">Microsoft Store</h3>
+      <p class="uc-message">Currently hidden because of some instabilities in its setup. The Windows installer here should work. Sorry if it looks scary — it's unsigned, so Windows will likely warn you about it.</p>
+    </div>
+  </div>
+  <div class="uc-actions">
+    <button type="button" class="uc-ok" data-uc-toggle>OK</button>
+  </div>
+</aside>
+
 <p>A terminal-native note-taking utility with semantic search.</p>
 <p><code>v1.0.0</code> out for Windows.</p>
 
@@ -111,11 +139,6 @@ llote browse
   <ul>
     
     
-    <li><a class="download-button" href="https://apps.microsoft.com/detail/9N8BHTQZR4L4">Microsoft Store</a></li>
-    
-    
-    
-    
     <li><a class="download-button" href="https://github.com/haberling/llote-docs/releases/download/llote-v1.0.0/llote-setup.exe">Windows Installer</a></li>
     
     
@@ -128,7 +151,6 @@ llote browse
   </ul>
 </div>
 
-<p>The Store build gives you less fine-grained control over uninstall. The installer here does.</p>
 <p>llote is free to use. Copyright 2026 Habersoft.</p>
 <h2>Comments</h2>
 
@@ -189,6 +211,7 @@ llote browse
   <script src="/js/widgets/chirp.js" defer></script>
 <script src="/js/widgets/downloads.js" defer></script>
 <script src="/js/widgets/slideshow.js" defer></script>
+<script src="/js/widgets/underconstruction.js" defer></script>
 <script src="/js/widgets/wasmterm.js" defer></script>
 
 

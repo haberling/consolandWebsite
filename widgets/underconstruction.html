@@ -1,0 +1,46 @@
+<!--
+  Site-authored widget (consolandWebsite/widgets/, not a Canary built-in --
+  see WIDGETS.md in the canary repo for the discovery rules). A small
+  window-chrome notice for something that is temporarily unavailable:
+  title bar, hazard stripes, a traffic cone, a heading, and a body. No
+  dynamic data at build time -- the fence YAML is the whole contract.
+
+  "title" is the thing under construction (the inner heading). "body" is
+  the explanation. "caption" is the title-bar text and defaults to
+  "Under Construction" when omitted. Never write a literal double-brace
+  tag in this comment block -- the templater has no notion of "this is a
+  comment," see WIDGETS.md's gotcha section.
+
+  The title-bar -/+ control and the OK button collapse the window to its
+  title bar (see the sibling .js). - minimizes, + restores.
+-->
+<!--clipboard
+```underconstruction
+title: Microsoft Store
+body: Currently hidden because of some instabilities in its setup. The Windows installer here should work. Sorry if it looks scary — it's unsigned, so Windows will likely warn you about it.
+```
+-->
+<aside class="uc-window" data-widget="underconstruction">
+  <div class="uc-titlebar" data-uc-titlebar>
+    <span class="uc-caption">{{#caption}}{{caption}}{{/caption}}{{^caption}}Under Construction{{/caption}}</span>
+    <button type="button" class="uc-btn uc-btn-toggle" data-uc-toggle aria-expanded="true" aria-label="Minimize under construction notice">-</button>
+  </div>
+  <div class="uc-stripes" aria-hidden="true"></div>
+  <div class="uc-body">
+    <svg class="uc-cone" viewBox="0 0 64 64" aria-hidden="true">
+      <ellipse cx="32" cy="57" rx="22" ry="4" fill="currentColor" opacity="0.25"/>
+      <path d="M12 52h40l-2 4H14z" fill="#9a3412"/>
+      <path d="M18 52 29 10h6l11 42z" fill="#ea580c"/>
+      <path d="M21.2 42h21.6l-2.6-10H23.8z" fill="#f8f4e8"/>
+      <path d="M24.6 26h14.8l-2.2-8H26.8z" fill="#f8f4e8"/>
+      <path d="M29 10h6l1.2 4h-8.4z" fill="#c2410c"/>
+    </svg>
+    <div class="uc-copy">
+      {{#title}}<h3 class="uc-heading">{{title}}</h3>{{/title}}
+      {{#body}}<p class="uc-message">{{body}}</p>{{/body}}
+    </div>
+  </div>
+  <div class="uc-actions">
+    <button type="button" class="uc-ok" data-uc-toggle>OK</button>
+  </div>
+</aside>

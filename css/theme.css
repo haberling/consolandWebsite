@@ -55,7 +55,7 @@
 }
 
 .site-title:hover {
-  color: var(--accent);
+  color: var(--text);
   text-decoration: none;
 }
 

@@ -3,8 +3,9 @@
   written: tools/blog-list-generator.cs emits one of these per
   [!BLOG LIST|...] tag. An Explorer-style window with a List view and a
   Tiles view over one shared set of items; bloglist.js switches the
-  data-view attribute and reorders the items. With no JS it stays a plain
-  date-sorted list of links.
+  data-view attribute and reorders the items. Tiles is the default view
+  (markup below and bloglist.js agree); the viewer's choice is saved in
+  localStorage. With no JS it stays a plain date-sorted grid of links.
 
   Per item: title, url, and optionally date (display text), sortdate
   (yyyymmdd), bytes (raw, for sorting), size (display text), image.
@@ -15,7 +16,7 @@
 <!--clipboard
 ```bloglist
 label: "Post List"
-title:"C:\blog\blog-new"
+title: "C:\blog\blog-new"
 count: "1"
 total: "6 KB"
 items:
@@ -28,17 +29,17 @@ items:
     image: !url "content/blog/blog-new/my-post/cover.png"
 ```
 -->
-<div class="bloglist" data-widget="bloglist" role="region" aria-label="{{label}}" data-view="list" data-sort="date" data-dir="desc">
+<div class="bloglist" data-widget="bloglist" role="region" aria-label="{{label}}" data-view="tiles" data-sort="date" data-dir="desc">
   <div class="bl-titlebar">
     <svg class="bl-titleicon" viewBox="0 0 16 16" aria-hidden="true"><path d="M1 3h5l1.5 1.5H15V13H1z" fill="currentColor"/></svg>
     <span class="bl-titletext">{{title}}</span>
   </div>
   <div class="bl-toolbar" role="toolbar" aria-label="View">
-    <button type="button" class="bl-viewbtn" data-view-btn="list" aria-pressed="true" title="List view">
+    <button type="button" class="bl-viewbtn" data-view-btn="list" aria-pressed="false" title="List view">
       <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h2v2H2zM6 3h8v2H6zM2 7h2v2H2zM6 7h8v2H6zM2 11h2v2H2zM6 11h8v2H6z" fill="currentColor"/></svg>
       List
     </button>
-    <button type="button" class="bl-viewbtn" data-view-btn="tiles" aria-pressed="false" title="Tile view">
+    <button type="button" class="bl-viewbtn" data-view-btn="tiles" aria-pressed="true" title="Tile view">
       <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 2h5v5H2zM9 2h5v5H9zM2 9h5v5H2zM9 9h5v5H9z" fill="currentColor"/></svg>
       Tiles
     </button>

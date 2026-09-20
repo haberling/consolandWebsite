@@ -13,8 +13,12 @@
   correctly from a nested page route. Required, no fallback: a missing app
   path is a content bug in the fence block, not something to paper over.
 
+  "title" (optional, default "CL-DOS Prompt") is the text in the window's title
+  bar; the widget draws a Win98 window around the terminal (see
+  wasmterm.css) -- the .wasmterm-frame inside is what wasmterm.js drives.
+
   cols/rows/fontSize default to an 80x32 grid at 24px if omitted -- these
-  are the only fields here, deliberately: which keys the app captures and
+  are the only terminal fields here, deliberately: which keys the app captures and
   which JSExports it wires up are facts about the app, not this specific
   embedding, so they live in two conventional files wasmterm.js fetches
   straight from the app's own base URL instead of being repeated in every
@@ -23,23 +27,36 @@
 -->
 <!--clipboard
 ```wasmterm
+title: "CL-DOS Prompt"
 app: !url "content/apps/tesselate-wasm"
 cols: 80
 rows: 32
 fontSize: 24
 ```
 -->
-<div class="wasmterm-frame"
-     data-widget="wasmterm"
-     data-wasmterm-app="{{app}}"
-     data-wasmterm-cols="{{^cols}}80{{/cols}}{{cols}}"
-     data-wasmterm-rows="{{^rows}}32{{/rows}}{{rows}}"
-     data-wasmterm-fontsize="{{^fontSize}}24{{/fontSize}}{{fontSize}}">
-  <div class="wasmterm-loading" data-wasmterm-loading>
-    <div class="wasmterm-loading-label" data-wasmterm-loading-label>Loading…</div>
-    <div class="wasmterm-loading-track"><div class="wasmterm-loading-fill" data-wasmterm-loading-fill></div></div>
+<div class="wasmterm-window">
+  <div class="wasmterm-titlebar">
+    <svg class="wasmterm-titleicon" viewBox="0 0 16 16" aria-hidden="true"><path d="M1 2h14v12H1z" fill="currentColor"/><path d="M3.5 5.5 6 8 3.5 10.5M7.5 10.5h4" fill="none" stroke="#000" stroke-width="1.3"/></svg>
+    <span class="wasmterm-titletext">{{^title}}CL-DOS Prompt{{/title}}{{title}}</span>
   </div>
-  <div class="wasmterm-viewport" data-wasmterm-viewport>
-    <div data-wasmterm-mount></div>
+  <div class="wasmterm-body">
+    <div class="wasmterm-frame"
+         data-widget="wasmterm"
+         data-wasmterm-app="{{app}}"
+         data-wasmterm-cols="{{^cols}}80{{/cols}}{{cols}}"
+         data-wasmterm-rows="{{^rows}}32{{/rows}}{{rows}}"
+         data-wasmterm-fontsize="{{^fontSize}}24{{/fontSize}}{{fontSize}}">
+      <div class="wasmterm-loading" data-wasmterm-loading>
+        <div class="wasmterm-loading-label" data-wasmterm-loading-label>Loading…</div>
+        <div class="wasmterm-loading-track"><div class="wasmterm-loading-fill" data-wasmterm-loading-fill></div></div>
+      </div>
+      <div class="wasmterm-viewport" data-wasmterm-viewport>
+        <div data-wasmterm-mount></div>
+      </div>
+    </div>
+  </div>
+  <div class="wasmterm-status">
+    <span>{{^cols}}80{{/cols}}{{cols}} x {{^rows}}32{{/rows}}{{rows}}</span>
+    <span>xterm.js + .NET wasm</span>
   </div>
 </div>

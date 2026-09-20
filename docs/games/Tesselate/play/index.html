@@ -49,18 +49,30 @@
 <p>Same game, in the browser. Click the terminal to focus.</p>
 
 
-<div class="wasmterm-frame"
-     data-widget="wasmterm"
-     data-wasmterm-app="/content/games/tesselate-wasm"
-     data-wasmterm-cols="80"
-     data-wasmterm-rows="32"
-     data-wasmterm-fontsize="24">
-  <div class="wasmterm-loading" data-wasmterm-loading>
-    <div class="wasmterm-loading-label" data-wasmterm-loading-label>Loading…</div>
-    <div class="wasmterm-loading-track"><div class="wasmterm-loading-fill" data-wasmterm-loading-fill></div></div>
+<div class="wasmterm-window">
+  <div class="wasmterm-titlebar">
+    <svg class="wasmterm-titleicon" viewBox="0 0 16 16" aria-hidden="true"><path d="M1 2h14v12H1z" fill="currentColor"/><path d="M3.5 5.5 6 8 3.5 10.5M7.5 10.5h4" fill="none" stroke="#000" stroke-width="1.3"/></svg>
+    <span class="wasmterm-titletext">CL-DOS Prompt</span>
   </div>
-  <div class="wasmterm-viewport" data-wasmterm-viewport>
-    <div data-wasmterm-mount></div>
+  <div class="wasmterm-body">
+    <div class="wasmterm-frame"
+         data-widget="wasmterm"
+         data-wasmterm-app="/content/games/tesselate-wasm"
+         data-wasmterm-cols="80"
+         data-wasmterm-rows="32"
+         data-wasmterm-fontsize="24">
+      <div class="wasmterm-loading" data-wasmterm-loading>
+        <div class="wasmterm-loading-label" data-wasmterm-loading-label>Loading…</div>
+        <div class="wasmterm-loading-track"><div class="wasmterm-loading-fill" data-wasmterm-loading-fill></div></div>
+      </div>
+      <div class="wasmterm-viewport" data-wasmterm-viewport>
+        <div data-wasmterm-mount></div>
+      </div>
+    </div>
+  </div>
+  <div class="wasmterm-status">
+    <span>80 x 32</span>
+    <span>xterm.js + .NET wasm</span>
   </div>
 </div>
 

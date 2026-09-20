@@ -4,7 +4,7 @@
  * without any init call.
  *
  * Persisted per browser (localStorage, every access guarded):
- *   bloglist-view   "list" | "tiles"
+ *   bloglist-view   "list" | "tiles" (default "tiles"; one key for every list)
  *   bloglist-filter "all" | "unread"
  *   bloglist-read   JSON array of post urls marked read -- shared by every
  *                   bloglist on the site, so a post read from one list is

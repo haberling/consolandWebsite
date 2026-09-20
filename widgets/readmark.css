@@ -1,0 +1,57 @@
+/*
+ * Styling for the readmark widget (see readmark.html) -- a Win98-style
+ * raised button floated into the top-right corner of a post. Bevel and
+ * color tokens come from theme.css/framework.css and cascade globally.
+ */
+
+.readmark {
+  float: right;
+  margin: 0 0 0.5rem 1rem;
+}
+
+.readmark-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.6rem;
+  border: 2px solid;
+  border-color: var(--bevel-light, #3d424b) var(--bevel-dark, #06070a) var(--bevel-dark, #06070a) var(--bevel-light, #3d424b);
+  background: var(--bg-elevated);
+  box-shadow: 1px 1px 0 #000;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.readmark-btn:hover {
+  background: color-mix(in srgb, var(--accent) 12%, var(--bg-elevated));
+}
+
+.readmark-btn:active {
+  border-color: var(--bevel-dark, #06070a) var(--bevel-light, #3d424b) var(--bevel-light, #3d424b) var(--bevel-dark, #06070a);
+  box-shadow: none;
+}
+
+.readmark-box {
+  flex-shrink: 0;
+  color: var(--accent);
+}
+
+.readmark-tick {
+  visibility: hidden;
+}
+
+.readmark-btn[aria-pressed="true"] .readmark-tick {
+  visibility: visible;
+}
+
+.readmark-btn[aria-pressed="true"] {
+  color: var(--text-dim);
+}
+
+/* Hidden until readmark.js has applied the stored state, so a post already
+   marked read never flashes "Mark as read" first (the script is deferred). */
+.readmark-btn:not([data-rm-ready]) {
+  visibility: hidden;
+}

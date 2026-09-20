@@ -1,0 +1,21 @@
+<!--
+  Site-authored widget (consolandWebsite/widgets/, not a Canary built-in --
+  see WIDGETS.md in the canary repo for the discovery rules). A small
+  Win98-style toggle button for the corner of a blog post: "Mark as read" /
+  "Read". State is shared with the bloglist widget (same localStorage key),
+  so ticking it here ticks the post's checkbox in every blog list. See the
+  sibling .js. No data of its own: the post is identified by the page's
+  own path at click time, so the fence body is empty. Never write a literal
+  double-brace tag in this comment block -- the templater has no notion of
+  "this is a comment," see WIDGETS.md's gotcha section.
+
+  Built for tools/format-blogpost.cs, which emits it above each post's
+  header.
+-->
+<!--clipboard
+```readmark
+```
+-->
+<div class="readmark" data-widget="readmark">
+  <button type="button" class="readmark-btn" data-readmark aria-pressed="false"><svg class="readmark-box" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><rect x="0.5" y="0.5" width="11" height="11" fill="var(--bg, #111)" stroke="currentColor"/><path class="readmark-tick" d="M2.5 6.2 5 8.7 9.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><span class="readmark-label">Mark as read</span></button>
+</div>

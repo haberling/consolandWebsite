@@ -9,6 +9,8 @@
 //      byline, all packed tight. See widgets/blogheader.html/.css. Anything
 //      after the title/tagline (a header image, the rest of the post) is
 //      left completely untouched.
+//   2b. A "readmark" mark-as-read button (widgets/readmark.*), emitted just
+//      above the blogheader so it floats into the post's top-right corner.
 //   3. A "chirp" comment-widget block, appended after the post's content --
 //      see widgets/chirp.html/.js/.css. "new" posts only (blogKind == "new")
 //      -- archive posts are old, largely dormant pages nobody's asked to
@@ -109,6 +111,9 @@ else
     var (tagline, tailStart) = TitleTaglineEnd(lines, headingIndex);
     var (author, date) = AuthorByline(input);
 
+    result.Add("```readmark");
+    result.Add("```");
+    result.Add("");
     result.Add("```blogheader");
     result.Add($"title: {YamlQuote(title)}");
     if (tagline is not null) result.Add($"tagline: {YamlQuote(tagline)}");

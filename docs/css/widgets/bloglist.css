@@ -298,12 +298,8 @@
 }
 
 .bl-col-check {
-  display: flex;
-  align-items: center;
   justify-content: center;
-  color: var(--text-dim);
-  font-size: 0.8rem;
-  cursor: default;
+  border-left: 0;
 }
 
 .bl-check {
@@ -366,7 +362,6 @@
   border: 2px solid;
   border-color: var(--bl-raised);
 }
-.bloglist[data-view="tiles"] .bl-col-check { display: none; }
 .bloglist[data-view="tiles"] .bl-empty { grid-column: 1 / -1; }
 
 @media (max-width: 30rem) {

@@ -55,6 +55,7 @@
   function sortValue(item, key) {
     if (key === "name") return item.dataset.name.toLowerCase();
     if (key === "size") return Number(item.dataset.bytes) || 0;
+    if (key === "read") return readSet.has(item.dataset.url) ? 1 : 0;
     return item.dataset.date || "0"; // yyyymmdd sorts lexically; undated sorts as oldest
   }
 
@@ -69,6 +70,12 @@
       const vb = sortValue(b, key);
       if (va < vb) return -sign;
       if (va > vb) return sign;
+      // Read ties fall back to newest first, whichever way read is sorted.
+      if (key === "read") {
+        const da = a.dataset.date || "0";
+        const db = b.dataset.date || "0";
+        if (da !== db) return da < db ? 1 : -1;
+      }
       // Ties keep the generated (source) order -- matters for a hand-curated
       // feed where same-day items are deliberately ordered.
       return Number(a.dataset.idx) - Number(b.dataset.idx);
@@ -122,6 +129,15 @@
     root.querySelector(".bl-total").textContent = formatSize(bytes);
   }
 
+  // Read state changed from outside this list (storage event, Back): lists
+  // sorted by read status need re-ordering too, not just re-checking.
+  function resortAll() {
+    document.querySelectorAll(".bloglist").forEach((root) => {
+      if (root.dataset.sort === "read") applySort(root, "read", root.dataset.dir);
+    });
+    refreshAll();
+  }
+
   function refreshAll() {
     document.querySelectorAll(".bloglist").forEach(refresh);
   }
@@ -129,6 +145,7 @@
   function init(root) {
     if (root.dataset.blReady) return;
     root.dataset.blReady = "1";
+    readSet = loadRead(); // may have changed since load (e.g. marked read on a post page, same tab: no "storage" event)
     root.querySelectorAll(".bl-item").forEach((item, i) => { item.dataset.idx = i; });
     const view = load(VIEW_KEY);
     if (view === "list" || view === "tiles") setView(root, view);
@@ -159,7 +176,7 @@
       // Same column toggles direction; a new one starts at its natural order.
       const dir = root.dataset.sort === key
         ? (root.dataset.dir === "asc" ? "desc" : "asc")
-        : (key === "name" ? "asc" : "desc");
+        : (key === "name" || key === "read" ? "asc" : "desc");
       applySort(root, key, dir);
     }
   });
@@ -191,7 +208,13 @@
   window.addEventListener("storage", (e) => {
     if (e.key !== READ_KEY && e.key !== null) return;
     readSet = loadRead();
-    refreshAll();
+    resortAll();
+  });
+
+  // Back/forward cache restores a page without re-running init.
+  window.addEventListener("pageshow", () => {
+    readSet = loadRead();
+    resortAll();
   });
 
   new MutationObserver(() => {

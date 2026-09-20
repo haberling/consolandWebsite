@@ -1,0 +1,78 @@
+<!--
+  Site-authored widget (consolandWebsite/widgets/). Generated, not hand-
+  written: tools/blog-list-generator.cs emits one of these per
+  [!BLOG LIST|...] tag. An Explorer-style window with a List view and a
+  Tiles view over one shared set of items; bloglist.js switches the
+  data-view attribute and reorders the items. With no JS it stays a plain
+  date-sorted list of links.
+
+  Per item: title, url, and optionally date (display text), sortdate
+  (yyyymmdd), bytes (raw, for sorting), size (display text), image.
+  Never write a literal double-brace tag in this comment block -- the
+  templater has no notion of "this is a comment," see WIDGETS.md's
+  gotcha section.
+-->
+<!--clipboard
+```bloglist
+label: "Post List"
+title:"C:\blog\blog-new"
+count: "1"
+total: "6 KB"
+items:
+  - title: "My Post"
+    url: !url "blog/blog-new/my-post"
+    date: "Sep 1, 2026"
+    sortdate: "20260901"
+    bytes: "5155"
+    size: "6 KB"
+    image: !url "content/blog/blog-new/my-post/cover.png"
+```
+-->
+<div class="bloglist" data-widget="bloglist" role="region" aria-label="{{label}}" data-view="list" data-sort="date" data-dir="desc">
+  <div class="bl-titlebar">
+    <svg class="bl-titleicon" viewBox="0 0 16 16" aria-hidden="true"><path d="M1 3h5l1.5 1.5H15V13H1z" fill="currentColor"/></svg>
+    <span class="bl-titletext">{{title}}</span>
+  </div>
+  <div class="bl-toolbar" role="toolbar" aria-label="View">
+    <button type="button" class="bl-viewbtn" data-view-btn="list" aria-pressed="true" title="List view">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h2v2H2zM6 3h8v2H6zM2 7h2v2H2zM6 7h8v2H6zM2 11h2v2H2zM6 11h8v2H6z" fill="currentColor"/></svg>
+      List
+    </button>
+    <button type="button" class="bl-viewbtn" data-view-btn="tiles" aria-pressed="false" title="Tile view">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 2h5v5H2zM9 2h5v5H9zM2 9h5v5H2zM9 9h5v5H9z" fill="currentColor"/></svg>
+      Tiles
+    </button>
+    <span class="bl-sep" aria-hidden="true"></span>
+    <button type="button" class="bl-viewbtn" data-filter-btn="all" aria-pressed="true" title="Show all posts">All</button>
+    <button type="button" class="bl-viewbtn" data-filter-btn="unread" aria-pressed="false" title="Show unread posts only">Unread</button>
+    <input type="search" class="bl-search" placeholder="Search..." aria-label="Search posts by title" autocomplete="off" spellcheck="false">
+  </div>
+  <div class="bl-head" role="group" aria-label="Sort by">
+    <span class="bl-sortlabel">Sort by:</span>
+    <span class="bl-col-check">Read</span>
+    <button type="button" class="bl-col bl-col-name" data-sort-btn="name">Name<span class="bl-arrow" aria-hidden="true"></span></button>
+    <button type="button" class="bl-col bl-col-date" data-sort-btn="date">Date<span class="bl-arrow" aria-hidden="true"></span></button>
+    <button type="button" class="bl-col bl-col-size" data-sort-btn="size">Size<span class="bl-arrow" aria-hidden="true"></span></button>
+  </div>
+  <ul class="bl-items">
+    <li class="bl-empty" hidden>All caught up. No unread posts.</li>
+    {{#items}}
+    <li class="bl-item" data-name="{{title}}" data-date="{{sortdate}}" data-bytes="{{bytes}}" data-url="{{url}}">
+      <label class="bl-check" title="Mark as read"><input type="checkbox" class="bl-readbox" aria-label="Mark {{title}} as read"></label>
+      <a class="bl-link" href="{{url}}" title="{{title}}">
+        <span class="bl-icon">
+          {{#image}}<img src="{{image}}" alt="" loading="lazy">{{/image}}
+          {{^image}}<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 1h7l3 3v11H3z" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M5 7h6M5 9.5h6M5 12h4" stroke="currentColor" stroke-width="1"/></svg>{{/image}}
+        </span>
+        <span class="bl-name">{{title}}</span>
+        <span class="bl-date">{{date}}</span>
+        <span class="bl-size">{{size}}</span>
+      </a>
+    </li>
+    {{/items}}
+  </ul>
+  <div class="bl-status">
+    <span class="bl-count" data-total-count="{{count}}">{{count}} object(s)</span>
+    <span class="bl-total">{{total}}</span>
+  </div>
+</div>

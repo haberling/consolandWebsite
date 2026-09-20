@@ -1,6 +1,8 @@
 // Toolchain tool -- expands a `[!BLOG LIST|<List Title>|<relative-path>]`
-// tag into a heading plus one `postlink` widget block per post found under
-// <relative-path>. Registered as "blog-list-generator" in canary.jsonc's
+// tag into a single `bloglist` widget block (a file-explorer style list/tile
+// view, see widgets/bloglist.html) with one item per post found under
+// <relative-path>. No heading is emitted; <List Title> becomes the widget's
+// accessible label. Registered as "blog-list-generator" in canary.jsonc's
 // "tools" registry; applied via content/blog/.toolchain.json.
 //
 // Contract (see docsite/content/guide/toolchain.md): read a page's raw
@@ -45,17 +47,10 @@ var pageDir = routePath.Length == 0
 var input = Console.In.ReadToEnd();
 var lines = input.Replace("\r\n", "\n").Split('\n');
 var output = new StringBuilder();
-var maxHeadingDepth = 0;
 
 for (var i = 0; i < lines.Length; i++)
 {
     var line = lines[i];
-
-    var headingMatch = HeadingRegex().Match(line.TrimStart());
-    if (headingMatch.Success)
-    {
-        maxHeadingDepth = Math.Max(maxHeadingDepth, headingMatch.Groups[1].Value.Length);
-    }
 
     var tagMatch = BlogListTagRegex().Match(line.Trim());
     if (!tagMatch.Success)
@@ -69,7 +64,8 @@ for (var i = 0; i < lines.Length; i++)
     var relativePath = tagMatch.Groups[2].Value.Trim();
     var posts = CollectPosts(Path.Combine(pageDir, relativePath), routePath);
 
-    output.Append(RenderBlogList(listTitle, maxHeadingDepth, posts));
+    var folderRoute = RouteFromContentPath(Path.Combine(pageDir, relativePath, "index.md"));
+    output.Append(RenderBlogList(listTitle, posts, folderRoute));
     if (i < lines.Length - 1) output.Append('\n');
 }
 
@@ -98,12 +94,59 @@ static List<BlogPostEntry> CollectPosts(string folder, string ownRoutePath)
         var raw = File.ReadAllText(file);
         var title = TitleFromMarkdown(raw, Path.GetFileNameWithoutExtension(file));
         var authorDate = AuthorDateFromMarkdown(raw);
-        posts.Add(new BlogPostEntry(title, authorDate, root));
+        var (bytes, image) = MeasurePost(file, raw, folder);
+        posts.Add(new BlogPostEntry(title, authorDate, root, bytes, image));
     }
 
     return posts
         .OrderByDescending(p => p.AuthorDate ?? DateTime.MinValue)
         .ToList();
+}
+
+// A post's "file size" is what a reader actually downloads for it: the
+// markdown source plus every distinct local image it references. Returns
+// that total and the site-root-relative path of the first local image
+// (null if the post has none). Image paths in posts are inconsistent
+// (site-root-relative, post-relative, or stale folder names), so each is
+// tried as-is, then relative to the post, then by bare filename anywhere
+// under the list folder.
+static (long Bytes, string? FirstImage) MeasurePost(string file, string raw, string listFolder)
+{
+    var total = new FileInfo(file).Length;
+    string? first = null;
+    var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+    foreach (Match m in ImageRegex().Matches(raw))
+    {
+        var reference = m.Groups.Cast<Group>().Skip(1).First(g => g.Success).Value.Trim();
+        if (reference.Length == 0 || reference.Contains("://") || reference.StartsWith("data:")) continue;
+
+        var resolved = ResolveImage(reference, file, listFolder);
+        if (resolved is null || !seen.Add(resolved)) continue;
+
+        total += new FileInfo(resolved).Length;
+        first ??= Path.GetRelativePath(".", resolved).Replace('\\', '/');
+    }
+    return (total, first);
+}
+
+static string? ResolveImage(string reference, string postFile, string listFolder)
+{
+    var clean = reference.Split('#')[0].Split('?')[0].TrimStart('/');
+    var candidates = new[]
+    {
+        clean,
+        Path.Combine(Path.GetDirectoryName(postFile)!, clean),
+    };
+    foreach (var candidate in candidates)
+    {
+        if (File.Exists(candidate)) return candidate;
+    }
+
+    var name = Path.GetFileName(clean);
+    return name.Length == 0
+        ? null
+        : Directory.EnumerateFiles(listFolder, name, SearchOption.AllDirectories).FirstOrDefault();
 }
 
 // Mirrors Canary.Core.Build.PageBuilder.TitleFromMarkdown -- first "# "
@@ -168,26 +211,45 @@ static string RouteFromContentPath(string file)
         : relative[..^3];
 }
 
-static string RenderBlogList(string listTitle, int maxHeadingDepth, List<BlogPostEntry> posts)
+static string RenderBlogList(string listTitle, List<BlogPostEntry> posts, string folderRoute)
 {
-    var level = Math.Min(maxHeadingDepth + 1, 6);
     var block = new StringBuilder();
-    block.Append('#', level).Append(' ').Append(listTitle).Append('\n');
 
+    // No heading is emitted -- the widget is its own titled window. The tag's list
+    // title survives as the widget's accessible label; the title bar shows a path.
+    var windowTitle = "C:\\" + folderRoute.Replace('/', '\\');
+
+    block.Append("```bloglist").Append('\n');
+    block.Append("label: ").Append(YamlQuote(listTitle)).Append('\n');
+    block.Append("title: ").Append(YamlQuote(windowTitle)).Append('\n');
+    block.Append("count: ").Append(YamlQuote(posts.Count.ToString(CultureInfo.InvariantCulture))).Append('\n');
+    block.Append("total: ").Append(YamlQuote(FormatSize(posts.Sum(p => p.Bytes)))).Append('\n');
+    block.Append("items:").Append('\n');
     foreach (var post in posts)
     {
-        block.Append('\n').Append("```postlink").Append('\n');
-        block.Append("title: ").Append(YamlQuote(post.Title)).Append('\n');
+        block.Append("  - title: ").Append(YamlQuote(post.Title)).Append('\n');
+        block.Append("    url: !url ").Append(YamlQuote(post.Root)).Append('\n');
         if (post.AuthorDate is { } date)
         {
-            block.Append("date: ").Append(YamlQuote(date.ToString("MMMM d, yyyy", CultureInfo.InvariantCulture))).Append('\n');
+            block.Append("    date: ").Append(YamlQuote(date.ToString("MMM d, yyyy", CultureInfo.InvariantCulture))).Append('\n');
+            block.Append("    sortdate: ").Append(YamlQuote(date.ToString("yyyyMMdd", CultureInfo.InvariantCulture))).Append('\n');
         }
-        block.Append("url: !url ").Append(YamlQuote(post.Root)).Append('\n');
-        block.Append("```").Append('\n');
+        block.Append("    bytes: ").Append(YamlQuote(post.Bytes.ToString(CultureInfo.InvariantCulture))).Append('\n');
+        block.Append("    size: ").Append(YamlQuote(FormatSize(post.Bytes))).Append('\n');
+        if (post.Image is { } image)
+        {
+            block.Append("    image: !url ").Append(YamlQuote(image)).Append('\n');
+        }
     }
+    block.Append("```").Append('\n');
 
     return block.ToString().TrimEnd('\n');
 }
+
+// Explorer-style: whole KB rounded up, MB with one decimal past 1 MB.
+static string FormatSize(long bytes) => bytes >= 1024 * 1024
+    ? $"{bytes / 1024.0 / 1024.0:0.0} MB"
+    : $"{Math.Max(1, (bytes + 1023) / 1024):N0} KB";
 
 // The widget YAML subset has no escape sequences (Canary.Core.Templating.
 // YamlParser.ParseScalarText just strips the surrounding quote chars
@@ -200,7 +262,11 @@ static string YamlQuote(string value)
     return $"{quote}{value}{quote}";
 }
 
+
 static Regex HeadingRegex() => new(@"^(#{1,6})\s+");
+// Markdown "![alt](path)", an HTML <img src="...">, or a widget "src:" line
+// (slideshows: `- src: !url "content/..."`), in file order.
+static Regex ImageRegex() => new(@"!\[[^\]]*\]\(\s*<?([^)\s>]+)[^)]*\)|<img[^>]+src=[""']([^""']+)[""']|^\s*-?\s*src:\s*(?:!url\s*)?[""']?([^""'\s]+)", RegexOptions.IgnoreCase | RegexOptions.Multiline);
 static Regex BlogListTagRegex() => new(@"^\[!BLOG LIST\|([^|]+)\|([^\]]+)\]$");
 
-readonly record struct BlogPostEntry(string Title, DateTime? AuthorDate, string Root);
+readonly record struct BlogPostEntry(string Title, DateTime? AuthorDate, string Root, long Bytes, string? Image);

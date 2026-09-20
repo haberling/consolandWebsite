@@ -203,6 +203,16 @@ blockquote {
 
 /* ---- Footer ---- */
 
+/* Sticky-to-bottom on short pages: body is already a flex column with
+   #app { flex: 1 }, but framework.css's `min-height: 100%` resolves against
+   an auto-height <html> and never fills the window. Viewport units do
+   (dvh first so mobile browser chrome doesn't push the footer offscreen).
+   Long pages are unaffected -- min-height only sets a floor. */
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
 .site-footer {
   border-top: 2px solid;
   border-top-color: var(--bevel-light);

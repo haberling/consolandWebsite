@@ -1,6 +1,6 @@
 // Toolchain tool -- writes docs/rss.xml from the curated rss.md at the
-// site root, and expands a `[!WHATS NEW]` tag into a heading plus one
-// postlink widget per feed item. Registered as "rss-generator" in
+// site root, and expands a `[!WHATS NEW]` tag into a single bloglist
+// widget (one item per feed entry, no heading). Registered as "rss-generator" in
 // canary.jsonc's "tools" registry; applied via content/.toolchain.json
 // so it runs once per full build, on the home page. There is no cascading.
 //
@@ -148,8 +148,8 @@ static bool IsFieldName(string key) =>
     || key.Equals("url", StringComparison.OrdinalIgnoreCase)
     || key.Equals("author", StringComparison.OrdinalIgnoreCase);
 
-// A lone `[!WHATS NEW]` line becomes a sibling `##` section of postlink
-// widgets (same widget the blog list uses). Anything else passes through.
+// A lone `[!WHATS NEW]` line becomes a bloglist
+// widget (same widget the blog list uses, no heading). Anything else passes through.
 static string ExpandWhatsNew(string markdown, List<RssItem> items)
 {
     var lines = markdown.Replace("\r\n", "\n").Split('\n');
@@ -169,25 +169,98 @@ static string ExpandWhatsNew(string markdown, List<RssItem> items)
     return output.ToString();
 }
 
+// One `bloglist` widget (the same Explorer-style list/tile window the blog
+// index uses, see widgets/bloglist.html) for the whole feed. The feed is
+// curated by hand in rss.md, so the item set and order-by-date come from
+// there; only size and first image are computed, from the page each item's
+// url points at. An absolute url (a GitHub release, say) has no local page,
+// so it gets no size and no image.
 static string RenderWhatsNew(List<RssItem> items)
 {
-    var block = new StringBuilder();
-    block.Append("## What's New\n");
+    var measured = items
+        .Select(item => (Item: item, Page: MeasurePage(item.Url!)))
+        .ToList();
 
-    foreach (var item in items)
+    var block = new StringBuilder();
+    block.Append("```bloglist").Append('\n');
+    block.Append("label: ").Append(YamlQuote("What's New")).Append('\n');
+    block.Append("title: ").Append(YamlQuote("C:\\whats-new")).Append('\n');
+    block.Append("count: ").Append(YamlQuote(items.Count.ToString(CultureInfo.InvariantCulture))).Append('\n');
+    block.Append("total: ").Append(YamlQuote(FormatSize(measured.Sum(m => m.Page.Bytes)))).Append('\n');
+    block.Append("items:").Append('\n');
+    foreach (var (item, page) in measured)
     {
-        block.Append('\n').Append("```postlink").Append('\n');
-        block.Append("title: ").Append(YamlQuote(item.Title)).Append('\n');
+        block.Append("  - title: ").Append(YamlQuote(item.Title)).Append('\n');
+        block.Append("    url: ").Append(WidgetUrl(item.Url!)).Append('\n');
         if (item.Date is { } date)
         {
-            block.Append("date: ").Append(YamlQuote(date.ToString("MMMM d, yyyy", CultureInfo.InvariantCulture))).Append('\n');
+            block.Append("    date: ").Append(YamlQuote(date.ToString("MMM d, yyyy", CultureInfo.InvariantCulture))).Append('\n');
+            block.Append("    sortdate: ").Append(YamlQuote(date.ToString("yyyyMMdd", CultureInfo.InvariantCulture))).Append('\n');
         }
-        block.Append("url: ").Append(WidgetUrl(item.Url!)).Append('\n');
-        block.Append("```").Append('\n');
+        if (page.Found)
+        {
+            block.Append("    bytes: ").Append(YamlQuote(page.Bytes.ToString(CultureInfo.InvariantCulture))).Append('\n');
+            block.Append("    size: ").Append(YamlQuote(FormatSize(page.Bytes))).Append('\n');
+        }
+        if (page.Image is { } image)
+        {
+            block.Append("    image: !url ").Append(YamlQuote(image)).Append('\n');
+        }
     }
+    block.Append("```").Append('\n');
 
     return block.ToString().TrimEnd('\n');
 }
+
+// A page's "file size" and first image, computed the same way as
+// blog-list-generator.cs (each tool is a standalone script, so the logic is
+// duplicated -- keep the two in step): the markdown source plus every
+// distinct local image it references, and the first such image. A route maps
+// to content/<route>.md or content/<route>/index.md.
+static (bool Found, long Bytes, string? Image) MeasurePage(string url)
+{
+    if (url.StartsWith("http://", StringComparison.OrdinalIgnoreCase)
+        || url.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+    {
+        return (false, 0, null);
+    }
+
+    var route = url.Trim('/');
+    var file = new[]
+    {
+        Path.Combine("content", route + ".md"),
+        Path.Combine("content", route, "index.md"),
+    }.FirstOrDefault(File.Exists);
+    if (file is null) return (false, 0, null);
+
+    var raw = File.ReadAllText(file);
+    var total = new FileInfo(file).Length;
+    string? first = null;
+    var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+    foreach (Match m in ImageRegex().Matches(raw))
+    {
+        var reference = m.Groups.Cast<Group>().Skip(1).First(g => g.Success).Value.Trim();
+        if (reference.Length == 0 || reference.Contains("://") || reference.StartsWith("data:")) continue;
+
+        var clean = reference.Split('#')[0].Split('?')[0].TrimStart('/');
+        var resolved = new[] { clean, Path.Combine(Path.GetDirectoryName(file)!, clean) }.FirstOrDefault(File.Exists);
+        if (resolved is null || !seen.Add(resolved)) continue;
+
+        total += new FileInfo(resolved).Length;
+        first ??= Path.GetRelativePath(".", resolved).Replace('\\', '/');
+    }
+    return (true, total, first);
+}
+
+// Explorer-style: whole KB rounded up, MB with one decimal past 1 MB.
+static string FormatSize(long bytes) => bytes >= 1024 * 1024
+    ? $"{bytes / 1024.0 / 1024.0:0.0} MB"
+    : $"{Math.Max(1, (bytes + 1023) / 1024):N0} KB";
+
+// Markdown "![alt](path)", an HTML <img src="...">, or a widget's "src:"
+// line (slideshows: `- src: !url "content/..."`), in file order.
+static Regex ImageRegex() => new(@"!\[[^\]]*\]\(\s*<?([^)\s>]+)[^)]*\)|<img[^>]+src=[""']([^""']+)[""']|^\s*-?\s*src:\s*(?:!url\s*)?[""']?([^""'\s]+)", RegexOptions.IgnoreCase | RegexOptions.Multiline);
 
 // Site routes go through Canary's !url resolver so they match real page
 // paths. Absolute URLs (a GitHub release, say) are left as a plain scalar.

@@ -11,7 +11,7 @@
   tag in this comment block -- the templater has no notion of "this is a
   comment," see WIDGETS.md's gotcha section.
 
-  The title-bar -/+ control and the OK button collapse the window to its
+  The title-bar minimize/maximize control and the OK button collapse the window to its
   title bar (see the sibling .js). - minimizes, + restores.
 -->
 <!--clipboard
@@ -23,7 +23,7 @@ body: Currently hidden because of some instabilities in its setup. The Windows i
 <aside class="uc-window" data-widget="underconstruction">
   <div class="uc-titlebar" data-uc-titlebar>
     <span class="uc-caption">{{#caption}}{{caption}}{{/caption}}{{^caption}}Under Construction{{/caption}}</span>
-    <button type="button" class="uc-btn uc-btn-toggle" data-uc-toggle aria-expanded="true" aria-label="Minimize under construction notice">-</button>
+    <button type="button" class="uc-btn uc-btn-toggle" data-uc-toggle aria-expanded="true" aria-label="Minimize under construction notice"><svg viewBox="0 0 10 10" width="10" height="10" fill="currentColor" shape-rendering="crispEdges" aria-hidden="true"><rect x="1" y="7" width="6" height="2"/></svg></button>
   </div>
   <div class="uc-stripes" aria-hidden="true"></div>
   <div class="uc-body">

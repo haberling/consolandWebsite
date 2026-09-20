@@ -15,12 +15,13 @@
 .uc-window {
   margin: 1.5rem 0;
   max-width: 28rem;
-  border: 1px solid var(--border);
+  padding: 2px;
+  /* Win98 dialog frame: raised 2px bevel, hard offset shadow. Bevel
+     tokens come from theme.css. */
+  border: 2px solid;
+  border-color: var(--bevel-light) var(--bevel-dark) var(--bevel-dark) var(--bevel-light);
   background: var(--bg-elevated);
-  border-radius: 6px;
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--accent) 22%, transparent),
-    0 10px 28px rgba(0, 0, 0, 0.45);
+  box-shadow: 4px 4px 0 #000;
   overflow: hidden;
 }
 
@@ -28,9 +29,10 @@
   display: flex;
   align-items: center;
   gap: 0.35rem;
-  padding: 0.3rem 0.35rem 0.3rem 0.7rem;
-  background: var(--accent);
-  color: var(--bg);
+  padding: 0.2rem 0.2rem 0.2rem 0.4rem;
+  background: linear-gradient(90deg, var(--titlebar), var(--accent));
+  color: #fff;
+  text-shadow: 1px 1px 0 #000;
   font-family: Consolas, "Cascadia Code", "SF Mono", Menlo, "Liberation Mono", monospace;
   font-weight: 700;
   font-size: 0.85rem;
@@ -57,9 +59,11 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--bg);
-  background: var(--accent);
-  color: var(--bg);
+  border: 2px solid;
+  border-color: var(--bevel-light) var(--bevel-dark) var(--bevel-dark) var(--bevel-light);
+  background: var(--bg-elevated);
+  color: var(--text);
+  text-shadow: none;
   font-size: 0.85rem;
   line-height: 1;
   padding: 0;
@@ -69,11 +73,13 @@
   flex-shrink: 0;
 }
 
-.uc-btn-toggle:hover,
+.uc-btn-toggle:active {
+  border-color: var(--bevel-dark) var(--bevel-light) var(--bevel-light) var(--bevel-dark);
+}
+
 .uc-btn-toggle:focus-visible {
-  background: var(--bg);
-  color: var(--accent);
-  outline: none;
+  outline: 1px dotted #fff;
+  outline-offset: -4px;
 }
 
 .uc-stripes {
@@ -84,17 +90,7 @@
     var(--accent) 8px 16px
   );
   background-size: 22px 22px;
-  animation: uc-stripe 0.9s linear infinite;
-}
-
-@keyframes uc-stripe {
-  to { background-position: 22px 0; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .uc-stripes {
-    animation: none;
-  }
+  margin: 2px 0;
 }
 
 .uc-body {
@@ -122,7 +118,7 @@
 
 .uc-message {
   margin: 0;
-  color: var(--text-dim);
+  color: var(--text);
   font-size: 0.92rem;
 }
 
@@ -135,20 +131,28 @@
 .uc-ok {
   padding: 0.25rem 1.1rem;
   min-width: 4.5rem;
-  border: 1px solid var(--accent);
-  border-radius: 6px;
-  background: transparent;
-  color: var(--accent);
-  font: inherit;
+  /* Win98 default button: raised bevel inside an extra 1px black frame. */
+  border: 2px solid;
+  border-color: var(--bevel-light) var(--bevel-dark) var(--bevel-dark) var(--bevel-light);
+  background: var(--bg-elevated);
+  color: var(--text);
+  outline: 1px solid #000;
+  font-family: Consolas, "Cascadia Code", "SF Mono", Menlo, "Liberation Mono", monospace;
+  font-size: 0.9rem;
   cursor: pointer;
 }
 
-.uc-ok:hover,
+.uc-ok:hover {
+  color: var(--accent);
+}
+
+.uc-ok:active {
+  border-color: var(--bevel-dark) var(--bevel-light) var(--bevel-light) var(--bevel-dark);
+}
+
 .uc-ok:focus-visible {
-  background: var(--accent);
-  color: var(--bg);
-  outline: none;
-  text-decoration: none;
+  outline: 1px dotted var(--accent);
+  outline-offset: 2px;
 }
 
 .uc-window.is-collapsed .uc-stripes,

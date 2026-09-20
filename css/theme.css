@@ -2,6 +2,10 @@
  * Consoland's branding, loaded after css/framework.css. Overrides the
  * generic color tokens and wordmark treatment framework.css defines
  * defaults for.
+ *
+ * Look: Windows 98 if it had shipped a dark theme -- square corners,
+ * 2px beveled borders, flat charcoal window chrome, amber accent, hard
+ * (never blurred) shadows.
  */
 
 :root {
@@ -11,16 +15,278 @@
   --text-dim: #9aa1ab;
   --accent: #ffb000;
   --border: #2a2e35;
+
+  --bevel-light: #3d424b;
+  --bevel-dark: #06070a;
+  --titlebar: #3a2a00;
+  --mono: Consolas, "Cascadia Code", "SF Mono", Menlo, "Liberation Mono", monospace;
+}
+
+/* Nothing on this site is rounded. framework.css and the widget
+   stylesheets (which load AFTER this file) hard-code radii, so !important
+   is the only way to win without editing every widget. */
+*, *::before, *::after {
+  border-radius: 0 !important;
+}
+
+/* ---- Header: window frame + title bar ---- */
+
+.site-header {
+  padding: 0;
+  border: 2px solid;
+  border-color: var(--bevel-light) var(--bevel-dark) var(--bevel-dark) var(--bevel-light);
+  border-top-width: 0;
+  border-left-width: 0;
+  border-right-width: 0;
+  background: var(--bg-elevated);
+}
+
+.site-header-top {
+  padding: 0.5rem 1rem;
+  background: linear-gradient(90deg, var(--titlebar), var(--bg-elevated));
+  border-bottom: 2px solid var(--bevel-dark);
 }
 
 .site-title {
-  font-family: Consolas, "Cascadia Code", "SF Mono", Menlo, "Liberation Mono", monospace;
+  font-family: var(--mono);
   font-size: 2.5rem;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.site-title:hover {
+  color: var(--accent);
+  text-decoration: none;
 }
 
 .site-logo {
   height: 54px;
   aspect-ratio: 4 / 3;
-  border-radius: 4px;
-  border: 1px solid var(--border);
+  border: 2px solid;
+  border-color: var(--bevel-dark) var(--bevel-light) var(--bevel-light) var(--bevel-dark);
+}
+
+.site-tagline p {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+}
+
+/* ---- Nav: menu bar of toolbar buttons ---- */
+
+.site-nav {
+  padding: 0.35rem 1rem;
+  border-top: 1px solid var(--bevel-light);
+}
+
+.site-nav-list {
+  gap: 0.25rem;
+}
+
+.nav-label {
+  display: block;
+  padding: 0.2rem 0.75rem;
+  border: 2px solid transparent;
+  font-family: var(--mono);
+  font-size: 0.9rem;
+}
+
+.nav-label:hover,
+.nav-item:focus-within .nav-label {
+  border-color: var(--bevel-light) var(--bevel-dark) var(--bevel-dark) var(--bevel-light);
+}
+
+.nav-item.active > .nav-label {
+  border-color: var(--bevel-dark) var(--bevel-light) var(--bevel-light) var(--bevel-dark);
+  background: var(--bg);
+}
+
+.nav-dropdown {
+  top: calc(100% - 0.1rem);
+  padding: 2px;
+  border: 2px solid;
+  border-color: var(--bevel-light) var(--bevel-dark) var(--bevel-dark) var(--bevel-light);
+  background: var(--bg-elevated);
+  box-shadow: 3px 3px 0 #000;
+}
+
+/* Win98 menu selection: solid accent bar, dark text. Selectors match the
+   framework's own specificity (.nav-dropdown a / .nav-dropdown .nav-dropdown-label). */
+.nav-dropdown a,
+.nav-dropdown .nav-dropdown-label {
+  font-family: var(--mono);
+  padding: 0.3rem 0.9rem;
+}
+
+.nav-dropdown a:hover,
+.nav-dropdown-label:hover,
+.nav-subitem:focus-within > .nav-dropdown-label {
+  color: #000;
+  background: var(--accent);
+}
+
+.nav-dropdown a.active,
+.nav-dropdown-label.active {
+  color: var(--accent);
+}
+
+.nav-dropdown a.active:hover,
+.nav-dropdown-label.active:hover {
+  color: #000;
+}
+
+.nav-dropdown-nested {
+  top: -4px;
+  margin-left: 0;
+}
+
+/* Classic dotted focus rectangle. */
+a:focus-visible,
+button:focus-visible {
+  outline: 1px dotted var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---- Content ---- */
+
+#app img {
+  border: 2px solid;
+  border-color: var(--bevel-dark) var(--bevel-light) var(--bevel-light) var(--bevel-dark);
+}
+
+blockquote {
+  border-left-width: 4px;
+  background: var(--bg-elevated);
+}
+
+/* ---- Widget buttons: raised bevel, sink when pressed ----
+   downloads.css is a Canary built-in and loads after this file, so these
+   are prefixed with #app to out-rank its same-specificity rules. postlink
+   is site-authored and styles its own button in widgets/postlink.css. */
+
+#app .downloads-widget {
+  border: 2px solid;
+  border-color: var(--bevel-dark) var(--bevel-light) var(--bevel-light) var(--bevel-dark);
+}
+
+#app .downloads-widget a.download-button,
+#app .copy-command-button {
+  display: inline-block;
+  padding: 0.35rem 1rem;
+  border: 2px solid;
+  border-color: var(--bevel-light) var(--bevel-dark) var(--bevel-dark) var(--bevel-light);
+  background: var(--bg-elevated);
+  box-shadow: 1px 1px 0 #000;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#app .downloads-widget a.download-button:hover,
+#app .copy-command-button:hover {
+  background: color-mix(in srgb, var(--accent) 12%, var(--bg-elevated));
+  color: var(--accent);
+}
+
+#app .downloads-widget a.download-button:active,
+#app .copy-command-button:active {
+  border-color: var(--bevel-dark) var(--bevel-light) var(--bevel-light) var(--bevel-dark);
+  box-shadow: none;
+  padding: calc(0.35rem + 1px) calc(1rem - 1px) calc(0.35rem - 1px) calc(1rem + 1px);
+}
+
+#app .copy-command-text {
+  border: 2px solid;
+  border-color: var(--bevel-dark) var(--bevel-light) var(--bevel-light) var(--bevel-dark);
+}
+
+/* ---- Footer ---- */
+
+.site-footer {
+  border-top: 2px solid;
+  border-top-color: var(--bevel-light);
+  box-shadow: inset 0 2px 0 var(--bevel-dark);
+  background: var(--bg-elevated);
+}
+
+/* ---- Logo zoom modal ---- */
+
+.logo-zoom-modal-img {
+  border: 2px solid var(--bevel-light);
+  box-shadow: 4px 4px 0 #000;
+}
+
+.logo-zoom-modal-close {
+  border: 2px solid;
+  border-color: var(--bevel-light) var(--bevel-dark) var(--bevel-dark) var(--bevel-light);
+}
+
+.logo-zoom-modal-close:active {
+  border-color: var(--bevel-dark) var(--bevel-light) var(--bevel-light) var(--bevel-dark);
+}
+
+/* ---- Narrow screens ---- */
+
+@media (max-width: 640px) {
+  .site-header-top {
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .site-title {
+    font-size: 1.75rem;
+  }
+
+  .site-logo {
+    height: 40px;
+  }
+
+  .site-tagline {
+    flex-basis: 100%;
+  }
+
+  .site-tagline p {
+    text-align: left;
+  }
+}
+
+/* ---- Slideshow widget (Canary built-in, loads after this file) ---- */
+
+#app .slideshow-widget {
+  border: 2px solid;
+  border-color: var(--bevel-dark) var(--bevel-light) var(--bevel-light) var(--bevel-dark);
+}
+
+#app .slideshow-viewport {
+  border: 2px solid;
+  border-color: var(--bevel-dark) var(--bevel-light) var(--bevel-light) var(--bevel-dark);
+}
+
+#app .slideshow-toggle,
+#app .slideshow-nav {
+  border: 2px solid;
+  border-color: var(--bevel-light) var(--bevel-dark) var(--bevel-dark) var(--bevel-light);
+  background: var(--bg-elevated);
+  box-shadow: 1px 1px 0 #000;
+  color: var(--text);
+  font-family: var(--mono);
+}
+
+#app .slideshow-toggle:hover,
+#app .slideshow-nav:hover {
+  background: color-mix(in srgb, var(--accent) 12%, var(--bg-elevated));
+  border-color: var(--bevel-light) var(--bevel-dark) var(--bevel-dark) var(--bevel-light);
+  color: var(--accent);
+}
+
+#app .slideshow-toggle:active,
+#app .slideshow-nav:active {
+  border-color: var(--bevel-dark) var(--bevel-light) var(--bevel-light) var(--bevel-dark);
+  box-shadow: none;
+}
+
+/* Dots: flat squares, like a tab-stop indicator; active is filled. */
+#app .slideshow-dot {
+  border: 1px solid var(--accent);
 }

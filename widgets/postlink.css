@@ -14,8 +14,16 @@
   font-size: 1.25rem;
 }
 
+/* The icon is a Win98-style raised button (bevel tokens come from theme.css). */
 .postlink-url {
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.3rem 0.5rem;
+  border: 2px solid;
+  border-color: var(--bevel-light, #3d424b) var(--bevel-dark, #06070a) var(--bevel-dark, #06070a) var(--bevel-light, #3d424b);
+  background: var(--bg-elevated);
+  box-shadow: 1px 1px 0 #000;
   color: var(--accent);
   flex-shrink: 0;
 }
@@ -26,7 +34,13 @@
 }
 
 .postlink-url:hover {
-  opacity: 0.75;
+  background: color-mix(in srgb, var(--accent) 12%, var(--bg-elevated));
+  text-decoration: none;
+}
+
+.postlink-url:active {
+  border-color: var(--bevel-dark, #06070a) var(--bevel-light, #3d424b) var(--bevel-light, #3d424b) var(--bevel-dark, #06070a);
+  box-shadow: none;
 }
 
 .postlink-title {

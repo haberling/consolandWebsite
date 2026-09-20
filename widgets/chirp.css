@@ -393,3 +393,70 @@
   color: var(--bg);
   cursor: pointer;
 }
+
+/*
+ * Win98 bevel pass. Overrides the flat/rounded button and field styling
+ * above, using the bevel tokens theme.css defines on :root. Radii are
+ * already zeroed site-wide by theme.css.
+ */
+
+.chirp-widget {
+  border: 2px solid;
+  border-color: var(--bevel-dark) var(--bevel-light) var(--bevel-light) var(--bevel-dark);
+}
+
+.chirp-load-more,
+.chirp-toggle,
+.chirp-form button[type="submit"],
+.chirp-rules-close {
+  border: 2px solid;
+  border-color: var(--bevel-light) var(--bevel-dark) var(--bevel-dark) var(--bevel-light);
+  background: var(--bg-elevated);
+  box-shadow: 1px 1px 0 #000;
+  color: var(--text);
+  font-family: Consolas, "Cascadia Code", "SF Mono", Menlo, "Liberation Mono", monospace;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.chirp-load-more:hover,
+.chirp-toggle:hover,
+.chirp-form button[type="submit"]:hover:not(:disabled),
+.chirp-rules-close:hover {
+  background: color-mix(in srgb, var(--accent) 12%, var(--bg-elevated));
+  border-color: var(--bevel-light) var(--bevel-dark) var(--bevel-dark) var(--bevel-light);
+  color: var(--accent);
+}
+
+.chirp-load-more:active,
+.chirp-toggle:active,
+.chirp-form button[type="submit"]:active:not(:disabled),
+.chirp-rules-close:active {
+  border-color: var(--bevel-dark) var(--bevel-light) var(--bevel-light) var(--bevel-dark);
+  box-shadow: none;
+}
+
+/* Expanded = pressed in, like a latched toolbar button. */
+.chirp-toggle[aria-expanded="true"] {
+  border-color: var(--bevel-dark) var(--bevel-light) var(--bevel-light) var(--bevel-dark);
+  box-shadow: none;
+  color: var(--accent);
+}
+
+.chirp-form input,
+.chirp-form textarea {
+  border: 2px solid;
+  border-color: var(--bevel-dark) var(--bevel-light) var(--bevel-light) var(--bevel-dark);
+}
+
+.chirp-form input:focus,
+.chirp-form textarea:focus {
+  outline: 1px dotted var(--accent);
+  outline-offset: 1px;
+}
+
+.chirp-rules-dialog {
+  border: 2px solid;
+  border-color: var(--bevel-light) var(--bevel-dark) var(--bevel-dark) var(--bevel-light);
+  box-shadow: 4px 4px 0 #000;
+}

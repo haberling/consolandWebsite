@@ -1,25 +1,24 @@
 # llote
 
-```underconstruction
-title: Microsoft Store
-body: Currently hidden because of some instabilities in its setup. The Windows installer here should work. Sorry if it looks scary — it's unsigned, so Windows will likely warn you about it.
-```
-
 A terminal-native note-taking utility with semantic search.
 
-`v1.0.0` out for Windows.
+`v1.1.0` out for Windows on the Microsoft Store.
 
 ```slideshow
 title: Screenshots
 slides:
+  - src: !url "content/utilities/images/llote-browse.jpg"
+    caption: "Browse mode: interactive terminal interface"
   - src: !url "content/utilities/images/llote-splash.png"
-    caption: "Startup splash"
+    caption: "Splash screen"
   - src: !url "content/utilities/images/llote-cli.png"
-    caption: "Ask by meaning, then keep writing"
-  - src: !url "content/utilities/images/llote-browse.png"
-    caption: "browse TUI"
-  - src: !url "content/utilities/images/llote-docs.png"
-    caption: "User's guide"
+    caption: "Add notes, search, and open browse mode from the command line"
+  - src: !url "content/utilities/images/llote-docs-cover.jpg"
+    caption: "First-class documentation"
+  - src: !url "content/utilities/images/llote-docs-commands.jpg"
+    caption: "Become an expert llote user in ~10 minutes"
+  - src: !url "content/utilities/images/llote-start-menu.png"
+    caption: "Lives in Windows like a normal app"
 ```
 
 ## Features
@@ -42,13 +41,15 @@ lines:
   - text: "llote browse"
 ```
 
-The full user's guide is at [llote.consoland.net](https://llote.consoland.net/).
+## Why Microsoft Store only?
+
+My original plan was to release llote both here and on the Microsoft Store. What changed is that, like a lot of software projects, once the first version was out I came up with all sorts of improvements and refinements I wanted to add. llote is a side project, and I decided to spend the time I have for it on new features instead of testing and maintaining installers. The Microsoft Store won out because, hopefully, more people will find llote there than in this small corner of the internet.
 
 ```downloads
 title: Get llote
 items:
-  - label: "Windows Installer"
-    url: "https://github.com/haberling/llote-docs/releases/download/llote-v1.0.0/llote-setup.exe"
+  - label: "Microsoft Store"
+    url: "https://apps.microsoft.com/detail/9N8BHTQZR4L4"
   - label: "User's Guide"
     url: "https://llote.consoland.net/"
 ```

@@ -8,7 +8,7 @@ paragraph after the fields is the summary.
 
 Newest date wins; same-day items keep the order they appear here.
 
-## llote v1.0.0
+## llote v1.1.0
 date: 2026-09-07
 url: utilities/llote
 

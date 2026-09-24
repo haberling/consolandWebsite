@@ -47,35 +47,8 @@
   </div>
 
   <main id="app"><h1>llote</h1>
-
-
-<aside class="uc-window" data-widget="underconstruction">
-  <div class="uc-titlebar" data-uc-titlebar>
-    <span class="uc-caption">Under Construction</span>
-    <button type="button" class="uc-btn uc-btn-toggle" data-uc-toggle aria-expanded="true" aria-label="Minimize under construction notice"><svg viewBox="0 0 10 10" width="10" height="10" fill="currentColor" shape-rendering="crispEdges" aria-hidden="true"><rect x="1" y="7" width="6" height="2"/></svg></button>
-  </div>
-  <div class="uc-stripes" aria-hidden="true"></div>
-  <div class="uc-body">
-    <svg class="uc-cone" viewBox="0 0 64 64" aria-hidden="true">
-      <ellipse cx="32" cy="57" rx="22" ry="4" fill="currentColor" opacity="0.25"/>
-      <path d="M12 52h40l-2 4H14z" fill="#9a3412"/>
-      <path d="M18 52 29 10h6l11 42z" fill="#ea580c"/>
-      <path d="M21.2 42h21.6l-2.6-10H23.8z" fill="#f8f4e8"/>
-      <path d="M24.6 26h14.8l-2.2-8H26.8z" fill="#f8f4e8"/>
-      <path d="M29 10h6l1.2 4h-8.4z" fill="#c2410c"/>
-    </svg>
-    <div class="uc-copy">
-      <h3 class="uc-heading">Microsoft Store</h3>
-      <p class="uc-message">Currently hidden because of some instabilities in its setup. The Windows installer here should work. Sorry if it looks scary — it's unsigned, so Windows will likely warn you about it.</p>
-    </div>
-  </div>
-  <div class="uc-actions">
-    <button type="button" class="uc-ok" data-uc-toggle>OK</button>
-  </div>
-</aside>
-
 <p>A terminal-native note-taking utility with semantic search.</p>
-<p><code>v1.0.0</code> out for Windows.</p>
+<p><code>v1.1.0</code> out for Windows on the Microsoft Store.</p>
 
 
 
@@ -88,23 +61,33 @@
     <div class="slideshow-track">
       
       <figure class="slideshow-slide" aria-roledescription="slide">
-        <img src="/content/utilities/images/llote-splash.png" alt="Startup splash" loading="lazy">
-        <figcaption class="slideshow-caption">Startup splash</figcaption>
+        <img src="/content/utilities/images/llote-browse.jpg" alt="Browse mode: interactive terminal interface" loading="lazy">
+        <figcaption class="slideshow-caption">Browse mode: interactive terminal interface</figcaption>
       </figure>
       
       <figure class="slideshow-slide" aria-roledescription="slide">
-        <img src="/content/utilities/images/llote-cli.png" alt="Ask by meaning, then keep writing" loading="lazy">
-        <figcaption class="slideshow-caption">Ask by meaning, then keep writing</figcaption>
+        <img src="/content/utilities/images/llote-splash.png" alt="Splash screen" loading="lazy">
+        <figcaption class="slideshow-caption">Splash screen</figcaption>
       </figure>
       
       <figure class="slideshow-slide" aria-roledescription="slide">
-        <img src="/content/utilities/images/llote-browse.png" alt="browse TUI" loading="lazy">
-        <figcaption class="slideshow-caption">browse TUI</figcaption>
+        <img src="/content/utilities/images/llote-cli.png" alt="Add notes, search, and open browse mode from the command line" loading="lazy">
+        <figcaption class="slideshow-caption">Add notes, search, and open browse mode from the command line</figcaption>
       </figure>
       
       <figure class="slideshow-slide" aria-roledescription="slide">
-        <img src="/content/utilities/images/llote-docs.png" alt="User's guide" loading="lazy">
-        <figcaption class="slideshow-caption">User's guide</figcaption>
+        <img src="/content/utilities/images/llote-docs-cover.jpg" alt="First-class documentation" loading="lazy">
+        <figcaption class="slideshow-caption">First-class documentation</figcaption>
+      </figure>
+      
+      <figure class="slideshow-slide" aria-roledescription="slide">
+        <img src="/content/utilities/images/llote-docs-commands.jpg" alt="Become an expert llote user in ~10 minutes" loading="lazy">
+        <figcaption class="slideshow-caption">Become an expert llote user in ~10 minutes</figcaption>
+      </figure>
+      
+      <figure class="slideshow-slide" aria-roledescription="slide">
+        <img src="/content/utilities/images/llote-start-menu.png" alt="Lives in Windows like a normal app" loading="lazy">
+        <figcaption class="slideshow-caption">Lives in Windows like a normal app</figcaption>
       </figure>
       
     </div>
@@ -113,7 +96,7 @@
   </div>
   <div class="slideshow-footer">
     <div class="slideshow-dots">
-      <button type="button" class="slideshow-dot"></button><button type="button" class="slideshow-dot"></button><button type="button" class="slideshow-dot"></button><button type="button" class="slideshow-dot"></button>
+      <button type="button" class="slideshow-dot"></button><button type="button" class="slideshow-dot"></button><button type="button" class="slideshow-dot"></button><button type="button" class="slideshow-dot"></button><button type="button" class="slideshow-dot"></button><button type="button" class="slideshow-dot"></button>
     </div>
     <span class="slideshow-counter"></span>
   </div>
@@ -133,7 +116,8 @@ llote browse
 </code></pre>
 </div>
 
-<p>The full user's guide is at <a href="https://llote.consoland.net/">llote.consoland.net</a>.</p>
+<h2>Why Microsoft Store only?</h2>
+<p>My original plan was to release llote both here and on the Microsoft Store. What changed is that, like a lot of software projects, once the first version was out I came up with all sorts of improvements and refinements I wanted to add. llote is a side project, and I decided to spend the time I have for it on new features instead of testing and maintaining installers. The Microsoft Store won out because, hopefully, more people will find llote there than in this small corner of the internet.</p>
 
 
 <div class="downloads-widget" data-widget="downloads">
@@ -141,7 +125,7 @@ llote browse
   <ul>
     
     
-    <li><a class="download-button" href="https://github.com/haberling/llote-docs/releases/download/llote-v1.0.0/llote-setup.exe">Windows Installer</a></li>
+    <li><a class="download-button" href="https://apps.microsoft.com/detail/9N8BHTQZR4L4">Microsoft Store</a></li>
     
     
     
